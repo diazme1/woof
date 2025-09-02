@@ -13,6 +13,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "start:react": "cross-env BROWSER=none react-scripts start",
+    "start:spring": "cross-env-shell \"if [ $OS = 'Windows_NT' ]; then cd .. && gradlew.bat bootRun; else cd .. && ./gradlew bootRun; fi\"",
+    "dev": "concurrently -k -n REACT,SPRING -c auto \"npm run start:react\" \"npm run start:spring\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -35,5 +38,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.0.0"
   }
 }
