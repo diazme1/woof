@@ -1,4 +1,4 @@
-package main.java.ar.edu.unq.woof;
+package ar.edu.unq.woof;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
