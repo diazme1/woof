@@ -5,6 +5,11 @@ Para dueños de mascotas con poco tiempo, que necesitan pasear a sus perros de f
 Es una aplicación web de servicios para mascotas que conecta a dueños con paseadores de perros, permitiendo elegir fácilmente al que más se adapte a sus preferencias.  
 Diferente a buscar personas desconocidas o sin referencias, nuestro proyecto brinda **seguridad y practicidad**, ya que todos los paseadores cuentan con perfiles verificados y reseñas transparentes.
 
+### Links:
+
+#### USM: https://miro.com/app/board/uXjVJQVloak=/
+#### JIRA: https://orlandoabrillujan.atlassian.net/jira/software/projects/EIS/summary
+
 ---
 
 ## D.O.D (Definition of Done)
