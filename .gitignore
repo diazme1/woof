@@ -29,5 +29,8 @@ bin/
 .DS_Store
 
 ### Gradle ###
-/build
-/.gradle
+build/
+.gradle/
+
+### IntelliJ ###
+.idea/
