@@ -3,7 +3,7 @@ package main.java.ar.edu.unq.woof;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "ar.edu.unq.woof")
 public class WoofApp {
 
     public static void main(String[] args) {
