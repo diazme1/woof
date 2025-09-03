@@ -70,7 +70,7 @@ const Login = () => {
                 >
                     <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
                         <div className={styles.modalHeader}>
-                            <h3 id="register-title">Crear cuenta</h3>
+                            <h3 id="register-title">Registrarme</h3>
                             <button
                                 className={styles.closeBtn}
                                 onClick={() => setShowRegister(false)}
