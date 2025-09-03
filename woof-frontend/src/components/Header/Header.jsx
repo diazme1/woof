@@ -30,7 +30,7 @@ const Header = () => {
 
                 <div className={styles.ctas}>
                     <a className={`${styles.btn} ${styles.ghost}`} href="#login">Iniciar sesión</a>
-                    <a className={`${styles.btn} ${styles.solid}`} href="#ser-paseador">Quiero ser paseador</a>
+                    <a className={`${styles.btn} ${styles.solid}`} href="#register">Registrarse</a>
                 </div>
             </nav>
 
