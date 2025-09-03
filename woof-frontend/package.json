@@ -14,7 +14,7 @@
   },
   "scripts": {
     "start:react": "cross-env BROWSER=none react-scripts start",
-    "start:spring": "cross-env-shell \"if [ $OS = 'Windows_NT' ]; then cd .. && gradlew.bat bootRun; else cd .. && ./gradlew bootRun; fi\"",
+    "start:spring": "node -e \"const {spawn}=require('child_process');const isWin=process.platform==='win32';const cmd=isWin?'gradlew.bat':'./gradlew';const args=['bootRun'];const cp=spawn(cmd,args,{stdio:'inherit',cwd:'..',shell:true});cp.on('exit',c=>process.exit(c));\"",
     "dev": "concurrently -k -n REACT,SPRING -c auto \"npm run start:react\" \"npm run start:spring\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
