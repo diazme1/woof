@@ -18,7 +18,11 @@ public class Paseador {
     @Column(nullable = false)
     private String nombre;
 
+    @Column(nullable = false)
+    private Integer dni;
+
     public Paseador(String nombre) {
         this.nombre = nombre;
+        this.dni = dni;
     }
 }
