@@ -1,19 +1,19 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header/Header";
-import ClientForm from "./components/ClientForm/ClientForm";
-
+import Login from "./components/Login/Login";
 
 const App = () => {
     return (
         <Router>
-            <Header></Header>
+            <Header />
 
             <Routes>
-                <Route path="/login" element={<ClientForm />} />
+                {/* Redirige al login */}
+                <Route path="/login" element={<Login />} />
+
             </Routes>
         </Router>
-    )
-}
-
+    );
+};
 
 export default App;
