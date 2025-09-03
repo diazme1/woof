@@ -1,0 +1,34 @@
+:global(:root){
+    /* Paleta Woof! */
+    --primary:#00B0B1;      /* teal/menta */
+    --primary-700:#007C7D;  /* teal oscuro */
+    --accent:#FF6F61;       /* coral (CTA) */
+    --ink:#102A43;          /* texto principal */
+    --muted:#627D98;        /* texto secundario */
+    --bg:#F7F9FB;           /* fondo app */
+    --card:#FFFFFF;
+    --line:#E4E7EB;
+}
+.footer {
+    display: flex;
+    justify-content: space-around;   /* distribuye cada bloque horizontalmente */
+    align-items: center;             /* centra verticalmente */
+    padding: 40px 10px;
+    background: var(--primary-700);      /* mismo color que el botón */
+    color: white;
+    width: AUTO;
+}
+
+.socials {
+    display: flex;
+    gap: 13px;   /* espacio entre links */
+}
+
+.footer a {
+    color: white;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
