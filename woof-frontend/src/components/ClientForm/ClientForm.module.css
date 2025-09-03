@@ -1,0 +1,37 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--card);
+}
+
+label {
+    display: flex;
+    flex-direction: column;
+    font-weight: 500;
+    color: var(--ink);
+}
+
+input {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+}
+
+button {
+    padding: 10px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: var(--primary-700);
+}

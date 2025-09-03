@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import styles from "./Header.module.css";
 
@@ -29,8 +30,9 @@ const Header = () => {
                 </ul>
 
                 <div className={styles.ctas}>
-                    <a className={`${styles.btn} ${styles.ghost}`} href="#login">Iniciar sesión</a>
-                    <a className={`${styles.btn} ${styles.solid}`} href="#ser-paseador">Quiero ser paseador</a>
+                    <Link className={`${styles.btn} ${styles.ghost}`} to="/login">
+                        Iniciar sesión
+                    </Link>
                 </div>
             </nav>
 
