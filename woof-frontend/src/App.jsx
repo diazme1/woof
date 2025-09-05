@@ -1,5 +1,5 @@
 import Header from "./components/Header/Header";
-
+import Body from "./components/Body/Body";
 
 const App = () => {
 
@@ -7,8 +7,7 @@ const App = () => {
         <>
 
         <Header></Header>
-
-
+        <Body></Body>
 
 
         </>

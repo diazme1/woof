@@ -31,3 +31,10 @@ bin/
 ### Gradle ###
 /build
 /.gradle
+
+### Node (frontend) ###
+frontend/node_modules/
+frontend/build/
+
+node_modules/
+package-lock.json

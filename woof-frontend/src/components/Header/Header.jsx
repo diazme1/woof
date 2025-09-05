@@ -7,7 +7,6 @@ const Header = () => {
     return (
         <header className={styles.header}>
             <nav className={styles.nav}>
-                <a className={styles.brand} href="/">Woof!</a>
 
                 <button
                     className={styles.burger}
@@ -20,6 +19,8 @@ const Header = () => {
                     <span />
                 </button>
 
+                <img src="/logo.png" alt="Logo de la empresa" className={styles.logo} />
+
                 <ul className={`${styles.links} ${menuOpen ? styles.open : ""}`}>
                     <li><a href="#como-funciona">Cómo funciona</a></li>
                     <li><a href="#paseadores">Paseadores</a></li>
@@ -30,7 +31,6 @@ const Header = () => {
 
                 <div className={styles.ctas}>
                     <a className={`${styles.btn} ${styles.ghost}`} href="#login">Iniciar sesión</a>
-                    <a className={`${styles.btn} ${styles.solid}`} href="#ser-paseador">Quiero ser paseador</a>
                 </div>
             </nav>
 
