@@ -8,7 +8,6 @@ const Header = () => {
     return (
         <header className={styles.header}>
             <nav className={styles.nav}>
-                <a className={styles.brand} href="/">Woof!</a>
 
                 <button
                     className={styles.burger}
@@ -20,6 +19,8 @@ const Header = () => {
                     <span />
                     <span />
                 </button>
+
+                <img src="/logo.png" alt="Logo de la empresa" className={styles.logo} />
 
                 <ul className={`${styles.links} ${menuOpen ? styles.open : ""}`}>
                     <li><a href="#como-funciona">Cómo funciona</a></li>
