@@ -10,12 +10,14 @@ const App = () => {
     return (
         <Router>
             <Header />
-            <Footer />
+
 
             <Routes>
                 <Route path="/" element={<Body />} />
                 <Route path="/login" element={<Login />} />
             </Routes>
+
+            <Footer />
         </Router>
     );
 };
