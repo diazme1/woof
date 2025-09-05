@@ -20,7 +20,11 @@ const Header = () => {
                     <span />
                 </button>
 
-                <img src="/logo.png" alt="Logo de la empresa" className={styles.logo} />
+                <div>
+                    <Link to="/">
+                    <img src="/logo.png" alt="Logo de la empresa" className={styles.logo} />
+                    </Link>
+                </div>
 
                 <ul className={`${styles.links} ${menuOpen ? styles.open : ""}`}>
                     <li><a href="#como-funciona">Cómo funciona</a></li>
@@ -40,7 +44,7 @@ const Header = () => {
             <section className={styles.hero}>
                 <h1>Paseos confiables cerca tuyo</h1>
                 <p>Encontrá paseadores verificados con reseñas reales. Reservá en 2 minutos.</p>
-
+                {/* Botones de buscar paseador y seguridad, Lo dejo comentado por ahora
                 <div className={styles.heroActions}>
                     <a href="#paseadores" className={`${styles.btn} ${styles.solid}`}>
                         Buscar paseador
@@ -53,6 +57,7 @@ const Header = () => {
                 <p className={styles.trust}>
                     Perfiles verificados · Reseñas transparentes · Soporte 24/7
                 </p>
+                */}
             </section>
         </header>
     );

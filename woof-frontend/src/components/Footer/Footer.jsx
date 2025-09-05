@@ -1,9 +1,8 @@
 import {useState} from "react";
 import styles from "./Footer.module.css";
 import { FaInstagram, FaWhatsapp, FaTiktok, FaYoutube, FaTwitter, FaFacebook } from "react-icons/fa";
-// import logo from "../../assets/logo.png";
 
-// <img src={logo} alt="Logo" className={styles.footerLogo} /> en linea 14
+
 const Footer = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     return (
@@ -12,6 +11,7 @@ const Footer = () => {
 
                 {/* Izquierda: Logo + copyright */}
                 <div className={styles.footerLeft}>
+                    <img src="/logo_circular.png" alt="Logo" className={styles.footerLogo} />
                     <p className={styles.footerText}>© Global Pro Care Inc.</p>
                 </div>
 
