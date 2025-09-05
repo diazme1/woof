@@ -6,13 +6,11 @@ import Body from "./components/Body/Body";
 const App = () => {
     return (
         <Router>
-            <Header></Header>
-            <Body></Body>
+            <Header />
 
             <Routes>
-                {/* Redirige al login */}
+                <Route path="/" element={<Body />} />
                 <Route path="/login" element={<Login />} />
-
             </Routes>
         </Router>
     );
