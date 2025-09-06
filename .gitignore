@@ -34,3 +34,10 @@ build/
 
 ### IntelliJ ###
 .idea/
+
+### Node (frontend) ###
+frontend/node_modules/
+frontend/build/
+
+node_modules/
+package-lock.json
