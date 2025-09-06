@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useState } from "react";
 import styles from "./Header.module.css";
 
@@ -21,7 +22,7 @@ const Header = () => {
 
                 <div>
                     <Link to="/">
-                    <img src="/logo.png" alt="Logo de la empresa" className={styles.logo} />
+                        <img src="/logo.png" alt="Logo de la empresa" className={styles.logo} />
                     </Link>
                 </div>
 
@@ -56,6 +57,7 @@ const Header = () => {
                 <p className={styles.trust}>
                     Perfiles verificados · Reseñas transparentes · Soporte 24/7
                 </p>
+                */}
             </section>
         </header>
     );
