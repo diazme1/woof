@@ -1,6 +1,6 @@
 package ar.edu.unq.woof.controller.dto.paseador;
 
-import ar.edu.unq.woof.modelo.Paseador;
+import ar.edu.unq.woof.modelo.Usuario;
 
 public record PaseadorRequestDTO(
         String nombre,
@@ -11,7 +11,7 @@ public record PaseadorRequestDTO(
         String contrasena
 ) {
 
-    public Paseador aModelo(){
-        return new Paseador(nombre, dni, email, telefono, direccion, contrasena);
+    public Usuario aModelo(){
+        return new Usuario(nombre, dni, email, telefono, direccion, contrasena);
     }
 }

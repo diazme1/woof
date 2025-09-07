@@ -1,6 +1,6 @@
 package ar.edu.unq.woof.service.impl;
 
-import ar.edu.unq.woof.modelo.Paseador;
+import ar.edu.unq.woof.modelo.Usuario;
 import ar.edu.unq.woof.modelo.exceptions.CorreoDuplicadoPaseadorException;
 import ar.edu.unq.woof.persistence.PaseadorDAO;
 import ar.edu.unq.woof.service.interfaces.PaseadorService;
@@ -20,16 +20,16 @@ public class PaseadorServiceImpl implements PaseadorService {
     }
 
     @Override
-    public void savePaseador(Paseador paseador) {
+    public void savePaseador(Usuario usuario) {
         try {
-            paseadorDAO.save(paseador);
+            paseadorDAO.save(usuario);
         } catch (DataIntegrityViolationException e) {
-            throw new CorreoDuplicadoPaseadorException(paseador.getEmail());
+            throw new CorreoDuplicadoPaseadorException(usuario.getEmail());
         }
     }
 
     @Override
-    public Optional<Paseador> getPaseador(Long idPaseador) {
+    public Optional<Usuario> getPaseador(Long idPaseador) {
         return paseadorDAO.findById(idPaseador);
     }
 }

@@ -7,6 +7,7 @@
     "@testing-library/jest-dom": "^6.8.0",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.11.0",
     "concurrently": "^9.2.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
@@ -19,12 +20,11 @@
   "scripts": {
     "start:react": "cross-env BROWSER=none react-scripts start",
     "start:spring": "cross-env-shell \"if [ $OS = 'Windows_NT' ]; then cd .. && gradlew.bat bootRun; else cd .. && ./gradlew bootRun; fi\"",
-    "dev": "concurrently -k -n REACT,SPRING -c auto \"npm run start:react\" \"npm run start:spring\"",
+    "dev": "concurrently \"npm start\" \"cd .. && gradlew.bat bootRun\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "dev": "concurrently \"npm start\" \"cd .. && gradlew.bat bootRun\""
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
