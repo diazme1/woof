@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PaseadorDAO extends JpaRepository<Usuario,Long> {
+public interface UserDAO extends JpaRepository<Usuario,Long> {
 
 }

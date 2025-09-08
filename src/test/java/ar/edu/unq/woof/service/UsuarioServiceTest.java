@@ -1,21 +1,21 @@
 package ar.edu.unq.woof.service;
 
-import ar.edu.unq.woof.modelo.Paseador;
-import ar.edu.unq.woof.service.interfaces.PaseadorService;
+import ar.edu.unq.woof.modelo.Usuario;
+import ar.edu.unq.woof.service.interfaces.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-public class PaseadorServiceTest {
+public class UsuarioServiceTest {
 
     @Autowired
-    private PaseadorService paseadorSer;
+    private UserService userService;
 
     @Test
     public void savePaseador() {
-        Paseador paseador = new Paseador("Emilia Diaz", 44555666, "x@x.com", "2215559999", "xxxx", "root");
-        paseadorSer.savePaseador(paseador);
+        Usuario usuario = new Usuario("Emilia Diaz", 44555666, "x@x.com", "2215559999", "xxxx", "root");
+        userService.saveUser(usuario);
     }
 
 }

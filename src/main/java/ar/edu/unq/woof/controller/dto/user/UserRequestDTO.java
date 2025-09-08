@@ -1,8 +1,8 @@
-package ar.edu.unq.woof.controller.dto.paseador;
+package ar.edu.unq.woof.controller.dto.user;
 
 import ar.edu.unq.woof.modelo.Usuario;
 
-public record PaseadorRequestDTO(
+public record UserRequestDTO(
         String nombre,
         Integer dni,
         String email,

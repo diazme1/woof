@@ -4,8 +4,8 @@ import ar.edu.unq.woof.modelo.Usuario;
 
 import java.util.Optional;
 
-public interface PaseadorService {
+public interface UserService {
 
-    public void savePaseador(Usuario usuario);
-    public Optional<Usuario> getPaseador(Long idPaseador);
+    public void saveUser(Usuario user);
+    public Optional<Usuario> getUser(Long idUser);
 }
