@@ -1,13 +1,19 @@
 // ClientForm.jsx
 import { useState, useEffect } from "react";
 import styles from "./ClientForm.module.css";
+import axios from 'axios';
 
-const initial = { fullName: "", email: "", phone: "", address: "" };
+const initial = { fullName: "", dni:"", email: "", phone: "", address: "" };
 const emailRE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const validate = (v) => {
     const errors = {};
     if (!v.fullName.trim()) errors.fullName = "Ingresá tu nombre completo.";
+    if(!v.dni.trim()) errors.dni="Ingresá tu número de documento.";
+    else if (!/^\d+$/.test(v.dni))
+    errors.dni = "El DNI solo puede contener números.";
+    else if (v.dni.length < 7 || v.dni.length > 8)
+    errors.dni = "El DNI debe tener 7 u 8 dígitos.";
     if (!v.email.trim()) errors.email = "Ingresá tu email.";
     else if (!emailRE.test(v.email)) errors.email = "Email inválido.";
     if (!v.phone.trim()) errors.phone = "Ingresá tu teléfono.";
@@ -38,18 +44,37 @@ export default function ClientForm() {
         setErrors(validate(formData));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const nextErrors = validate(formData);
         setErrors(nextErrors);
-        setTouched({ fullName: true, email: true, phone: true, address: true });
+        setTouched({ fullName: true, dni:true, email: true, phone: true, address: true });
         if (Object.keys(nextErrors).length) return;
 
         //mostrar pop up
-        setFormData(initial);
-        setTouched({});
-        setErrors({});
-        setShowSuccess(true);
+        try {
+            // datos al back
+            const response = await axios.post("http://localhost:8080/paseador", {
+                nombre: formData.fullName,
+                dni: formData.dni,
+                email: formData.email,
+                telefono: formData.phone,
+                direccion: formData.address,
+                contrasena: "secreta",
+                rol: "PASEADOR" //habría que agregar el campo al form
+            });
+
+            console.log("Respuesta del backend:", response.data);
+
+            // success y reset
+            setFormData(initial);
+            setTouched({});
+            setErrors({});
+            setShowSuccess(true);
+        } catch (error) {
+            console.error("Error al enviar datos:", error);
+            alert("Hubo un problema al registrar el cliente. Intenta nuevamente.");
+        }
     };
 
 
@@ -79,6 +104,21 @@ export default function ClientForm() {
                     />
                     {fieldError("fullName") && (
                         <small className={styles.error}>{errors.fullName}</small>
+                    )}
+                </label>
+
+                <label>
+                    Número de documento:
+                    <input
+                        type="text"
+                        name="dni"
+                        value={formData.dni}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        aria-invalid={!!fieldError("dni")}
+                    />
+                    {fieldError("dni") && (
+                        <small className={styles.error}>{errors.dni}</small>
                     )}
                 </label>
 

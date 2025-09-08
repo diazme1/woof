@@ -14,7 +14,7 @@ public class PaseadorServiceTest {
 
     @Test
     public void savePaseador() {
-        Paseador paseador = new Paseador("Emilia");
+        Paseador paseador = new Paseador("Emilia Diaz", 44555666, "x@x.com", "2215559999", "xxxx", "root");
         paseadorSer.savePaseador(paseador);
     }
 
