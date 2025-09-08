@@ -7,12 +7,20 @@
     "@testing-library/jest-dom": "^6.8.0",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.11.0",
+    "concurrently": "^9.2.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-icons": "^5.5.0",
+    "react-router-dom": "^7.8.2",
     "react-scripts": "5.0.1",
+    "swiper": "^11.2.10",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "start:react": "cross-env BROWSER=none react-scripts start",
+    "start:spring": "cross-env-shell \"if [ $OS = 'Windows_NT' ]; then cd .. && gradlew.bat bootRun; else cd .. && ./gradlew bootRun; fi\"",
+    "dev": "concurrently \"npm start\" \"cd .. && gradlew.bat bootRun\"",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -35,5 +43,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.0.0"
   }
 }

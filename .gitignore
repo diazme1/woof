@@ -29,5 +29,15 @@ bin/
 .DS_Store
 
 ### Gradle ###
-/build
-/.gradle
+build/
+.gradle/
+
+### IntelliJ ###
+.idea/
+
+### Node (frontend) ###
+frontend/node_modules/
+frontend/build/
+
+node_modules/
+package-lock.json
