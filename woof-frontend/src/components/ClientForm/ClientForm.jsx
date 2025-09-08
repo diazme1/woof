@@ -168,6 +168,18 @@ export default function ClientForm() {
                     )}
                 </label>
 
+
+                <div className="checkbox-group">
+                    <input type="checkbox" id="opcion1" name="opcion1" value="valor1"/>
+                    <label htmlFor="opcion1">Soy paseador</label>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="opcion2" name="opcion2" value="valor2"/>
+                    <label for="opcion2">Soy cliente</label>
+                </div>
+
+
                 <button type="submit">Guardar</button>
             </form>
 

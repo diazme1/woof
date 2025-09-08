@@ -56,4 +56,16 @@ input[aria-invalid="true"] { outline: 2px solid #d00; }
 .modal h3 { margin: 0 0 8px; }
 .modal button { margin-top: 12px; }
 
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+}
+
+.checkbox-group input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+
+
 
