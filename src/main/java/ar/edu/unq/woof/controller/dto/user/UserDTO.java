@@ -1,8 +1,8 @@
-package ar.edu.unq.woof.controller.dto.paseador;
+package ar.edu.unq.woof.controller.dto.user;
 
 import ar.edu.unq.woof.modelo.Usuario;
 
-public record PaseadorDTO(
+public record UserDTO(
         Long idPaseador,
         String nombre,
         Integer dni,
@@ -12,8 +12,8 @@ public record PaseadorDTO(
         String contrasena
 ) {
 
-    public static PaseadorDTO desdeModelo(Usuario usuario) {
-        return new PaseadorDTO(
+    public static UserDTO desdeModelo(Usuario usuario) {
+        return new UserDTO(
                 usuario.getId(),
                 usuario.getNombre(),
                 usuario.getDni(),

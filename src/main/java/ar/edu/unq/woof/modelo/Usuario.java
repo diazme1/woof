@@ -9,7 +9,7 @@ import lombok.*;
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class Paseador {
+public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +33,7 @@ public class Paseador {
     @Column(nullable = false)
     private String contrasena;
 
-    public Paseador(String nombre,  Integer dni, String email, String telefono, String direccion, String contrasena) {
+    public Usuario(String nombre, Integer dni, String email, String telefono, String direccion, String contrasena) {
         this.nombre = nombre;
         this.dni = dni;
         this.email = email;

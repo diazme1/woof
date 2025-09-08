@@ -2,8 +2,8 @@ package ar.edu.unq.woof.service.impl;
 
 import ar.edu.unq.woof.modelo.Usuario;
 import ar.edu.unq.woof.modelo.exceptions.CorreoDuplicadoPaseadorException;
-import ar.edu.unq.woof.persistence.PaseadorDAO;
-import ar.edu.unq.woof.service.interfaces.PaseadorService;
+import ar.edu.unq.woof.persistence.UserDAO;
+import ar.edu.unq.woof.service.interfaces.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -11,25 +11,25 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class PaseadorServiceImpl implements PaseadorService {
+public class UserServiceImpl implements UserService {
 
-    private final PaseadorDAO paseadorDAO;
+    private final UserDAO userDAO;
 
-    public PaseadorServiceImpl(PaseadorDAO paseadorDAO) {
-        this.paseadorDAO = paseadorDAO;
+    public UserServiceImpl(UserDAO userDAO) {
+        this.userDAO = userDAO;
     }
 
     @Override
-    public void savePaseador(Usuario usuario) {
+    public void saveUser(Usuario usuario) {
         try {
-            paseadorDAO.save(usuario);
+            userDAO.save(usuario);
         } catch (DataIntegrityViolationException e) {
             throw new CorreoDuplicadoPaseadorException(usuario.getEmail());
         }
     }
 
     @Override
-    public Optional<Usuario> getPaseador(Long idPaseador) {
-        return paseadorDAO.findById(idPaseador);
+    public Optional<Usuario> getUser(Long idPaseador) {
+        return userDAO.findById(idPaseador);
     }
 }
