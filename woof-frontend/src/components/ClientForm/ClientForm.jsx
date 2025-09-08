@@ -54,7 +54,7 @@ export default function ClientForm() {
         //mostrar pop up
         try {
             // datos al back
-            const response = await axios.post("http://localhost:8080/paseador", {
+            const response = await axios.post("http://localhost:8080/user", {
                 nombre: formData.fullName,
                 dni: formData.dni,
                 email: formData.email,
@@ -90,7 +90,7 @@ export default function ClientForm() {
     return (
         <>
             <form className={styles.form} onSubmit={handleSubmit} noValidate>
-                <h2>Formulario de Cliente</h2>
+                <h2>Formulario de registro</h2>
 
                 <label>
                     Nombre completo:
