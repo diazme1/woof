@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import styles from "./ClientForm.module.css";
 import axios from 'axios';
 
-const initial = { fullName: "", dni:"", email: "", phone: "", address: "" };
+const initial = { fullName: "", dni:"", email: "", phone: "", address: "", password: "" };
 const emailRE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 
@@ -38,6 +38,8 @@ export default function ClientForm() {
     const [touched, setTouched] = useState({});
     const [errors, setErrors] = useState({});
     const [showSuccess, setShowSuccess] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -201,16 +203,30 @@ export default function ClientForm() {
 
                 <label>
                     Contraseña:
-                    <input
-                        type="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        aria-invalid={!!fieldError("password")}
-                        autoComplete="new-password"
-                        placeholder="Mín. 8, Mayús, minús, número y símbolo"
-                    />
+                    <div className={styles.passwordWrapper}>
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            name="password"
+                            value={formData.password ?? ""}
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            aria-invalid={!!fieldError("password")}
+                            autoComplete="new-password"
+                            placeholder="Mín. 8, Mayús, minús, número y símbolo"
+                        />
+                        <button
+                            type="button"
+                            className={styles.eyeButton}
+                            onClick={() => setShowPassword(s => !s)}
+                            aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                            aria-pressed={showPassword}
+                        >
+                            <img
+                                src={showPassword ? "/abrir-ojo.png" : "/cerrar-ojo.png"}
+                                alt={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                            />
+                        </button>
+                    </div>
                     {fieldError("password") && (
                         <small className={styles.error}>{errors.password}</small>
                     )}
