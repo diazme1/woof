@@ -56,15 +56,42 @@ input[aria-invalid="true"] { outline: 2px solid #d00; }
 .modal h3 { margin: 0 0 8px; }
 .modal button { margin-top: 12px; }
 
-.checkbox-group {
+.passwordWrapper {
+    position: relative;
     display: flex;
     align-items: center;
-    margin: 5px 0;
 }
 
-.checkbox-group input[type="checkbox"] {
-    margin-right: 8px;
+.passwordWrapper input {
+    width: 100%;
+    padding-right: 2.5rem; /* espacio para el botón */
 }
+
+.passwordWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.passwordWrapper input {
+    width: 100%;
+    padding-right: 40px; /* deja espacio para el ojito */
+}
+
+.eyeButton {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.eyeButton img {
+    width: 20px;
+    height: 20px;
+}
+
 
 
 
