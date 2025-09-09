@@ -25,6 +25,11 @@ const validate = (v) => {
     } else if (!passwordRE.test(v.password)) {
         errors.password = "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.";
     }
+    if (!v.role) {
+        errors.role = "Seleccioná un rol.";
+    } else if (!["PASEADOR", "CLIENTE"].includes(v.role)) {
+        errors.role = "Rol inválido.";
+    }
     return errors;
 };
 
@@ -54,7 +59,7 @@ export default function ClientForm() {
         e.preventDefault();
         const nextErrors = validate(formData);
         setErrors(nextErrors);
-        setTouched({ fullName: true, dni:true, email: true, phone: true, address: true, password: true });
+        setTouched({ fullName: true, dni:true, email: true, phone: true, address: true, password: true,rol: true });
         if (Object.keys(nextErrors).length) return;
 
         //mostrar pop up
@@ -67,7 +72,7 @@ export default function ClientForm() {
                 telefono: formData.phone,
                 direccion: formData.address,
                 contrasena: formData.password,
-                rol: "PASEADOR" //habría que agregar el campo al form
+                rol: formData.rol
             });
 
             console.log("Respuesta del backend:", response.data);
@@ -174,16 +179,25 @@ export default function ClientForm() {
                     )}
                 </label>
 
+                <label>
+                    Rol:
+                    <select
+                        name="rol"
+                        value={formData.rol}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        aria-invalid={!!fieldError("rol")}
+                        required
+                    >
+                        <option value="" disabled>Seleccioná una opción</option>
+                        <option value="PASEADOR">Paseador</option>
+                        <option value="CLIENTE">Cliente</option>
+                    </select>
+                    {fieldError("rol") && (
+                        <small className={styles.error}>{errors.rol}</small>
+                    )}
+                </label>
 
-                <div className="checkbox-group">
-                    <input type="checkbox" id="opcion1" name="opcion1" value="valor1"/>
-                    <label htmlFor="opcion1">Soy paseador</label>
-                </div>
-
-                <div class="checkbox-group">
-                    <input type="checkbox" id="opcion2" name="opcion2" value="valor2"/>
-                    <label for="opcion2">Soy cliente</label>
-                </div>
 
                 <label>
                     Contraseña:
