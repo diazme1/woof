@@ -7,5 +7,6 @@ import java.util.Optional;
 public interface SolicitudPaseoService {
 
     void savePaseo(SolicitudPaseo solicitudPaseo);
-    Optional<SolicitudPaseo> getPaseo(Integer idPaseo);
+    Optional<SolicitudPaseo> getSolicitud(Long idPaseo);
+    void aceptarSolicitudPaseo(Long idPaseo);
 }

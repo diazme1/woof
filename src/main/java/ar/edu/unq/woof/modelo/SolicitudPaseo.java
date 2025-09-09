@@ -34,7 +34,6 @@ public class SolicitudPaseo {
     @Column(nullable = false)
     private String raza;
 
-    @Setter
     @Column(nullable = false)
     private EstadoSolicitud estado = EstadoSolicitud.PENDIENTE;
 
