@@ -5,20 +5,26 @@ import axios from 'axios';
 
 const initial = { fullName: "", dni:"", email: "", phone: "", address: "" };
 const emailRE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const passwordRE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 
 const validate = (v) => {
     const errors = {};
     if (!v.fullName.trim()) errors.fullName = "Ingresá tu nombre completo.";
     if(!v.dni.trim()) errors.dni="Ingresá tu número de documento.";
     else if (!/^\d+$/.test(v.dni))
-    errors.dni = "El DNI solo puede contener números.";
+        errors.dni = "El DNI solo puede contener números.";
     else if (v.dni.length < 7 || v.dni.length > 8)
-    errors.dni = "El DNI debe tener 7 u 8 dígitos.";
+        errors.dni = "El DNI debe tener 7 u 8 dígitos.";
     if (!v.email.trim()) errors.email = "Ingresá tu email.";
     else if (!emailRE.test(v.email)) errors.email = "Email inválido.";
     if (!v.phone.trim()) errors.phone = "Ingresá tu teléfono.";
     else if (!/^\d{8,15}$/.test(v.phone)) errors.phone = "Solo dígitos (8–15).";
     if (!v.address.trim()) errors.address = "Ingresá tu dirección.";
+    if (!v.password || !v.password.trim()) {
+        errors.password = "Ingresá una contraseña.";
+    } else if (!passwordRE.test(v.password)) {
+        errors.password = "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.";
+    }
     return errors;
 };
 
@@ -48,7 +54,7 @@ export default function ClientForm() {
         e.preventDefault();
         const nextErrors = validate(formData);
         setErrors(nextErrors);
-        setTouched({ fullName: true, dni:true, email: true, phone: true, address: true });
+        setTouched({ fullName: true, dni:true, email: true, phone: true, address: true, password: true });
         if (Object.keys(nextErrors).length) return;
 
         //mostrar pop up
@@ -60,7 +66,7 @@ export default function ClientForm() {
                 email: formData.email,
                 telefono: formData.phone,
                 direccion: formData.address,
-                contrasena: "secreta",
+                contrasena: formData.password,
                 rol: "PASEADOR" //habría que agregar el campo al form
             });
 
@@ -179,6 +185,22 @@ export default function ClientForm() {
                     <label for="opcion2">Soy cliente</label>
                 </div>
 
+                <label>
+                    Contraseña:
+                    <input
+                        type="password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        aria-invalid={!!fieldError("password")}
+                        autoComplete="new-password"
+                        placeholder="Mín. 8, Mayús, minús, número y símbolo"
+                    />
+                    {fieldError("password") && (
+                        <small className={styles.error}>{errors.password}</small>
+                    )}
+                </label>
 
                 <button type="submit">Guardar</button>
             </form>
