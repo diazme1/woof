@@ -14,5 +14,7 @@ public record SolicitudPaseoRequestDTO(
         TamanoPerro tamanoPerro,
         String raza
 ) {
-    public SolicitudPaseo aModelo() {return new SolicitudPaseo(zona, horario, nombrePerro, tamanoPerro, raza);}
+    public SolicitudPaseo aModelo() {
+        return new SolicitudPaseo(zona, horario, nombrePerro, tamanoPerro, raza);
+    }
 }
