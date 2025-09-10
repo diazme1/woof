@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface SolicitudPaseoDAO extends JpaRepository<SolicitudPaseo, Integer> {
+public interface SolicitudPaseoDAO extends JpaRepository<SolicitudPaseo, Long> {
     @Query("SELECT e FROM SolicitudPaseo e WHERE e.id = :id")
     Optional<SolicitudPaseo> recuperarSolicitudPaseo(@Param("id") Long id);
 }

@@ -1,7 +1,6 @@
 package ar.edu.unq.woof.service.impl;
 
 import ar.edu.unq.woof.modelo.SolicitudPaseo;
-import ar.edu.unq.woof.modelo.Usuario;
 import ar.edu.unq.woof.modelo.enums.EstadoSolicitud;
 import ar.edu.unq.woof.modelo.exceptions.FranjaHorariaExcedida;
 import ar.edu.unq.woof.modelo.exceptions.HorarioIncorrecto;
@@ -9,7 +8,6 @@ import ar.edu.unq.woof.modelo.exceptions.SolicitudNoEncontrada;
 import ar.edu.unq.woof.persistence.SolicitudPaseoDAO;
 import ar.edu.unq.woof.service.interfaces.SolicitudPaseoService;
 import jakarta.transaction.Transactional;
-import org.springframework.data.repository.core.support.FragmentNotImplementedException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -25,7 +23,7 @@ public class SolicitudPaseoImpl implements SolicitudPaseoService {
     public SolicitudPaseoImpl(SolicitudPaseoDAO userDAO) { this.paseoDAO = userDAO; }
 
     @Override
-    public void savePaseo(SolicitudPaseo paseo){
+    public SolicitudPaseo savePaseo(SolicitudPaseo paseo){
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime max = now.plusHours(12);
         LocalTime cutoff = LocalTime.of(21, 0);
@@ -40,12 +38,12 @@ public class SolicitudPaseoImpl implements SolicitudPaseoService {
             throw new FranjaHorariaExcedida();
         }
 
-        paseoDAO.save(paseo);
+        return paseoDAO.save(paseo);
     }
 
     @Override
     public Optional<SolicitudPaseo> getSolicitud(Long idPaseo) {
-        return paseoDAO.findById(Math.toIntExact(idPaseo));
+        return paseoDAO.findById(idPaseo);
     }
 
     @Override
