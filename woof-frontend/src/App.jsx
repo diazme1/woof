@@ -3,6 +3,7 @@ import Header from "./components/Header/Header";
 import Login from "./components/Login/Login";
 import Body from "./components/Body/Body";
 import Footer from "./components/Footer/Footer";
+import PaseoForm from "./components/PaseoForm/PaseoForm";
 
 
 
@@ -15,6 +16,7 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<Body />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/paseos" element={<PaseoForm />} />
             </Routes>
 
             <Footer />
