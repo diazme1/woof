@@ -33,19 +33,31 @@ const DashboardPaseos = () => {
     };
 
     useEffect(() => {
+        let isMounted = true; // para evitar actualizar estado si el componente se desmonta
         const fetchSolicitudes = async () => {
             try {
                 const response = await axios.get("http://localhost:8080/paseo/solicitudes");
-                setSolicitudes(response.data);
+                if (isMounted) setSolicitudes(response.data);
             } catch (err) {
-                setError("Error al cargar las solicitudes.");
+                if (isMounted) setError("Error al cargar las solicitudes.");
             } finally {
-                setLoading(false);
+                if (isMounted) setLoading(false);
             }
         };
 
         fetchSolicitudes();
+
+        const interval = setInterval(() => {
+            fetchSolicitudes();
+        }, 10000);
+
+        return () => {
+            isMounted = false;
+            clearInterval(interval);
+        };
     }, []);
+
+
 
     const aceptarSolicitud = async (id) => {
         try {
