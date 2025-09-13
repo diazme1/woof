@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -44,6 +45,11 @@ public class SolicitudPaseoImpl implements SolicitudPaseoService {
     @Override
     public Optional<SolicitudPaseo> getSolicitud(Long idPaseo) {
         return paseoDAO.findById(idPaseo);
+    }
+
+    @Override
+    public List<SolicitudPaseo> getAllPendientes(){
+        return paseoDAO.findAllEstado(EstadoSolicitud.PENDIENTE);
     }
 
     @Override

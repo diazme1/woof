@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/paseo")
 public class PaseoControllerREST {
@@ -28,9 +31,15 @@ public class PaseoControllerREST {
         return ResponseEntity.status(HttpStatus.CREATED).body(SolicitudPaseoDTO.desdeModelo(saved));
     }
 
+    @GetMapping("/solicitudes")
+    public List<SolicitudPaseoDTO> findAllSolicitudesPendientes(){
+        return solicitudService.getAllPendientes().stream()
+                .map(SolicitudPaseoDTO::desdeModelo).toList();
+    }
+
 
     @PutMapping("/{id}")
-    public ResponseEntity<SolicitudPaseoDTO> updateSolicitudPaseo(@PathVariable Long id, @RequestBody SolicitudPaseoRequestDTO request) {
+    public ResponseEntity<SolicitudPaseoDTO> updateSolicitudPaseo(@PathVariable Long id) {
         solicitudService.aceptarSolicitudPaseo(id);
 
         SolicitudPaseo solicitud = solicitudService.getSolicitud(id).orElseThrow(() -> new EntityNotFoundException("Solicitud de paseo no encontrada con id " + id));

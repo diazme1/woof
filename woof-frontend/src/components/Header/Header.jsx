@@ -38,6 +38,9 @@ const Header = () => {
                     <Link className={`${styles.btn} ${styles.ghost}`} to="/login">
                         Iniciar sesión
                     </Link>
+                    <Link className={`${styles.btn} ${styles.ghost}`} to="/solicitudes">
+                        Solicitudes activas
+                    </Link>
                 </div>
             </nav>
 
