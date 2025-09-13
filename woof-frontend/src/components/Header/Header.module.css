@@ -162,3 +162,55 @@
 
     .hero h1{ font-size:1.65rem; }
 }
+
+/* Modal */
+.backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.45);
+    display: grid;
+    place-items: center;
+    padding: 16px;
+    z-index: 1000;
+}
+
+.modal {
+    width: 100%;
+    max-width: 560px;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,.25);
+}
+
+.modalHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    border-bottom: 1px solid #eee;
+}
+
+.modalBody {
+    padding: 12px;
+}
+
+.modalHeader h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333; /* texto oscuro sobre fondo blanco */
+}
+
+.closeBtn {
+    border: 0;
+    background: none;
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    color: #333;
+}
+
+.closeBtn:hover {
+    color: #fff;
+}
