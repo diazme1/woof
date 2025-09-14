@@ -6,6 +6,7 @@ import ar.edu.unq.woof.persistence.UserDAO;
 import ar.edu.unq.woof.service.interfaces.UserService;
 import jakarta.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
@@ -31,5 +32,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<Usuario> getUser(Long idPaseador) {
         return userDAO.findById(idPaseador);
+    }
+
+    @Override
+    public Usuario findByEmail(String email){
+        return userDAO.findByEmail(email);
     }
 }

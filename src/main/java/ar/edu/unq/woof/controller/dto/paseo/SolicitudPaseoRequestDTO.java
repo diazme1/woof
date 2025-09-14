@@ -1,9 +1,8 @@
-package ar.edu.unq.woof.controller.dto.user;
+package ar.edu.unq.woof.controller.dto.paseo;
 
 import ar.edu.unq.woof.modelo.SolicitudPaseo;
 import ar.edu.unq.woof.modelo.enums.TamanoPerro;
 import ar.edu.unq.woof.modelo.enums.ZonaOperativa;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 

@@ -16,9 +16,26 @@ const Login = () => {
         console.log("Login:", loginData);
     };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const res = await axios.post("http://localhost:8080/user/login", {
+                email: loginData.email,
+                contrasena: loginData.contrasena,
+            });
+
+            localStorage.setItem("token", res.data.token);
+            localStorage.setItem("usuario", JSON.stringify(res.data));
+
+            window.location.href = "/";
+        } catch (err) {
+            setError("Credenciales inválidas");
+        }
+    };
+
     return (
         <div className={styles.wrapper}>
-            <form className={styles.form} onSubmit={onSubmit}>
+            <form className={styles.form} onSubmit={handleSubmit}>
                 <h2>Iniciar sesión</h2>
 
                 <label>

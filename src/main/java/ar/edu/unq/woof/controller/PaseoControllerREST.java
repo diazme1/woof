@@ -1,11 +1,10 @@
 package ar.edu.unq.woof.controller;
 
-import ar.edu.unq.woof.controller.dto.user.SolicitudPaseoDTO;
-import ar.edu.unq.woof.controller.dto.user.SolicitudPaseoRequestDTO;
+import ar.edu.unq.woof.controller.dto.paseo.SolicitudPaseoDTO;
+import ar.edu.unq.woof.controller.dto.paseo.SolicitudPaseoRequestDTO;
 import ar.edu.unq.woof.modelo.SolicitudPaseo;
 import ar.edu.unq.woof.service.interfaces.SolicitudPaseoService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
