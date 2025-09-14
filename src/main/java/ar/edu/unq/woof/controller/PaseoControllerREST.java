@@ -4,12 +4,13 @@ import ar.edu.unq.woof.controller.dto.paseo.SolicitudPaseoDTO;
 import ar.edu.unq.woof.controller.dto.paseo.SolicitudPaseoRequestDTO;
 import ar.edu.unq.woof.modelo.SolicitudPaseo;
 import ar.edu.unq.woof.service.interfaces.SolicitudPaseoService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/paseo")
@@ -24,8 +25,25 @@ public class PaseoControllerREST {
     @PostMapping
     public ResponseEntity<SolicitudPaseoDTO> saveSolicitudPaseo(@RequestBody SolicitudPaseoRequestDTO request) {
         SolicitudPaseo newSolicitud = request.aModelo();
-        solicitudService.savePaseo(newSolicitud);
-        return  ResponseEntity.status(HttpStatus.CREATED).body(SolicitudPaseoDTO.desdeModelo(newSolicitud));
+        SolicitudPaseo saved = solicitudService.savePaseo(newSolicitud);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(SolicitudPaseoDTO.desdeModelo(saved));
+    }
+
+    @GetMapping("/solicitudes")
+    public List<SolicitudPaseoDTO> findAllSolicitudesPendientes(){
+        return solicitudService.getAllPendientes().stream()
+                .map(SolicitudPaseoDTO::desdeModelo).toList();
+    }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<SolicitudPaseoDTO> updateSolicitudPaseo(@PathVariable Long id) {
+        solicitudService.aceptarSolicitudPaseo(id);
+
+        SolicitudPaseo solicitud = solicitudService.getSolicitud(id).orElseThrow(() -> new EntityNotFoundException("Solicitud de paseo no encontrada con id " + id));
+
+        return ResponseEntity.ok(SolicitudPaseoDTO.desdeModelo(solicitud));
 
     }
 
