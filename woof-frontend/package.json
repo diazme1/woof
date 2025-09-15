@@ -17,6 +17,16 @@
     "swiper": "^11.2.10",
     "web-vitals": "^2.1.4"
   },
+  "jest": {
+    "moduleNameMapper": {
+      "^swiper/react$": "<rootDir>/src/__mocks__/swiper/react.js",
+      "^swiper/modules$": "<rootDir>/src/__mocks__/swiper/modules.js",
+      "^swiper/css$": "<rootDir>/src/__mocks__/styleMock.js",
+      "^swiper/css/navigation$": "<rootDir>/src/__mocks__/styleMock.js",
+      "^swiper/css/pagination$": "<rootDir>/src/__mocks__/styleMock.js",
+      "\\.(css|less|scss|sass)$": "identity-obj-proxy"
+    }
+  },
   "scripts": {
     "start:react": "cross-env BROWSER=none react-scripts start",
     "start:spring": "cross-env-shell \"if [ $OS = 'Windows_NT' ]; then cd .. && gradlew.bat bootRun; else cd .. && ./gradlew bootRun; fi\"",
@@ -46,6 +56,7 @@
   },
   "devDependencies": {
     "concurrently": "^9.2.1",
-    "cross-env": "^10.0.0"
+    "cross-env": "^10.0.0",
+    "identity-obj-proxy": "^3.0.0"
   }
 }
