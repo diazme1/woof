@@ -1,11 +1,24 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./Header.module.css";
 import PaseoForm from "../PaseoForm/PaseoForm";
 
 const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [showPaseoForm, setShowPaseoForm] = useState(false);
+    const token = localStorage.getItem("token");
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        setIsLoggedIn(!!token);
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        setIsLoggedIn(false);
+        window.location.href = "/"; // o navigate("/") si usás react-router
+    };
 
     return (
         <header className={styles.header}>
@@ -37,15 +50,27 @@ const Header = () => {
                 </ul>
 
                 <div className={styles.ctas}>
-                    <button onClick={() => setShowPaseoForm(true)}>
-                        Registrar solicitud
-                    </button>
-                    <Link className={`${styles.btn} ${styles.ghost}`} to="/login">
-                        Iniciar sesión
-                    </Link>
-                    <Link className={`${styles.btn} ${styles.ghost}`} to="/solicitudes">
-                        Solicitudes activas
-                    </Link>
+                    { isLoggedIn ? (
+                        <>
+                            <Link className={`${styles.btn} ${styles.ghost}`} to="/solicitudes">
+                                Solicitudes activas
+                            </Link>
+
+                            <button className={styles.btn} onClick={handleLogout}>
+                                Cerrar sesión
+                            </button>
+                        </>
+                    ) : (
+                        <>
+                            <button onClick={() => setShowPaseoForm(true)}>
+                                Registrar solicitud
+                            </button>
+                            <Link className={`${styles.btn} ${styles.ghost}`} to="/login">
+                                Iniciar sesión
+                            </Link>
+                        </>
+                    )
+                    }
                 </div>
             </nav>
 

@@ -1,11 +1,13 @@
 import { useState } from "react";
 import styles from "./Login.module.css";
+import axios from "axios";
 import ClientForm from "../ClientForm/ClientForm";
 
 
 const Login = () => {
-    const [loginData, setLoginData] = useState({ email: "", password: "" });
+    const [loginData, setLoginData] = useState({ email: "", contrasena: "" });
     const [showRegister, setShowRegister] = useState(false);
+    const [error, setError] = useState(null);
 
     const onChange = (e) => {
         setLoginData({ ...loginData, [e.target.name]: e.target.value });
@@ -19,17 +21,23 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await axios.post("http://localhost:8080/user/login", {
+            console.log("Payload que voy a enviar:", {
+                email: loginData.email,
+                contrasena: loginData.contrasena
+            });
+
+            const res = await axios.post("http://localhost:8080/auth/login", {
                 email: loginData.email,
                 contrasena: loginData.contrasena,
             });
 
             localStorage.setItem("token", res.data.token);
-            localStorage.setItem("usuario", JSON.stringify(res.data));
 
             window.location.href = "/";
         } catch (err) {
             setError("Credenciales inválidas");
+            console.error("Error al enviar datos:", err);
+            alert("Hubo un problema al iniciar sesión. Intenta nuevamente más tarde.");
         }
     };
 
@@ -53,12 +61,12 @@ const Login = () => {
                 <label>
                     Contraseña
                     <input
-                        type="password"
-                        name="password"
-                        value={loginData.password}
+                        type="contrasena"
+                        name="contrasena"
+                        value={loginData.contrasena}
                         onChange={onChange}
                         required
-                        autoComplete="current-password"
+                        autoComplete="current-contrasena"
                     />
                 </label>
 

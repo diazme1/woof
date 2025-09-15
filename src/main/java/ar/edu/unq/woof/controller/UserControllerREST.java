@@ -32,17 +32,4 @@ public class UserControllerREST {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(UserDTO.desdeModelo(newUsuario));
     }
-
-    @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody UserLoginRequestDTO request){
-        Usuario usuario = userService.findByEmail(request.email());
-        if(usuario==null || !usuario.getContrasena().equals(request.contrasena())){
-            return ResponseEntity.status(401).body("Credenciales inválidas");
-        }
-        String token = UUID.randomUUID().toString();
-
-        return ResponseEntity.ok(new LoginResponseDTO(token, usuario.getNombre(), usuario.getEmail()));
-
-    }
-
 }
