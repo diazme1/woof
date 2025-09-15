@@ -61,7 +61,7 @@ const Login = () => {
                 <label>
                     Contraseña
                     <input
-                        type="contrasena"
+                        type="password"
                         name="contrasena"
                         value={loginData.contrasena}
                         onChange={onChange}
