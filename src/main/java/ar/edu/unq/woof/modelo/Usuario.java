@@ -1,5 +1,6 @@
 package ar.edu.unq.woof.modelo;
 
+import ar.edu.unq.woof.modelo.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -33,12 +34,16 @@ public class Usuario {
     @Column(nullable = false)
     private String contrasena;
 
-    public Usuario(String nombre, Integer dni, String email, String telefono, String direccion, String contrasena) {
+    @Column(nullable = false)
+    private UserRole rol;
+
+    public Usuario(String nombre, Integer dni, String email, String telefono, String direccion, String contrasena, UserRole rol) {
         this.nombre = nombre;
         this.dni = dni;
         this.email = email;
         this.telefono = telefono;
         this.direccion = direccion;
         this.contrasena = contrasena;
+        this.rol = rol;
     }
 }

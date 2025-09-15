@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import styles from "./ClientForm.module.css";
 import axios from 'axios';
 
-const initial = { fullName: "", dni:"", email: "", phone: "", address: "", password: "" };
+const initial = { fullName: "", dni:"", email: "", phone: "", address: "", password: "", rol:"" };
 const emailRE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const passwordRE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 
@@ -25,10 +25,10 @@ const validate = (v) => {
     } else if (!passwordRE.test(v.password)) {
         errors.password = "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.";
     }
-    if (!v.role) {
-        errors.role = "Seleccioná un rol.";
-    } else if (!["PASEADOR", "CLIENTE"].includes(v.role)) {
-        errors.role = "Rol inválido.";
+    if (!v.rol) {
+        errors.rol = "Seleccioná un rol.";
+    } else if (!["PASEADOR", "CLIENTE"].includes(v.rol)) {
+        errors.rol = "Rol inválido.";
     }
     return errors;
 };
@@ -60,13 +60,22 @@ export default function ClientForm() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const nextErrors = validate(formData);
+
         setErrors(nextErrors);
         setTouched({ fullName: true, dni:true, email: true, phone: true, address: true, password: true,rol: true });
+        console.log("Payload que voy a enviar:", {
+            email: formData.email,
+            password: formData.password,
+            dni: formData.dni,
+            phone: formData.phone,
+            address: formData.address,
+            rol: formData.rol
+        });
         if (Object.keys(nextErrors).length) return;
-
         //mostrar pop up
         try {
             // datos al back
+
             const response = await axios.post("http://localhost:8080/user", {
                 nombre: formData.fullName,
                 dni: formData.dni,
