@@ -1,6 +1,8 @@
 package ar.edu.unq.woof.controller;
 
+import ar.edu.unq.woof.controller.dto.user.LoginResponseDTO;
 import ar.edu.unq.woof.controller.dto.user.UserDTO;
+import ar.edu.unq.woof.controller.dto.user.UserLoginRequestDTO;
 import ar.edu.unq.woof.controller.dto.user.UserRequestDTO;
 import ar.edu.unq.woof.modelo.Usuario;
 import ar.edu.unq.woof.service.interfaces.UserService;
@@ -10,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/user")
@@ -28,5 +32,4 @@ public class UserControllerREST {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(UserDTO.desdeModelo(newUsuario));
     }
-
 }

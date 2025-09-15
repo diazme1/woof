@@ -1,11 +1,13 @@
 import { useState } from "react";
 import styles from "./Login.module.css";
+import axios from "axios";
 import ClientForm from "../ClientForm/ClientForm";
 
 
 const Login = () => {
-    const [loginData, setLoginData] = useState({ email: "", password: "" });
+    const [loginData, setLoginData] = useState({ email: "", contrasena: "" });
     const [showRegister, setShowRegister] = useState(false);
+    const [error, setError] = useState(null);
 
     const onChange = (e) => {
         setLoginData({ ...loginData, [e.target.name]: e.target.value });
@@ -16,9 +18,32 @@ const Login = () => {
         console.log("Login:", loginData);
     };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            console.log("Payload que voy a enviar:", {
+                email: loginData.email,
+                contrasena: loginData.contrasena
+            });
+
+            const res = await axios.post("http://localhost:8080/auth/login", {
+                email: loginData.email,
+                contrasena: loginData.contrasena,
+            });
+
+            localStorage.setItem("token", res.data.token);
+
+            window.location.href = "/";
+        } catch (err) {
+            setError("Credenciales inválidas");
+            console.error("Error al enviar datos:", err);
+            alert("Hubo un problema al iniciar sesión. Intenta nuevamente más tarde.");
+        }
+    };
+
     return (
         <div className={styles.wrapper}>
-            <form className={styles.form} onSubmit={onSubmit}>
+            <form className={styles.form} onSubmit={handleSubmit}>
                 <h2>Iniciar sesión</h2>
 
                 <label>
@@ -36,12 +61,12 @@ const Login = () => {
                 <label>
                     Contraseña
                     <input
-                        type="password"
-                        name="password"
-                        value={loginData.password}
+                        type="contrasena"
+                        name="contrasena"
+                        value={loginData.contrasena}
                         onChange={onChange}
                         required
-                        autoComplete="current-password"
+                        autoComplete="current-contrasena"
                     />
                 </label>
 
