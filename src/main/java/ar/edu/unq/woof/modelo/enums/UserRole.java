@@ -1,7 +1,7 @@
 package ar.edu.unq.woof.modelo.enums;
 
 public enum UserRole {
-    PASEADOR,
-    CLIENTE,
-    ADMIN
+    ROLE_PASEADOR,
+    ROLE_CLIENTE,
+    ROLE_ADMIN
 }
