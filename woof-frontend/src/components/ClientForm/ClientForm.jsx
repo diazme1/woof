@@ -27,7 +27,7 @@ const validate = (v) => {
     }
     if (!v.rol) {
         errors.rol = "Seleccioná un rol.";
-    } else if (!["PASEADOR", "CLIENTE"].includes(v.rol)) {
+    } else if (!["ROLE_PASEADOR", "ROLE_CLIENTE"].includes(v.rol)) {
         errors.rol = "Rol inválido.";
     }
     return errors;
@@ -201,8 +201,8 @@ export default function ClientForm() {
                         required
                     >
                         <option value="" disabled>Seleccioná una opción</option>
-                        <option value="PASEADOR">Paseador</option>
-                        <option value="CLIENTE">Cliente</option>
+                        <option value="ROLE_PASEADOR">Paseador</option>
+                        <option value="ROLE_CLIENTE">Cliente</option>
                     </select>
                     {fieldError("rol") && (
                         <small className={styles.error}>{errors.rol}</small>

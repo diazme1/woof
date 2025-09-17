@@ -54,14 +54,14 @@ const Header = () => {
                     {isLoggedIn ? (
                         <>
                             {/* Solo paseador ve solicitudes activas */}
-                            {JSON.parse(localStorage.getItem("user"))?.rol === "PASEADOR" && (
+                            {JSON.parse(localStorage.getItem("user"))?.rol === "ROLE_PASEADOR" && (
                                 <Link className={`${styles.btn} ${styles.ghost}`} to="/solicitudes">
                                     Solicitudes activas
                                 </Link>
                             )}
 
                             {/* Solo cliente ve registrar solicitud */}
-                            {JSON.parse(localStorage.getItem("user"))?.rol === "CLIENTE" && (
+                            {JSON.parse(localStorage.getItem("user"))?.rol === "ROLE_CLIENTE" && (
                                 <button onClick={() => setShowPaseoForm(true)}>
                                     Registrar solicitud
                                 </button>
