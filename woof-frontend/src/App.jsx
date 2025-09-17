@@ -23,11 +23,11 @@ const App = () => {
                     element={
                         !user ? (
                             <Body /> // no logueado
-                        ) : user.rol === "ROLE_PASEADOR" ? (   // 👈 usá ROLE_PASEADOR
+                        ) : user.rol === "ROLE_PASEADOR" ? (
                             <PaseadorDashboard />
-                        ) : user.rol === "ROLE_CLIENTE" ? (    // 👈 usá ROLE_CLIENTE
+                        ) : user.rol === "ROLE_CLIENTE" ? (
                             <ClienteDashboard />
-                        ) : user.rol === "ROLE_ADMIN" ? (      // 👈 nuevo caso
+                        ) : user.rol === "ROLE_ADMIN" ? (
                             <AdminDashboard />
                         ) : (
                             <Body />
