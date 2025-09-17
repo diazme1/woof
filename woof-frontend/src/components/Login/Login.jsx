@@ -8,6 +8,7 @@ const Login = () => {
     const [loginData, setLoginData] = useState({ email: "", contrasena: "" });
     const [showRegister, setShowRegister] = useState(false);
     const [error, setError] = useState(null);
+    const [showPassword, setShowPassword] = useState(false);
 
     const onChange = (e) => {
         setLoginData({ ...loginData, [e.target.name]: e.target.value });
@@ -60,14 +61,28 @@ const Login = () => {
 
                 <label>
                     Contraseña
+                    <div className={styles.passwordWrapper}>
                     <input
-                        type="password"
+                        type={showPassword ? "text" : "password"}
                         name="contrasena"
                         value={loginData.contrasena}
                         onChange={onChange}
                         required
                         autoComplete="current-contrasena"
                     />
+                    <button
+                        type="button"
+                        className={styles.eyeButton}
+                        onClick={() => setShowPassword(s => !s)}
+                        aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                        aria-pressed={showPassword}
+                    >
+                        <img
+                            src={showPassword ? "/abrir-ojo.png" : "/cerrar-ojo.png"}
+                            alt={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                        />
+                    </button>
+                    </div>
                 </label>
 
                 <button type="submit">Entrar</button>
