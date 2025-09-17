@@ -62,6 +62,33 @@ const Body = () => {
                     </SwiperSlide>
                 </Swiper>
             </div>
+
+            <div>
+                <section id="como-funciona" style={{ padding: "2rem"}}>
+                    <h2 style={{ textAlign: "center", marginBottom: "1.5rem" }}>
+                            ¿Cómo funciona Woof?
+                    </h2>
+                    <p>
+                        <strong>Registrate:</strong> Creá tu cuenta en Woof completando tus datos.
+                        Podés elegir registrarte como cliente, para solicitar paseos, o como paseador,
+                        para ofrecer el servicio. Inicia sesión a la plataforma con tu email y contraseña
+                        para acceder a todas las funciones.
+                    </p>
+                    <p>
+                        <strong>Solicitá un paseo:</strong> Si sos cliente, seleccioná el día y la hora en que
+                        necesitás el paseo. Podés incluir detalles como la duración o indicaciones especiales
+                        para tu perro.
+                    </p>
+                    <p>
+                        <strong>Esperá la aceptación:</strong> La solicitud será enviada a los paseadores disponibles
+                        en tu zona. Cuando uno la acepte, vas a recibir la notificación en tu cuenta y por correo electrónico.
+                    </p>
+                    <p>
+                        <strong>Confirmación y paseo:</strong> Con la aceptación confirmada, tu perro ya tiene paseo asegurado!
+                        El paseador pasa en el horario acordado y el servicio queda registrado en la plataforma.
+                    </p>
+                </section>
+            </div>
         </main>
     );
 };
