@@ -7,8 +7,7 @@ import PaseoForm from "./components/PaseoForm/PaseoForm";
 import DashboardPaseos from "./components/Paseos/DashboardPaseos";
 import PaseadorDashboard from "./components/Dashboard/PaseadorDashboard";
 import ClienteDashboard from "./components/Dashboard/ClienteDashboard";
-
-
+import AdminDashboard from "./components/Dashboard/AdminDashboard";
 
 const App = () => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -24,10 +23,12 @@ const App = () => {
                     element={
                         !user ? (
                             <Body /> // no logueado
-                        ) : user.rol === "PASEADOR" ? (
+                        ) : user.rol === "ROLE_PASEADOR" ? (   // 👈 usá ROLE_PASEADOR
                             <PaseadorDashboard />
-                        ) : user.rol === "CLIENTE" ? (
+                        ) : user.rol === "ROLE_CLIENTE" ? (    // 👈 usá ROLE_CLIENTE
                             <ClienteDashboard />
+                        ) : user.rol === "ROLE_ADMIN" ? (      // 👈 nuevo caso
+                            <AdminDashboard />
                         ) : (
                             <Body />
                         )
