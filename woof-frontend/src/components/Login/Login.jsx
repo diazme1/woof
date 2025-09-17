@@ -33,6 +33,11 @@ const Login = () => {
             });
 
             localStorage.setItem("token", res.data.token);
+            localStorage.setItem("user", JSON.stringify({
+                nombre: res.data.nombre,
+                email: res.data.email,
+                rol: res.data.rol
+            }));
 
             window.location.href = "/";
         } catch (err) {

@@ -16,6 +16,7 @@ const Header = () => {
 
     const handleLogout = () => {
         localStorage.removeItem("token");
+        localStorage.removeItem("user");
         setIsLoggedIn(false);
         window.location.href = "/"; // o navigate("/") si usás react-router
     };
@@ -50,11 +51,21 @@ const Header = () => {
                 </ul>
 
                 <div className={styles.ctas}>
-                    { isLoggedIn ? (
+                    {isLoggedIn ? (
                         <>
-                            <Link className={`${styles.btn} ${styles.ghost}`} to="/solicitudes">
-                                Solicitudes activas
-                            </Link>
+                            {/* Solo paseador ve solicitudes activas */}
+                            {JSON.parse(localStorage.getItem("user"))?.rol === "PASEADOR" && (
+                                <Link className={`${styles.btn} ${styles.ghost}`} to="/solicitudes">
+                                    Solicitudes activas
+                                </Link>
+                            )}
+
+                            {/* Solo cliente ve registrar solicitud */}
+                            {JSON.parse(localStorage.getItem("user"))?.rol === "CLIENTE" && (
+                                <button onClick={() => setShowPaseoForm(true)}>
+                                    Registrar solicitud
+                                </button>
+                            )}
 
                             <button className={styles.btn} onClick={handleLogout}>
                                 Cerrar sesión
@@ -62,16 +73,15 @@ const Header = () => {
                         </>
                     ) : (
                         <>
-                            <button onClick={() => setShowPaseoForm(true)}>
-                                Registrar solicitud
-                            </button>
                             <Link className={`${styles.btn} ${styles.ghost}`} to="/login">
                                 Iniciar sesión
                             </Link>
                         </>
-                    )
-                    }
+                    )}
+
+
                 </div>
+
             </nav>
 
             {/* Modal de solicitud de paseo */}
