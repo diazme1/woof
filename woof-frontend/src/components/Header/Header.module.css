@@ -138,6 +138,16 @@
     background:rgba(255,255,255,.08);
 }
 
+.links button {
+    background: none;       /* quita el fondo */
+    border: none;           /* quita el borde */
+    padding: 0;             /* opcional */
+    margin: 0;              /* opcional */
+    cursor: pointer;        /* puntero al pasar el mouse */
+    font: inherit;          /* hereda fuente y tamaño */
+    color: inherit;         /* hereda el color del texto */
+}
+
 .trust{
     margin-top:14px;
     opacity:.95;
