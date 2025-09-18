@@ -32,7 +32,7 @@
 /* Lista de pasos en una sola fila */
 .stepsList {
     display: flex;
-    flex-wrap: nowrap; /* Mantiene las tarjetas en una sola fila */
+    flex-wrap: nowrap;  /* Mantiene las tarjetas en una sola fila */
     justify-content: center;
     gap: 1rem;
     list-style: none;
@@ -59,4 +59,12 @@
     font-size: 0.95rem;
     line-height: 1.4;
     color: #333;
+}
+
+/* En pantallas pequeñas, se acomodan una debajo de la otra */
+@media (max-width: 768px) {
+    .stepsList {
+        flex-direction: column;
+        align-items: center;
+    }
 }
