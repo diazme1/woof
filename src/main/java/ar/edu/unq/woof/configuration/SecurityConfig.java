@@ -22,12 +22,13 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .cors(cors -> {})
                 .authorizeHttpRequests(auth -> auth
+                                .requestMatchers("/user/**").permitAll()
+                                .requestMatchers("/api/admin/**").hasRole("ROLE_ADMIN")
+                        .requestMatchers("/api/paseador/**").hasRole("ROLE_PASEADOR")
+                        .requestMatchers("/api/cliente/**").hasRole("ROLE_CLIENTE")
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/paseador/**").hasRole("PASEADOR")
-                        .requestMatchers("/api/cliente/**").hasRole("CLIENTE")
-                        .requestMatchers("/**").permitAll()
-                        .anyRequest().authenticated()
+
+                .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 

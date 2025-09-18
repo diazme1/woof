@@ -8,10 +8,8 @@ import ar.edu.unq.woof.modelo.Usuario;
 import ar.edu.unq.woof.service.interfaces.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
@@ -32,4 +30,21 @@ public class UserControllerREST {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(UserDTO.desdeModelo(newUsuario));
     }
+
+    @PostMapping("/{id}/validacion")
+    public ResponseEntity<String> validarUsuario(
+            @PathVariable Long id,
+            @RequestParam("fotoDni") MultipartFile fotoDni,
+            @RequestParam("cv") MultipartFile cv) {
+
+        userService.validarUsuario(id, fotoDni, cv);
+        return ResponseEntity.ok("Documentos subidos correctamente. Usuario en proceso de validación.");
+    }
+
+    @PutMapping("/{id}/aprobar-validacion")
+    public ResponseEntity<String> aprobarValidacion(@PathVariable Long id) {
+        userService.aprobarValidacion(id);
+        return ResponseEntity.ok("Usuario validado correctamente");
+    }
+
 }

@@ -30,13 +30,18 @@ public class JwtFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+        if (authHeader != null && authHeader.startsWith("Bearer")) {
             String token = authHeader.substring(7);
             try {
                 Claims claims = jwtUtil.validarToken(token);
 
                 String email = claims.getSubject();
                 String role = claims.get("rol", String.class);
+
+                if (role == null) {
+                    filterChain.doFilter(request, response);
+                    return;
+                }
 
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(

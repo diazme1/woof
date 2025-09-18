@@ -37,6 +37,16 @@ public class Usuario {
     @Column(nullable = false)
     private UserRole rol;
 
+    @Column
+    private String fotoDni;
+
+    @Column
+    private String cv;
+
+    @Column
+    private Boolean validado = false;
+
+
     public Usuario(String nombre, Integer dni, String email, String telefono, String direccion, String contrasena, UserRole rol) {
         this.nombre = nombre;
         this.dni = dni;

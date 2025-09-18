@@ -29,8 +29,8 @@ public class AuthController {
         if (usuario == null || !usuario.getContrasena().equals(request.contrasena())) {
             return ResponseEntity.status(401).body("Credenciales inválidas");
         }
-        String token = jwtUtil.generarToken(usuario.getId(), usuario.getEmail());
-        return ResponseEntity.ok(new LoginResponseDTO(token, usuario.getNombre(), usuario.getEmail(), usuario.getRol()));
+        String token = jwtUtil.generarToken(usuario.getId(), usuario.getEmail(), usuario.getRol().name());
+        return ResponseEntity.ok(new LoginResponseDTO(token, usuario.getNombre(), usuario.getEmail(), usuario.getRol(), usuario.getId()));
     }
 
 

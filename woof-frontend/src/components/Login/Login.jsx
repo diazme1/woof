@@ -34,6 +34,7 @@ const Login = () => {
 
             localStorage.setItem("token", res.data.token);
             localStorage.setItem("user", JSON.stringify({
+                id: res.data.id,
                 nombre: res.data.nombre,
                 email: res.data.email,
                 rol: res.data.rol
