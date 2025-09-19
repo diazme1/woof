@@ -23,9 +23,9 @@ public class SecurityConfig {
                 .cors(cors -> {})
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers("/user/**").permitAll()
-                                .requestMatchers("/api/admin/**").hasRole("ROLE_ADMIN")
-                        .requestMatchers("/api/paseador/**").hasRole("ROLE_PASEADOR")
-                        .requestMatchers("/api/cliente/**").hasRole("ROLE_CLIENTE")
+                                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/paseador/**").hasRole("PASEADOR")
+                        .requestMatchers("/api/cliente/**").hasRole("CLIENTE")
                         .requestMatchers("/auth/**").permitAll()
 
                 .anyRequest().authenticated()

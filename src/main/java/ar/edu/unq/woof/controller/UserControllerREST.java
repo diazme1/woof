@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.UUID;
 
 @RestController
@@ -35,7 +36,7 @@ public class UserControllerREST {
     public ResponseEntity<String> validarUsuario(
             @PathVariable Long id,
             @RequestParam("fotoDni") MultipartFile fotoDni,
-            @RequestParam("cv") MultipartFile cv) {
+            @RequestParam("cv") MultipartFile cv) throws IOException {
 
         userService.validarUsuario(id, fotoDni, cv);
         return ResponseEntity.ok("Documentos subidos correctamente. Usuario en proceso de validación.");

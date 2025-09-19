@@ -1,0 +1,5 @@
+   __          __
+   \ \        / /
+    \ \  /\  / /   ¡Bienvenido/a!
+     \ \/  \/ /    Woof App arrancando... 🐶🐾
+      \__/\__/     (Spring Boot ${spring-boot.version})

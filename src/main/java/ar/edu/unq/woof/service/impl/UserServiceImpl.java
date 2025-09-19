@@ -52,7 +52,8 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("Solo los paseadores pueden validar documentos");
         }
 
-        String baseUploadDir = System.getProperty("user.home") + File.separator + "woof_uploads";
+        String projectDir = System.getProperty("user.dir");
+        String baseUploadDir = projectDir + File.separator + "src" + File.separator + "main" + File.separator + "uploads";
         String uploadDir = baseUploadDir + File.separator + "user_" + usuario.getId();
 
         File dir = new File(uploadDir);
