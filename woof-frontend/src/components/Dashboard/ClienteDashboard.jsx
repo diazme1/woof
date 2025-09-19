@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./ClienteDashboard.module.css";
+import styles from "./Dashboard.module.css";
 
 
 const ClienteDashboard = () => {

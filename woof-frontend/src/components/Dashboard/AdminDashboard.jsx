@@ -1,6 +1,6 @@
 import React from "react";
-import styles from "./AdminDashboard.module.css";
-
+import styles from "./Dashboard.module.css";
+import DashboardValidaciones from "../Validaciones/DashboardValidaciones";
 
 const AdminDashboard = () => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -8,6 +8,10 @@ const AdminDashboard = () => {
     return (
         <main className={styles.dashboard}>
             <h1>Bienvenido {user?.nombre} 🐶</h1>
+
+            <section>
+                <DashboardValidaciones />
+            </section>
         </main>
     );
 };

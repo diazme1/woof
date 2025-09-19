@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -47,5 +48,15 @@ public class UserControllerREST {
         userService.aprobarValidacion(id);
         return ResponseEntity.ok("Usuario validado correctamente");
     }
+
+    @GetMapping("/validaciones/pendientes")
+    public ResponseEntity<List<UserDTO>> getUsuariosPendientesValidacion() {
+        List<Usuario> pendientes = userService.getUsuariosPendientesValidacion();
+        List<UserDTO> dtos = pendientes.stream()
+                .map(UserDTO::desdeModelo)
+                .toList();
+        return ResponseEntity.ok(dtos);
+    }
+
 
 }

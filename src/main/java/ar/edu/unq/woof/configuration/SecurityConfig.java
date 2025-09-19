@@ -22,14 +22,14 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable())
                 .cors(cors -> {})
                 .authorizeHttpRequests(auth -> auth
-                                .requestMatchers("/user/**").permitAll()
-                                .requestMatchers("/paseo/**").permitAll()
-                                .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                               .requestMatchers("/api/paseador/**").hasRole("PASEADOR")
-                               .requestMatchers("/api/cliente/**").hasRole("CLIENTE")
-                                .requestMatchers("/auth/**").permitAll()
-
-                .anyRequest().authenticated()
+                        .requestMatchers("/user/validaciones/**").hasRole("ADMIN")
+                        .requestMatchers("/user/**").permitAll()
+                        .requestMatchers("/paseo/**").permitAll()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/paseador/**").hasRole("PASEADOR")
+                        .requestMatchers("/api/cliente/**").hasRole("CLIENTE")
+                        .requestMatchers("/auth/**").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
@@ -38,4 +38,3 @@ public class SecurityConfig {
         return http.build();
     }
 }
-

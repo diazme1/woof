@@ -1,6 +1,8 @@
 package ar.edu.unq.woof.service.impl;
 
 import ar.edu.unq.woof.modelo.Usuario;
+import ar.edu.unq.woof.modelo.enums.EstadoSolicitud;
+import ar.edu.unq.woof.modelo.enums.EstadoValidacion;
 import ar.edu.unq.woof.modelo.exceptions.CorreoDuplicadoPaseadorException;
 import ar.edu.unq.woof.persistence.UserDAO;
 import ar.edu.unq.woof.service.interfaces.UserService;
@@ -12,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -71,9 +74,7 @@ public class UserServiceImpl implements UserService {
         cv.transferTo(new File(cvPath));
         usuario.setCv(cvPath);
 
-            // Estado pendiente hasta que admin lo apruebe
-            usuario.setValidado(false);
-
+        usuario.setEstadoValidacion(EstadoValidacion.PENDIENTE);
 
         userDAO.save(usuario);
     }
@@ -84,7 +85,13 @@ public class UserServiceImpl implements UserService {
         Usuario usuario = userDAO.findById(idUser)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
-        usuario.setValidado(true);
+        usuario.setEstadoValidacion(EstadoValidacion.APROBADO);
         userDAO.save(usuario);
     }
+
+    @Override
+    public List<Usuario> getUsuariosPendientesValidacion() {
+        return userDAO.findByEstadoValidacion(EstadoValidacion.PENDIENTE);
+    }
+
 }
