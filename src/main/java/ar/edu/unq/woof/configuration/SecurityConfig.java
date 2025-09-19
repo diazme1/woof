@@ -23,10 +23,11 @@ public class SecurityConfig {
                 .cors(cors -> {})
                 .authorizeHttpRequests(auth -> auth
                                 .requestMatchers("/user/**").permitAll()
+                                .requestMatchers("/paseo/**").permitAll()
                                 .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/paseador/**").hasRole("PASEADOR")
-                        .requestMatchers("/api/cliente/**").hasRole("CLIENTE")
-                        .requestMatchers("/auth/**").permitAll()
+                               .requestMatchers("/api/paseador/**").hasRole("PASEADOR")
+                               .requestMatchers("/api/cliente/**").hasRole("CLIENTE")
+                                .requestMatchers("/auth/**").permitAll()
 
                 .anyRequest().authenticated()
                 )

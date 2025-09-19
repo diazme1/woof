@@ -74,7 +74,6 @@ public class UserServiceImpl implements UserService {
             // Estado pendiente hasta que admin lo apruebe
             usuario.setValidado(false);
 
-            userDAO.save(usuario);
 
         userDAO.save(usuario);
     }
