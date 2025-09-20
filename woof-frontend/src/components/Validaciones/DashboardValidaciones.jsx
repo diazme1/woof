@@ -57,7 +57,6 @@ const DashboardValidaciones = () => {
                 }
             );
 
-            // 👇 corregido: usa idPaseador
             setUsuarios((prev) => prev.filter((u) => u.idPaseador !== id));
             setShowSuccess(true);
         } catch (err) {
@@ -66,6 +65,25 @@ const DashboardValidaciones = () => {
         }
     };
 
+    const rechazarValidacion = async (id) => {
+        try {
+            await axios.put(
+                `http://localhost:8080/user/${id}/rechazar-validacion`,
+                {}, // body vacío porque no necesitás mandar nada
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                }
+            );
+
+            setUsuarios((prev) => prev.filter((u) => u.idPaseador !== id));
+            setShowSuccess(true);
+        } catch (err) {
+            console.error("Error al rechazar validación:", err);
+            alert("Hubo un error al rechazar la validación.");
+        }
+    };
 
 
     if (loading) return <p>Cargando validaciones...</p>;
@@ -141,6 +159,15 @@ const DashboardValidaciones = () => {
                                         onClick={() => aprobarValidacion(u.idPaseador)}
                                     >
                                         Aprobar
+                                    </button>
+                                )}
+
+                                {u.validado === "PENDIENTE" && (
+                                    <button
+                                        className={styles.btnRechazar}
+                                        onClick={() => rechazarValidacion(u.idPaseador)}
+                                    >
+                                        Rechazar
                                     </button>
                                 )}
                             </div>

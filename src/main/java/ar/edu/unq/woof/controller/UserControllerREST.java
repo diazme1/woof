@@ -49,6 +49,12 @@ public class UserControllerREST {
         return ResponseEntity.ok("Usuario validado correctamente");
     }
 
+    @PutMapping("/{id}/rechazar-validacion")
+    public ResponseEntity<String> rechazarValidacion(@PathVariable Long id) {
+        userService.rechazarValidacion(id);
+        return ResponseEntity.ok("Usuario rechazado correctamente");
+    }
+
     @GetMapping("/validaciones/pendientes")
     public ResponseEntity<List<UserDTO>> getUsuariosPendientesValidacion() {
         List<Usuario> pendientes = userService.getUsuariosPendientesValidacion();

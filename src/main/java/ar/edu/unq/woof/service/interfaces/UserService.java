@@ -15,5 +15,5 @@ public interface UserService {
     void validarUsuario(Long idUser, MultipartFile fotoDni, MultipartFile cv) throws IOException;
     void aprobarValidacion(Long idUser);
     List<Usuario> getUsuariosPendientesValidacion();
-
+    void rechazarValidacion(Long id);
 }

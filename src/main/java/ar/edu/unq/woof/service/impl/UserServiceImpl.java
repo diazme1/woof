@@ -94,4 +94,13 @@ public class UserServiceImpl implements UserService {
         return userDAO.findByEstadoValidacion(EstadoValidacion.PENDIENTE);
     }
 
+    @Override
+    public void rechazarValidacion(Long id){
+        Usuario usuario = userDAO.findById(id)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        usuario.setEstadoValidacion(EstadoValidacion.RECHAZADO);
+        userDAO.save(usuario);
+    }
+
 }
