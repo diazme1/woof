@@ -37,7 +37,7 @@ const DashboardValidaciones = () => {
 
         const interval = setInterval(() => {
             fetchUsuarios();
-        }, 10000);
+        }, 100000);
 
         return () => {
             isMounted = false;
@@ -49,7 +49,7 @@ const DashboardValidaciones = () => {
         try {
             await axios.put(
                 `http://localhost:8080/user/${id}/aprobar-validacion`,
-                {}, // body vacío porque no necesitás mandar nada
+                {},
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -69,7 +69,7 @@ const DashboardValidaciones = () => {
         try {
             await axios.put(
                 `http://localhost:8080/user/${id}/rechazar-validacion`,
-                {}, // body vacío porque no necesitás mandar nada
+                {},
                 {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -141,14 +141,14 @@ const DashboardValidaciones = () => {
 
                             <div className={styles.cardActions}>
                                 {u.fotoDni && (
-                                    <a href={`http://localhost:8080/${u.fotoDni}`} target="_blank" rel="noreferrer">
+                                    <a href={`http://localhost:8080/user/${u.idPaseador}/foto-dni`} target="_blank" rel="noreferrer">
                                         📎 Ver DNI
                                     </a>
                                 )}
                                 {u.cv && (
 
-                                    <a href={`http://localhost:8080/${u.cv}`} target="_blank" rel="noreferrer">
-                                        📎 Ver DNI
+                                    <a href={`http://localhost:8080/user/${u.idPaseador}/cv`} target="_blank" rel="noreferrer">
+                                        📎 Ver CV
                                     </a>
                                 )}
                                 <p><strong>Estado:</strong> {u.validado}</p>

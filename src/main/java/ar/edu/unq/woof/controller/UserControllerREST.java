@@ -7,11 +7,14 @@ import ar.edu.unq.woof.controller.dto.user.UserRequestDTO;
 import ar.edu.unq.woof.modelo.Usuario;
 import ar.edu.unq.woof.service.interfaces.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.UUID;
 
@@ -62,6 +65,42 @@ public class UserControllerREST {
                 .map(UserDTO::desdeModelo)
                 .toList();
         return ResponseEntity.ok(dtos);
+    }
+
+    @GetMapping("/{id}/foto-dni")
+    public ResponseEntity<byte[]> getFotoDNI(@PathVariable Long id) throws IOException {
+        File file = userService.getFotoDNI(id);
+
+        if (!file.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        byte[] bytes = Files.readAllBytes(file.toPath());
+        String mimeType = Files.probeContentType(file.toPath());
+
+        System.out.println(file.toPath());
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(mimeType))
+                .body(bytes);
+    }
+
+    @GetMapping("/{id}/cv")
+    public ResponseEntity<byte[]> getCV(@PathVariable Long id) throws IOException {
+        File file = userService.getCV(id);
+
+        if (!file.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        byte[] bytes = Files.readAllBytes(file.toPath());
+        String mimeType = Files.probeContentType(file.toPath());
+
+        System.out.println(file.toPath());
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(mimeType))
+                .body(bytes);
     }
 
 

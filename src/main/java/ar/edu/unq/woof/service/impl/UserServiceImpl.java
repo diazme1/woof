@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.Optional;
 
@@ -101,6 +102,30 @@ public class UserServiceImpl implements UserService {
 
         usuario.setEstadoValidacion(EstadoValidacion.RECHAZADO);
         userDAO.save(usuario);
+    }
+
+    @Override
+    public File getFotoDNI(Long idUser) throws IOException {
+        Usuario usuario = userDAO.findById(idUser)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        if (usuario.getFotoDni() == null) {
+            throw new RuntimeException("El usuario no tiene foto de DNI");
+        }
+
+        return new File(usuario.getFotoDni());
+    }
+
+    @Override
+    public File getCV(Long idUser) throws IOException {
+        Usuario usuario = userDAO.findById(idUser)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        if (usuario.getCv() == null) {
+            throw new RuntimeException("El usuario no tiene curriculum.");
+        }
+
+        return new File(usuario.getCv());
     }
 
 }
