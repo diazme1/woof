@@ -2,12 +2,16 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import styles from "./Header.module.css";
 import PaseoForm from "../PaseoForm/PaseoForm";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [showPaseoForm, setShowPaseoForm] = useState(false);
     const token = localStorage.getItem("token");
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -19,6 +23,22 @@ const Header = () => {
         localStorage.removeItem("user");
         setIsLoggedIn(false);
         window.location.href = "/"; // o navigate("/") si usás react-router
+    };
+
+    const handleScroll = (sectionId) => {
+        if (location.pathname !== "/") {
+            // Si no estamos en la home, vamos primero a /
+            navigate("/", { replace: false });
+            // Esperamos que la página renderice
+            setTimeout(() => {
+                const element = document.getElementById(sectionId);
+                if (element) element.scrollIntoView({ behavior: "smooth" });
+            }, 50);
+        } else {
+            // Si ya estamos en home, solo hacemos scroll
+            const element = document.getElementById(sectionId);
+            if (element) element.scrollIntoView({ behavior: "smooth" });
+        }
     };
 
     return (
@@ -43,11 +63,31 @@ const Header = () => {
                 </div>
 
                 <ul className={`${styles.links} ${menuOpen ? styles.open : ""}`}>
-                    <li><a href="#como-funciona">Cómo funciona</a></li>
-                    <li><a href="#paseadores">Paseadores</a></li>
-                    <li><a href="#precios">Precios</a></li>
-                    <li><a href="#seguridad">Seguridad</a></li>
-                    <li><a href="#ayuda">Ayuda</a></li>
+                    <li>
+                        <button onClick={() => handleScroll("como-funciona")}>
+                            Cómo funciona
+                        </button>
+                    </li>
+                    <li>
+                        <button onClick={() => handleScroll("paseadores")}>
+                            Paseadores
+                        </button>
+                    </li>
+                    <li>
+                        <button onClick={() => handleScroll("precios")}>
+                            Precios
+                        </button>
+                    </li>
+                    <li>
+                        <button onClick={() => handleScroll("seguridad")}>
+                            Seguridad
+                        </button>
+                    </li>
+                    <li>
+                        <button onClick={() => handleScroll("ayuda")}>
+                            Ayuda
+                        </button>
+                    </li>
                 </ul>
 
                 <div className={styles.ctas}>
