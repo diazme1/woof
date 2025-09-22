@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+@SpringBootTest(properties = "spring.sql.init.mode=never")
 public class UsuarioServiceTest {
 
     @Autowired
@@ -15,7 +15,7 @@ public class UsuarioServiceTest {
 
     @Test
     public void savePaseador() {
-        Usuario usuario = new Usuario("Emilia Diaz", 44555666, "x@x.com", "2215559999", "xxxx", "root", UserRole.PASEADOR);
+        Usuario usuario = new Usuario("Emilia Diaz", 44555666, "x@x.com", "2215559999", "xxxx", "root", UserRole.ROLE_PASEADOR);
         userService.saveUser(usuario);
     }
 

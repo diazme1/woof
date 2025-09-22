@@ -1,5 +1,6 @@
 package ar.edu.unq.woof.modelo;
 
+import ar.edu.unq.woof.modelo.enums.EstadoValidacion;
 import ar.edu.unq.woof.modelo.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
@@ -36,6 +37,16 @@ public class Usuario {
 
     @Column(nullable = false)
     private UserRole rol;
+
+    @Column
+    private String fotoDni;
+
+    @Column
+    private String cv;
+
+    @Enumerated(EnumType.STRING)
+    private EstadoValidacion estadoValidacion = EstadoValidacion.NO_ENVIADO;
+
 
     public Usuario(String nombre, Integer dni, String email, String telefono, String direccion, String contrasena, UserRole rol) {
         this.nombre = nombre;
