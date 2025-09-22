@@ -52,9 +52,10 @@
 }
 
 .cardActions {
-    margin-top: auto;
     display: flex;
-    justify-content: flex-end;
+    justify-content: center; /* centra horizontalmente */
+    gap: 20px; /* espacio entre los enlaces */
+    margin-top: 10px;
 }
 
 .btnPrimary {
@@ -67,7 +68,6 @@
     font-weight: 600;
     cursor: pointer;
     transition: background 0.2s ease, transform 0.1s ease;
-    margin-right: 10px; /*Para separarlo del boton rechazar*/
 }
 
 .btnPrimary:hover {
@@ -76,7 +76,7 @@
 }
 
 .btnRechazar{
-    background: var(--primary);
+    background: red;
     color: #fff;
     padding: 12px 20px;
     font-size: 1rem;
@@ -85,6 +85,12 @@
     font-weight: 600;
     cursor: pointer;
     transition: background 0.2s ease, transform 0.1s ease;
+}
+
+/* cuando pasás el cursor */
+.btnRechazar:hover {
+    background: #e40303;
+    transform: scale(1.03);
 }
 
 /* Popup */

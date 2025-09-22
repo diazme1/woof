@@ -109,7 +109,7 @@ const DashboardValidaciones = () => {
                         aria-modal="true"
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <p>Validación aprobada con éxito ✅</p>
+                        <p>Validación actualizada con éxito</p>
                         <button
                             type="button"
                             onClick={() => {
@@ -137,7 +137,7 @@ const DashboardValidaciones = () => {
                             <p><strong>Email:</strong> {u.email}</p>
                             <p><strong>DNI:</strong> {u.dni}</p>
                             <p><strong>Teléfono:</strong> {u.telefono}</p>
-                            <p><strong>Estado:</strong> {u.estadoValidacion}</p> {/* 👈 Nuevo */}
+                            <p><strong>Estado:</strong> {u.validado}</p>
 
                             <div className={styles.cardActions}>
                                 {u.fotoDni && (
@@ -151,7 +151,6 @@ const DashboardValidaciones = () => {
                                         📎 Ver CV
                                     </a>
                                 )}
-                                <p><strong>Estado:</strong> {u.validado}</p>
 
                                 {u.validado === "PENDIENTE" && (
                                     <button
