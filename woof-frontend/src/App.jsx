@@ -8,6 +8,8 @@ import DashboardPaseos from "./components/Paseos/DashboardPaseos";
 import PaseadorDashboard from "./components/Dashboard/PaseadorDashboard";
 import ClienteDashboard from "./components/Dashboard/ClienteDashboard";
 import AdminDashboard from "./components/Dashboard/AdminDashboard";
+import Perfil from "./components/Perfil/Perfil";
+
 
 const App = () => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -39,6 +41,7 @@ const App = () => {
                 <Route path="/login" element={<Login />} />
                 <Route path="/solicitudes" element={<DashboardPaseos />} />
                 <Route path="/paseos" element={<PaseoForm />} />
+                <Route path="/perfil" element={<Perfil />} />
             </Routes>
 
             <Footer />
