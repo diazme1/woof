@@ -53,6 +53,17 @@ public class SolicitudPaseoImpl implements SolicitudPaseoService {
     }
 
     @Override
+    public void cancelarSolicitudPaseo(Long idPaseo) {
+        SolicitudPaseo solicitud = paseoDAO.findSolicitudPaseoById(idPaseo).orElseThrow(SolicitudNoEncontrada::new);
+        if (!(solicitud.getEstado() == EstadoSolicitud.PENDIENTE ||
+                solicitud.getEstado() == EstadoSolicitud.ACEPTADA)) {
+            throw new RuntimeException("La solicitud no se puede cancelar en este estado");
+        }
+        solicitud.setEstado(EstadoSolicitud.CANCELADA);
+        paseoDAO.save(solicitud);
+    }
+
+    @Override
     public void aceptarSolicitudPaseo(Long idPaseo) {
         SolicitudPaseo solicitud = paseoDAO.recuperarSolicitudPaseo(idPaseo).orElseThrow(SolicitudNoEncontrada::new);
         if (solicitud.getEstado().equals(EstadoSolicitud.PENDIENTE)) {

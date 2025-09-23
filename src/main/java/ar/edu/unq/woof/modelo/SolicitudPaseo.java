@@ -1,5 +1,6 @@
 package ar.edu.unq.woof.modelo;
 
+import ar.edu.unq.woof.modelo.enums.EstadoDePago;
 import ar.edu.unq.woof.modelo.enums.EstadoSolicitud;
 import ar.edu.unq.woof.modelo.enums.TamanoPerro;
 import ar.edu.unq.woof.modelo.enums.ZonaOperativa;
@@ -36,6 +37,15 @@ public class SolicitudPaseo {
 
     @Column(nullable = false)
     private EstadoSolicitud estado = EstadoSolicitud.PENDIENTE;
+
+    @Column (nullable = false)
+    private EstadoDePago estadoDePago = EstadoDePago.PENDIENTE_DE_PAGO;
+
+    @Column (nullable = false)
+    private Long idCliente;
+
+    @Column
+    private Long idPaseador;
 
     public SolicitudPaseo(ZonaOperativa zona, LocalDateTime horario, String nombrePerro, TamanoPerro tamanoPerro, String raza) {
         this.zona = zona;

@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/paseo")
@@ -45,6 +44,15 @@ public class PaseoControllerREST {
 
         return ResponseEntity.ok(SolicitudPaseoDTO.desdeModelo(solicitud));
 
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> cancelarSolicitud(@PathVariable Long id) {
+        SolicitudPaseo solicitud = solicitudService.getSolicitud(id).orElseThrow(() -> new EntityNotFoundException("Solicitud de paseo no encontrada con id " + id));
+
+        solicitudService.cancelarSolicitudPaseo(id);
+
+        return ResponseEntity.noContent().build();
     }
 
 }

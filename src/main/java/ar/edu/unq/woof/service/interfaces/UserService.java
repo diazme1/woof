@@ -1,5 +1,6 @@
 package ar.edu.unq.woof.service.interfaces;
 
+import ar.edu.unq.woof.modelo.SolicitudPaseo;
 import ar.edu.unq.woof.modelo.Usuario;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,7 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserService {
-
     void saveUser(Usuario user);
     Optional<Usuario> getUser(Long idUser);
     Usuario findByEmail(String email);
