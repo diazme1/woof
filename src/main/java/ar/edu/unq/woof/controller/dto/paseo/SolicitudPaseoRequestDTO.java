@@ -11,9 +11,10 @@ public record SolicitudPaseoRequestDTO(
         LocalDateTime horario,
         String nombrePerro,
         TamanoPerro tamanoPerro,
-        String raza
+        String raza,
+        Long idCliente
 ) {
     public SolicitudPaseo aModelo() {
-        return new SolicitudPaseo(zona, horario, nombrePerro, tamanoPerro, raza);
+        return new SolicitudPaseo(zona, horario, nombrePerro, tamanoPerro, raza, idCliente);
     }
 }

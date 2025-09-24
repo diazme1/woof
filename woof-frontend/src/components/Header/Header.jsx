@@ -100,11 +100,17 @@ const Header = () => {
                                 </Link>
                             )}
 
-                            {/* Solo cliente ve registrar solicitud */}
+                            {/* Solo cliente ve registrar solicitud y sus solicitudes */}
                             {JSON.parse(localStorage.getItem("user"))?.rol === "ROLE_CLIENTE" && (
-                                <button onClick={() => setShowPaseoForm(true)}>
-                                    Registrar solicitud
-                                </button>
+                                <>
+                                    <Link className={`${styles.btn} ${styles.ghost}`} to="/mis-solicitudes">
+                                        Mis solicitudes
+                                    </Link>
+
+                                    <button onClick={() => setShowPaseoForm(true)}>
+                                        Registrar solicitud
+                                    </button>
+                                </>
                             )}
 
                             <button className={styles.btn} onClick={handleLogout}>

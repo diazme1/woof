@@ -7,6 +7,7 @@ const DashboardSolicitudes = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [showSuccess, setShowSuccess] = useState(false);
+    const user = JSON.parse(localStorage.getItem("user"));
 
     const tamanosMap = {
         PEQUENO: "Pequeño",
@@ -23,6 +24,11 @@ const DashboardSolicitudes = () => {
         DON_BOSCO: "Don Bosco"
     };
 
+    const estadoMap = {
+        PENDIENTE: "Pendiente",
+        ACEPTADA: "Aceptada"
+    };
+
     const formatFecha = (fechaISO) => {
         const f = new Date(fechaISO);
         return f.toLocaleDateString("en-GB") + " " + f.toLocaleTimeString("en-US", {
@@ -35,7 +41,7 @@ const DashboardSolicitudes = () => {
     // Traer solicitudes del cliente
     const fetchSolicitudes = async () => {
         try {
-            const response = await axios.get("http://localhost:8080/solicitudes/cliente");
+            const response = await axios.get(`http://localhost:8080/paseo/cliente/${user?.id}`);
             setSolicitudes(response.data);
         } catch (err) {
             setError("Error al cargar las solicitudes.");
@@ -56,7 +62,7 @@ const DashboardSolicitudes = () => {
         try {
             await axios.put(`http://localhost:8080/solicitudes/${id}/cancelar`);
             setSolicitudes(prev => prev.map(s =>
-                s.solicitudId === id ? { ...s, estadoSolicitud: "CANCELADA" } : s
+                s.solicitudId === id ? { ...s, estado: "CANCELADA" } : s
             ));
             setShowSuccess(true);
         } catch (err) {
@@ -95,10 +101,10 @@ const DashboardSolicitudes = () => {
                             <p><strong>Horario:</strong> {formatFecha(s.horario)}</p>
                             <p><strong>Perro:</strong> {s.nombrePerro} ({s.raza})</p>
                             <p><strong>Tamaño:</strong> {tamanosMap[s.tamanoPerro] || s.tamanoPerro}</p>
-                            <p><strong>Estado:</strong> {s.estadoSolicitud}</p>
+                            <p><strong>Estado:</strong> {estadoMap[s.estado] || s.estado}</p>
 
                             <div className={styles.cardActions}>
-                                {(s.estadoSolicitud === "PENDIENTE" || s.estadoSolicitud === "ACEPTADA") && (
+                                {(s.estado === "PENDIENTE" || s.estado === "ACEPTADA") && (
                                     <button
                                         className={styles.btnPrimary}
                                         onClick={() => cancelarSolicitud(s.solicitudId)}

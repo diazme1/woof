@@ -71,4 +71,9 @@ public class SolicitudPaseoImpl implements SolicitudPaseoService {
             paseoDAO.save(solicitud);
         }
     }
+
+    @Override
+    public List<SolicitudPaseo> getSolicitudesDeCliente(Long idCliente) {
+        return paseoDAO.findByIdCliente(idCliente);
+    }
 }

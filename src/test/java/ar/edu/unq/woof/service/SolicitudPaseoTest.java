@@ -26,7 +26,7 @@ public class SolicitudPaseoTest {
         LocalDateTime horario = now.plusMinutes(15);
 
 
-        SolicitudPaseo solicitudPaseo = new SolicitudPaseo(ZonaOperativa.QUILMES, horario, "Abdu", TamanoPerro.GRANDE, "Labrador");
+        SolicitudPaseo solicitudPaseo = new SolicitudPaseo(ZonaOperativa.QUILMES, horario, "Abdu", TamanoPerro.GRANDE, "Labrador", 4L);
         solicitudPaseoService.savePaseo(solicitudPaseo);
     }
 

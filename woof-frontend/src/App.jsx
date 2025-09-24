@@ -5,6 +5,7 @@ import Body from "./components/Body/Body";
 import Footer from "./components/Footer/Footer";
 import PaseoForm from "./components/PaseoForm/PaseoForm";
 import DashboardPaseos from "./components/Paseos/DashboardPaseos";
+import DashboardSolicitudes from "./components/Solicitudes/DashboardSolicitudes";
 import PaseadorDashboard from "./components/Dashboard/PaseadorDashboard";
 import ClienteDashboard from "./components/Dashboard/ClienteDashboard";
 import AdminDashboard from "./components/Dashboard/AdminDashboard";
@@ -38,6 +39,7 @@ const App = () => {
                 {/* Rutas adicionales */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/solicitudes" element={<DashboardPaseos />} />
+                <Route path="/mis-solicitudes" element={<DashboardSolicitudes />} />
                 <Route path="/paseos" element={<PaseoForm />} />
             </Routes>
 

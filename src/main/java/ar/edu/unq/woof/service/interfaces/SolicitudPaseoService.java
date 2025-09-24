@@ -12,4 +12,5 @@ public interface SolicitudPaseoService {
     void aceptarSolicitudPaseo(Long idPaseo);
     List<SolicitudPaseo> getAllPendientes();
     void cancelarSolicitudPaseo(Long idPaseo);
+    List<SolicitudPaseo> getSolicitudesDeCliente(Long  idCliente);
 }

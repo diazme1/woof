@@ -47,12 +47,13 @@ public class SolicitudPaseo {
     @Column
     private Long idPaseador;
 
-    public SolicitudPaseo(ZonaOperativa zona, LocalDateTime horario, String nombrePerro, TamanoPerro tamanoPerro, String raza) {
+    public SolicitudPaseo(ZonaOperativa zona, LocalDateTime horario, String nombrePerro, TamanoPerro tamanoPerro, String raza, Long idCliente) {
         this.zona = zona;
         this.horario = horario;
         this.nombrePerro = nombrePerro;
         this.tamanoPerro = tamanoPerro;
         this.raza = raza;
+        this.idCliente = idCliente;
     }
 
 }
