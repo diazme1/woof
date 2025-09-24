@@ -1,19 +1,25 @@
 import { useEffect, useState } from "react";
 import styles from "./Perfil.module.css";
+import axios from "axios";
 
 const Perfil = () => {
-    const [user, setUser] = useState(null);
+    const user = JSON.parse(localStorage.getItem("user"));
+    const [paseosR,setPaseosR] = useState(0);
+    console.log("Usuario en localStorage:", user)
 
     useEffect(() => {
-        const storedUser = JSON.parse(localStorage.getItem("user"));
-        if (storedUser) {
-            setUser(storedUser);
-        }
-    }, []);
+        if (!user?.id) return;
 
-    if (!user) {
-        return <p style={{ padding: "2rem" }}>Cargando perfil...</p>;
-    }
+        axios
+            .get(`http://localhost:8080/paseos/solicitudes/${user.id}`)
+    .then((res) => {
+            setPaseosR(res.data); // 👈 depende de qué devuelve tu backend
+        })
+            .catch((err) => {
+                console.error("Error al obtener paseos:", err);
+                setPaseosR(0);
+            });
+    }, [user?.id]);
 
     return (
         <div className={styles.perfil}>
@@ -47,7 +53,7 @@ const Perfil = () => {
                 <h3>Estadísticas</h3>
                 <div className={styles.statItem}>
           <span className={styles.statNumber}>
-            {user.paseosRealizados ?? 0}
+            paseosR ?? 0
           </span>
                     <span>Paseos realizados</span>
                 </div>

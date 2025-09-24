@@ -34,6 +34,9 @@ public class SolicitudPaseo {
     @Column(nullable = false)
     private String raza;
 
+    @Column(nullable = true)
+    private Long id_paseador;
+
     @Column(nullable = false)
     private EstadoSolicitud estado = EstadoSolicitud.PENDIENTE;
 

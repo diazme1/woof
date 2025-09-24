@@ -36,15 +36,18 @@ public class PaseoControllerREST {
                 .map(SolicitudPaseoDTO::desdeModelo).toList();
     }
 
+    @PutMapping("/solicitudes/{id_Paseador}")
+    public int findAllSolicitudesPaseador(@PathVariable Long id_Paseador){
+        return solicitudService.contarLosPaseosDePaseador(id_Paseador);
+    }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<SolicitudPaseoDTO> updateSolicitudPaseo(@PathVariable Long id) {
-        solicitudService.aceptarSolicitudPaseo(id);
+    @PutMapping("/{id}/{id_Paseador}")
+    public ResponseEntity<SolicitudPaseoDTO> updateSolicitudPaseo(@PathVariable Long id,@PathVariable Long id_Paseador) {
+        solicitudService.aceptarSolicitudPaseo(id,id_Paseador);
 
         SolicitudPaseo solicitud = solicitudService.getSolicitud(id).orElseThrow(() -> new EntityNotFoundException("Solicitud de paseo no encontrada con id " + id));
 
         return ResponseEntity.ok(SolicitudPaseoDTO.desdeModelo(solicitud));
-
     }
 
 }

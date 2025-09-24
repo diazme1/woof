@@ -1,5 +1,6 @@
 package ar.edu.unq.woof.persistence;
 
+import ar.edu.unq.woof.controller.dto.paseo.SolicitudPaseoDTO;
 import ar.edu.unq.woof.modelo.SolicitudPaseo;
 import ar.edu.unq.woof.modelo.enums.EstadoSolicitud;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,4 +18,7 @@ public interface SolicitudPaseoDAO extends JpaRepository<SolicitudPaseo, Long> {
 
     @Query("SELECT p FROM SolicitudPaseo p WHERE p.estado= :estado")
     List<SolicitudPaseo> findAllEstado(@Param("estado") EstadoSolicitud estado);
+
+    @Query("SELECT p FROM SolicitudPaseo p WHERE p.id_paseador= :idPaseador")
+    List<SolicitudPaseoDTO> getPaseosPaseador(Long idPaseador);
 }
