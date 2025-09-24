@@ -27,6 +27,7 @@
 .title {
     margin-bottom: 2rem;
     color: #007c7d;
+    text-align: center;
 }
 
 /* Lista de pasos en una sola fila */
@@ -67,4 +68,56 @@
         flex-direction: column;
         align-items: center;
     }
+}
+
+.porqueElegirnos {
+    max-width: 1000px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    padding: 2rem;
+    text-align: center;
+}
+
+.porqueElegirnos p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.porqueElegirnos h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-align: left;
+    color: #007c7d;
+}
+
+.porqueElegirnos ul {
+    list-style: none;
+    padding: 0;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.porqueElegirnos li {
+    margin-bottom: 1rem;
+    display: inline-block;
+    text-align: left;
+    max-width: 1000px;
+}
+
+.porqueElegirnos li strong {
+    color: #007c7d;
+}
+
+.sectionImage {
+    display: block;
+    margin: 1rem auto;
+    max-width: 280px;
+    height: auto;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.sectionImage:hover {
+    transform: scale(1.2);
 }

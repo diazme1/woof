@@ -69,8 +69,8 @@ const Header = () => {
                         </button>
                     </li>
                     <li>
-                        <button onClick={() => handleScroll("paseadores")}>
-                            Paseadores
+                        <button onClick={() => handleScroll("por-que-elegirnos")}>
+                            ¿Por qué elegirnos?
                         </button>
                     </li>
                     <li>
