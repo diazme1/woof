@@ -55,7 +55,7 @@ public class PaseoControllerREST {
 
     @PutMapping("/cancelar/{id}")
     public ResponseEntity<Void> cancelarSolicitud(@PathVariable Long id) {
-        SolicitudPaseo solicitud = solicitudService.getSolicitud(id).orElseThrow(() -> new EntityNotFoundException("Solicitud de paseo no encontrada con id " + id));
+//      solicitudService.getSolicitud(id).orElseThrow(() -> new EntityNotFoundException("Solicitud de paseo no encontrada con id " + id));
 
         solicitudService.cancelarSolicitudPaseo(id);
 
