@@ -60,7 +60,7 @@ const DashboardSolicitudes = () => {
     // Cancelar solicitud
     const cancelarSolicitud = async (id) => {
         try {
-            await axios.put(`http://localhost:8080/solicitudes/${id}/cancelar`);
+            await axios.put(`http://localhost:8080/paseo/cancelar/${id}`);
             setSolicitudes(prev => prev.map(s =>
                 s.solicitudId === id ? { ...s, estado: "CANCELADA" } : s
             ));
@@ -76,7 +76,7 @@ const DashboardSolicitudes = () => {
 
     return (
         <main className={styles.dashboardContainer}>
-            <h2 className={styles.title}>🐾 Mis Solicitudes de Paseo 🐾</h2>
+            <h2 className={styles.title}>Mis solicitudes de paseo🐶</h2>
 
             {showSuccess && (
                 <div className={styles.overlay} role="presentation" onClick={() => setShowSuccess(false)}>
