@@ -103,5 +103,9 @@ public class UserControllerREST {
                 .body(bytes);
     }
 
+    @GetMapping("/{id}/antiguedad")
+    public int getAntiguedad(@PathVariable Long id) {
+        return userService.calcularAntiguedad(id);
+    }
 
 }

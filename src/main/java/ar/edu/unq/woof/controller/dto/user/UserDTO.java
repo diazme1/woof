@@ -3,6 +3,8 @@ package ar.edu.unq.woof.controller.dto.user;
 import ar.edu.unq.woof.modelo.Usuario;
 import ar.edu.unq.woof.modelo.enums.EstadoValidacion;
 
+import java.time.LocalDate;
+
 public record UserDTO(
         Long idPaseador,
         String nombre,
@@ -12,7 +14,8 @@ public record UserDTO(
         String direccion,
         String fotoDni,
         String cv,
-        EstadoValidacion validado
+        EstadoValidacion validado,
+        LocalDate fechaRegistro
 ) {
 
     public static UserDTO desdeModelo(Usuario usuario) {
@@ -25,7 +28,8 @@ public record UserDTO(
                 usuario.getDireccion(),
                 usuario.getFotoDni(),
                 usuario.getCv(),
-                usuario.getEstadoValidacion()
+                usuario.getEstadoValidacion(),
+                usuario.getFechaRegistro()
         );
     }
 }

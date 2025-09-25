@@ -4,21 +4,28 @@ import axios from "axios";
 
 const Perfil = () => {
     const user = JSON.parse(localStorage.getItem("user"));
-    const [paseosR,setPaseosR] = useState(0);
+    const [paseos,setPaseos] = useState(0);
+    const [antiguedad, setAntiguedad] = useState("0 meses");
     console.log("Usuario en localStorage:", user)
 
     useEffect(() => {
         if (!user?.id) return;
-
-        axios
-            .get(`http://localhost:8080/paseos/solicitudes/${user.id}`)
+        axios.get(`http://localhost:8080/paseos/solicitudes/${user.id}`)
     .then((res) => {
-            setPaseosR(res.data); // 👈 depende de qué devuelve tu backend
+            setPaseos(res.data);
         })
             .catch((err) => {
                 console.error("Error al obtener paseos:", err);
-                setPaseosR(0);
+                setPaseos(0);
             });
+    }, [user?.id]);
+
+
+    useEffect(() => {
+        if (!user?.id) return;
+        axios.get(`http://localhost:8080/usuarios/${user.id}/antiguedad`)
+            .then((res) => setAntiguedad(`${res.data} meses`))
+            .catch(() => setAntiguedad("0 meses"));
     }, [user?.id]);
 
     return (
@@ -53,13 +60,13 @@ const Perfil = () => {
                 <h3>Estadísticas</h3>
                 <div className={styles.statItem}>
           <span className={styles.statNumber}>
-            paseosR ?? 0
+            {paseos}
           </span>
                     <span>Paseos realizados</span>
                 </div>
                 <div className={styles.statItem}>
           <span className={styles.statNumber}>
-            {user.antiguedad || "0 meses"}
+            {antiguedad}
           </span>
                     <span>Antigüedad</span>
                 </div>
