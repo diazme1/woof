@@ -49,6 +49,12 @@
     flex: 1 0 200px; /* Se ajusta para entrar en la fila */
     max-width: 250px;
     text-align: center;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.stepCard:hover {
+    transform: scale(0.95);
 }
 
 .stepCard h3 {
