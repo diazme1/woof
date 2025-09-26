@@ -62,4 +62,10 @@ public class PaseoControllerREST {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/paseos-aceptados/{id}")
+    public List<SolicitudPaseoDTO> getPaseosPorPaseador(@PathVariable Long id) {
+        List<SolicitudPaseo> paseos = solicitudService.obtenerPaseosAceptados(id);
+        return paseos.stream()
+                .map(SolicitudPaseoDTO::desdeModelo).toList();
+    }
 }

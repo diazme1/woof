@@ -95,9 +95,15 @@ const Header = () => {
                         <>
                             {/* Solo paseador ve solicitudes activas */}
                             {JSON.parse(localStorage.getItem("user"))?.rol === "ROLE_PASEADOR" && (
-                                <Link className={`${styles.btn} ${styles.ghost}`} to="/solicitudes">
-                                    Solicitudes activas
-                                </Link>
+                                <>
+                                    <Link className={`${styles.btn} ${styles.ghost}`} to="/solicitudes">
+                                        Solicitudes activas
+                                    </Link>
+
+                                    <Link className={`${styles.btn} ${styles.ghost}`} to="/paseos-aceptados">
+                                        Paseos aceptados
+                                    </Link>
+                                </>
                             )}
 
                             {/* Solo cliente ve registrar solicitud y sus solicitudes */}

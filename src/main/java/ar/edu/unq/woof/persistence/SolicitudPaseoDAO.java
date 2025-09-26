@@ -19,4 +19,6 @@ public interface SolicitudPaseoDAO extends JpaRepository<SolicitudPaseo, Long> {
     List<SolicitudPaseo> findAllEstado(@Param("estado") EstadoSolicitud estado);
 
     List<SolicitudPaseo> findByIdCliente(Long idCliente);
+
+    List<SolicitudPaseo> findByIdPaseador(Long idPaseador);
 }

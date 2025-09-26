@@ -26,7 +26,8 @@ const DashboardSolicitudes = () => {
 
     const estadoMap = {
         PENDIENTE: "Pendiente",
-        ACEPTADA: "Aceptada"
+        ACEPTADA: "Aceptada",
+        CANCELADA: "Cancelada"
     };
 
     const formatFecha = (fechaISO) => {

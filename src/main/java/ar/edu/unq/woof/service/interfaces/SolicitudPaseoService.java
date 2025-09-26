@@ -1,5 +1,6 @@
 package ar.edu.unq.woof.service.interfaces;
 
+import ar.edu.unq.woof.controller.dto.paseo.SolicitudPaseoDTO;
 import ar.edu.unq.woof.modelo.SolicitudPaseo;
 
 import java.util.List;
@@ -13,4 +14,5 @@ public interface SolicitudPaseoService {
     List<SolicitudPaseo> getAllPendientes();
     void cancelarSolicitudPaseo(Long idPaseo);
     List<SolicitudPaseo> getSolicitudesDeCliente(Long  idCliente);
+    List<SolicitudPaseo> obtenerPaseosAceptados(Long idPaseador);
 }
