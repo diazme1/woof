@@ -23,7 +23,7 @@ const Perfil = () => {
 
     useEffect(() => {
         if (!user?.id) return;
-        axios.get(`http://localhost:8080/usuarios/${user.id}/antiguedad`)
+        axios.get(`http://localhost:8080/user/${user.id}/antiguedad`)
             .then((res) => setAntiguedad(`${res.data} meses`))
             .catch(() => setAntiguedad("0 meses"));
     }, [user?.id]);
