@@ -44,6 +44,11 @@ public class PaseoControllerREST {
                 .map(SolicitudPaseoDTO::desdeModelo).toList();
     }
 
+    @PutMapping("/solicitudes/{idPaseador}")
+    public int findAllSolicitudesPaseador(@PathVariable Long idPaseador){
+        return solicitudService.contarLosPaseosDePaseador(idPaseador);
+    }
+
     @PutMapping("/{id}/paseador/{idPaseador}")
     public ResponseEntity<SolicitudPaseoDTO> updateSolicitudPaseo(@PathVariable Long id, @PathVariable Long idPaseador) {
         solicitudService.aceptarSolicitudPaseo(id, idPaseador);
@@ -53,6 +58,7 @@ public class PaseoControllerREST {
         return ResponseEntity.ok(SolicitudPaseoDTO.desdeModelo(solicitud));
     }
 
+    {/*A PARTIR DE ACA solicitudService ESTA EN ROJO Y DICE Cannot resolve symbol 'solicitudService*/}
     @PutMapping("/cancelar/{id}")
     public ResponseEntity<Void> cancelarSolicitud(@PathVariable Long id) {
 //      solicitudService.getSolicitud(id).orElseThrow(() -> new EntityNotFoundException("Solicitud de paseo no encontrada con id " + id));

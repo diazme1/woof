@@ -5,6 +5,8 @@ import ar.edu.unq.woof.modelo.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 
 @Setter
 @Getter
@@ -38,6 +40,9 @@ public class Usuario {
     @Column(nullable = false)
     private UserRole rol;
 
+    @Column(nullable = false, updatable = false)
+    private LocalDate fechaRegistro;
+
     @Column
     private String fotoDni;
 
@@ -56,5 +61,6 @@ public class Usuario {
         this.direccion = direccion;
         this.contrasena = contrasena;
         this.rol = rol;
+        this.fechaRegistro = LocalDate.now();
     }
 }
