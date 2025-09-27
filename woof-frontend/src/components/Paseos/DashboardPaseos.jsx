@@ -10,6 +10,8 @@ const DashboardPaseos = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [showSuccess, setShowSuccess] = useState(false);
+    const usuario = JSON.parse(localStorage.getItem("user"));
+    const idPaseador = usuario?.id;
     const tamanosMap = {
         PEQUENO: "Pequeño",
         GRANDE: "Grande",
@@ -61,7 +63,7 @@ const DashboardPaseos = () => {
 
     const aceptarSolicitud = async (id) => {
         try {
-            await axios.put(`http://localhost:8080/paseo/${id}`);
+            await axios.put(`http://localhost:8080/paseo/${id}/paseador/${idPaseador}`);
             setSolicitudes((prev) => prev.filter((s) => s.solicitudId !== id));
             setShowSuccess(true);
         } catch (err) {

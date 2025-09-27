@@ -64,10 +64,11 @@ public class SolicitudPaseoImpl implements SolicitudPaseoService {
     }
 
     @Override
-    public void aceptarSolicitudPaseo(Long idPaseo) {
+    public void aceptarSolicitudPaseo(Long idPaseo, Long idPaseador) {
         SolicitudPaseo solicitud = paseoDAO.recuperarSolicitudPaseo(idPaseo).orElseThrow(SolicitudNoEncontrada::new);
         if (solicitud.getEstado().equals(EstadoSolicitud.PENDIENTE)) {
             solicitud.setEstado(EstadoSolicitud.ACEPTADA);
+            solicitud.setIdPaseador(idPaseador);
             paseoDAO.save(solicitud);
         }
     }

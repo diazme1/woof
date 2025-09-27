@@ -123,3 +123,31 @@
     font-size: 1.1rem;
     color: #a80000;
 }
+
+.tabs {
+    display: flex;
+    justify-content: center; /* centra los botones */
+    gap: 16px; /* espacio entre botones */
+    margin-bottom: 24px; /* separación del título/lista */
+}
+
+.tabBtn {
+    background-color: #00bfa6; /* color principal */
+    color: white;
+    padding: 12px 28px; /* más grandes */
+    font-size: 1rem;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.tabBtn:hover {
+    background-color: #009f8a; /* más oscuro en hover */
+    transform: scale(1.05);
+}
+
+.activeTab {
+    background-color: #007f6e; /* color distinto para el activo */
+}
