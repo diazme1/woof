@@ -1,6 +1,5 @@
 package ar.edu.unq.woof.service.impl;
 
-import ar.edu.unq.woof.controller.dto.paseo.SolicitudPaseoDTO;
 import ar.edu.unq.woof.modelo.SolicitudPaseo;
 import ar.edu.unq.woof.modelo.enums.EstadoSolicitud;
 import ar.edu.unq.woof.modelo.exceptions.FranjaHorariaExcedida;
@@ -78,8 +77,20 @@ public class SolicitudPaseoImpl implements SolicitudPaseoService {
         return paseoDAO.findByIdCliente(idCliente);
     }
 
+    // utilizados para que el paseador pueda visualizar todos sus paseos (con filtros o no)
     @Override
-    public List<SolicitudPaseo> obtenerPaseosAceptados(Long id) {
+    public List<SolicitudPaseo> obtenerPaseosAceptados(Long idPaseador) {
+        return paseoDAO.findPaseosPorPaseadorEnEstado(idPaseador, EstadoSolicitud.ACEPTADA);
+    }
+
+    @Override
+    public List<SolicitudPaseo> obtenerPaseosHistoricos(Long idPaseador) {
+        return paseoDAO.findPaseosPorPaseadorEnEstado(idPaseador, EstadoSolicitud.FINALIZADA);
+    }
+
+    @Override
+    public List<SolicitudPaseo> obtenerPaseosPaseador(Long id) {
         return paseoDAO.findByIdPaseador(id);
     }
+
 }

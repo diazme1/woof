@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/paseo")
 public class PaseoControllerREST {
@@ -62,9 +63,25 @@ public class PaseoControllerREST {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/paseos-aceptados/{id}")
-    public List<SolicitudPaseoDTO> getPaseosPorPaseador(@PathVariable Long id) {
+    @GetMapping("/paseador/historicos/{id}")
+    public List<SolicitudPaseoDTO> getPaseosHistoricosPorPaseador(@PathVariable Long id) {
+        // Devuelve paseos en estado finalizado
+        List<SolicitudPaseo> paseos = solicitudService.obtenerPaseosHistoricos(id);
+        return paseos.stream()
+                .map(SolicitudPaseoDTO::desdeModelo).toList();
+    }
+
+    @GetMapping("/paseador/actuales/{id}")
+    public List<SolicitudPaseoDTO> getPaseosActivosPorPaseador(@PathVariable Long id) {
+        // Devuelve paseos en estado aceptado
         List<SolicitudPaseo> paseos = solicitudService.obtenerPaseosAceptados(id);
+        return paseos.stream()
+                .map(SolicitudPaseoDTO::desdeModelo).toList();
+    }
+
+    @GetMapping("/paseador/{id}")
+    public List<SolicitudPaseoDTO> getPaseosPaseador(@PathVariable Long id) {
+        List<SolicitudPaseo> paseos = solicitudService.obtenerPaseosPaseador(id);
         return paseos.stream()
                 .map(SolicitudPaseoDTO::desdeModelo).toList();
     }

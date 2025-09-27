@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import styles from "./DashboardPaseos.module.css";
+import styles from "./DashboardPaseosAceptados.module.css";
 
 const DashboardPaseosAceptados = () => {
-    const [paseos, setPaseos] = useState([]);
+    const [paseosActivos, setPaseosActivos] = useState([]);
+    const [paseosHistoricos, setPaseosHistoricos] = useState([]);
     const [loading, setLoading] = useState(true);
     const [view, setView] = useState("activos"); // activos | historicos
     const [error, setError] = useState(null);
@@ -20,9 +21,15 @@ const DashboardPaseosAceptados = () => {
     useEffect(() => {
         const fetchPaseos = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/paseo/paseos-aceptados/${user?.id}`);
-                setPaseos(response.data);
+                const [resActivos, resHistoricos] = await Promise.all([
+                    axios.get(`http://localhost:8080/paseo/paseador/actuales/${user.id}`),
+                    axios.get(`http://localhost:8080/paseo/paseador/historicos/${user.id}`)
+                ]);
+
+                setPaseosActivos(resActivos.data);
+                setPaseosHistoricos(resHistoricos.data);
             } catch (err) {
+                console.error("Error al cargar paseos:", err);
                 setError("Error al cargar los paseos aceptados.");
             } finally {
                 setLoading(false);
@@ -30,16 +37,12 @@ const DashboardPaseosAceptados = () => {
         };
 
         fetchPaseos();
-    }, []);
+    }, [user.id]);
 
     if (loading) return <p>Cargando paseos...</p>;
     if (error) return <p>{error}</p>;
 
-    const ahora = new Date();
-    const activos = paseos.filter((p) => new Date(p.fechaHora) >= ahora);
-    const historicos = paseos.filter((p) => new Date(p.fechaHora) < ahora);
-
-    const lista = view === "activos" ? activos : historicos;
+    const lista = view === "activos" ? paseosActivos : paseosHistoricos;
 
     return (
         <main className={styles.dashboardContainer}>
@@ -61,6 +64,7 @@ const DashboardPaseosAceptados = () => {
                 </button>
             </div>
 
+            {/* Lista de paseos */}
             {lista.length === 0 ? (
                 <div className={styles.emptyMessageContainer}>
                     <div className={styles.emptyMessageBox}>
@@ -71,8 +75,7 @@ const DashboardPaseosAceptados = () => {
                 <ul className={styles.lista}>
                     {lista.map((p) => (
                         <li key={p.id} className={styles.item}>
-                            <h3><strong>Fecha y Hora:</strong> {formatFecha(s.horario)}</h3>
-                            {/*<p><strong>Cliente:</strong> {p.nombreCliente}</p>*/}
+                            <h3><strong>Fecha y Hora:</strong> {formatFecha(p.horario)}</h3>
                             <p><strong>Perro:</strong> {p.nombrePerro} ({p.raza})</p>
                             <p><strong>Estado:</strong> {p.estado}</p>
                         </li>
@@ -82,5 +85,7 @@ const DashboardPaseosAceptados = () => {
         </main>
     );
 };
-
+// <p><strong>Cliente:</strong> {p.nombreCliente}</p>
+//<p><strong>Precio:</strong> ${p.precio}</p>
 export default DashboardPaseosAceptados;
+
