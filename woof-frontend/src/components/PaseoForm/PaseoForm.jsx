@@ -18,6 +18,7 @@ const validate = (v) => {
 };
 
 export default function PaseoForm() {
+    const user = JSON.parse(localStorage.getItem("user"));
     const [formData, setFormData] = useState(initial);
     const [touched, setTouched] = useState({});
     const [errors, setErrors] = useState({});
@@ -58,7 +59,8 @@ export default function PaseoForm() {
                 horario: horarioCompleto,
                 nombrePerro: formData.nombrePerro,
                 tamanoPerro: formData.tamanoPerro,
-                raza: formData.raza
+                raza: formData.raza,
+                idCliente: user?.id
             });
 
             console.log("Respuesta del backend:", response.data);

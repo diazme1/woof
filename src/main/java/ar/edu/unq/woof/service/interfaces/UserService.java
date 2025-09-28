@@ -19,6 +19,5 @@ public interface UserService {
     void rechazarValidacion(Long id);
     File getFotoDNI(Long id) throws IOException;
     File getCV(Long id) throws IOException;
-
-    int calcularAntiguedad(Long idUsuario);
+    String calcularAntiguedad(Long idUsuario);
 }

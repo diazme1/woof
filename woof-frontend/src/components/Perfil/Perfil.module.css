@@ -41,3 +41,9 @@
     font-weight: bold;
     color: #00bfa6;
 }
+
+.statsContainer {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+}

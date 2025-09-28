@@ -27,7 +27,6 @@ public class SecurityConfig {
                         .requestMatchers("/paseo/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/paseador/**").hasRole("PASEADOR")
-                        .requestMatchers("/paseo/**").permitAll()
                         .requestMatchers("/api/cliente/**").hasRole("CLIENTE")
                         .requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated()

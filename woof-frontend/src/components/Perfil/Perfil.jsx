@@ -4,13 +4,14 @@ import axios from "axios";
 
 const Perfil = () => {
     const user = JSON.parse(localStorage.getItem("user"));
+    const [infoUser, setInfoUser] = useState({})
     const [paseos,setPaseos] = useState(0);
-    const [antiguedad, setAntiguedad] = useState("0 meses");
+    const [antiguedad, setAntiguedad] = useState("0 días y 0 meses");
     console.log("Usuario en localStorage:", user)
 
     useEffect(() => {
         if (!user?.id) return;
-        axios.get(`http://localhost:8080/paseos/solicitudes/${user.id}`)
+        axios.get(`http://localhost:8080/paseo/solicitudes/${user?.id}`)
     .then((res) => {
             setPaseos(res.data);
         })
@@ -24,9 +25,17 @@ const Perfil = () => {
     useEffect(() => {
         if (!user?.id) return;
         axios.get(`http://localhost:8080/user/${user.id}/antiguedad`)
-            .then((res) => setAntiguedad(`${res.data} meses`))
-            .catch(() => setAntiguedad("0 meses"));
+            .then((res) => setAntiguedad(`${res.data}`))
+            .catch(() => setAntiguedad("0 días y 0 meses"));
     }, [user?.id]);
+
+    useEffect(() => {
+        if (!user?.id) return;
+        axios.get(`http://localhost:8080/user/${user.id}`)
+            .then((res) => setInfoUser(res.data))
+            .catch(() => setInfoUser({}))
+        console.log("Info recuperada"+infoUser)
+    },  [user?.id]);
 
     return (
         <div className={styles.perfil}>
@@ -45,7 +54,7 @@ const Perfil = () => {
             {/* Datos de contacto */}
             <section className={styles.info}>
                 <h3>Datos de contacto</h3>
-                <p><strong>Teléfono:</strong> {user.telefono || "No disponible"}</p>
+                <p><strong>Teléfono:</strong> {infoUser.telefono || "No disponible"}</p>
                 <p><strong>Email:</strong> {user.email || "No disponible"}</p>
             </section>
 
@@ -58,17 +67,16 @@ const Perfil = () => {
             {/* Estadísticas */}
             <section className={styles.stats}>
                 <h3>Estadísticas</h3>
-                <div className={styles.statItem}>
-          <span className={styles.statNumber}>
-            {paseos}
-          </span>
-                    <span>Paseos realizados</span>
-                </div>
-                <div className={styles.statItem}>
-          <span className={styles.statNumber}>
-            {antiguedad}
-          </span>
-                    <span>Antigüedad</span>
+                <div className={styles.statsContainer}>
+                    <div className={styles.statItem}>
+                        <span className={styles.statNumber}>{paseos}</span>
+                        <span>Paseos realizados</span>
+                    </div>
+
+                    <div className={styles.statItem}>
+                        <span className={styles.statNumber}>{antiguedad}</span>
+                        <span>Antigüedad</span>
+                    </div>
                 </div>
             </section>
         </div>

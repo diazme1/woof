@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/paseo")
 public class PaseoControllerREST {
@@ -44,7 +43,7 @@ public class PaseoControllerREST {
                 .map(SolicitudPaseoDTO::desdeModelo).toList();
     }
 
-    @PutMapping("/solicitudes/{idPaseador}")
+    @GetMapping("/solicitudes/{idPaseador}")
     public int findAllSolicitudesPaseador(@PathVariable Long idPaseador){
         return solicitudService.contarLosPaseosDePaseador(idPaseador);
     }

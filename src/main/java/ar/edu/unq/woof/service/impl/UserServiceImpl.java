@@ -39,8 +39,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<Usuario> getUser(Long idPaseador) {
-        return userDAO.findById(idPaseador);
+    public Optional<Usuario> getUser(Long id) {
+        return userDAO.findById(id);
     }
 
     @Override
@@ -130,12 +130,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int calcularAntiguedad(Long idUsuario) {
+    public String calcularAntiguedad(Long idUsuario) {
         Usuario u = userDAO.findById(idUsuario)
                 .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
 
-        return Period.between(u.getFechaRegistro(), LocalDate.now()).getMonths()
-                + Period.between(u.getFechaRegistro(), LocalDate.now()).getYears() * 12;
+        Period periodo = Period.between(u.getFechaRegistro(), LocalDate.now());
+
+        return String.format("%d días y %d meses",
+                periodo.getDays(), periodo.getMonths());
     }
 
 

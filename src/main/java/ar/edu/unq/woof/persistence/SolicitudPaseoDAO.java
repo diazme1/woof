@@ -29,5 +29,5 @@ public interface SolicitudPaseoDAO extends JpaRepository<SolicitudPaseo, Long> {
                                                         @Param("estado") EstadoSolicitud estado);
 
     @Query("SELECT p FROM SolicitudPaseo p WHERE p.idPaseador= :idPaseador")
-    List<SolicitudPaseoDTO> getPaseosPaseador(@Param("idPaseador") Long idPaseador);
+    List<SolicitudPaseo> getPaseosPaseador(@Param("idPaseador") Long idPaseador);
 }
