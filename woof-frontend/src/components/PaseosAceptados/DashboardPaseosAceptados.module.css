@@ -1,0 +1,153 @@
+.dashboardContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 16px;
+}
+
+.title {
+    font-size: 24px;
+    margin-top: 35px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.lista {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.item {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    background: #fafafa;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 700px;
+}
+
+.item {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* mantiene contenido arriba y acciones abajo */
+    min-height: 220px; /* opcional para que todas las tarjetas tengan altura similar */
+}
+
+.item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.cardActions {
+    margin-top: auto;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btnPrimary {
+    background: var(--primary);
+    color: #fff;
+    padding: 12px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.btnPrimary:hover {
+    background: var(--primary-700);
+    transform: scale(1.03);
+}
+
+/* Popup */
+.overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.4);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 999;
+}
+.modal {
+    background-color: #D4EDDA;
+    color: #155724;
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #C3E6CB;
+    text-align: center;
+    font-weight: 600;
+    animation: fadeIn 0.3s ease-out;
+}
+.modal h3 { margin: 0 0 8px; }
+.modal button { margin-top: 12px; }
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.emptyMessageContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px; /* altura mínima para que se vea centrado */
+}
+
+.emptyMessageBox {
+    background-color: #fff0f0; /* rojo muy claro */
+    border: 1px solid #ff4d4f; /* borde rojo */
+    padding: 30px 40px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+}
+
+.emptyMessageBox p {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #a80000;
+}
+
+.tabs {
+    display: flex;
+    justify-content: center; /* centra los botones */
+    gap: 16px; /* espacio entre botones */
+    margin-bottom: 24px; /* separación del título/lista */
+}
+
+.tabBtn {
+    background-color: #00bfa6; /* color principal */
+    color: white;
+    padding: 12px 28px; /* más grandes */
+    font-size: 1rem;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.tabBtn:hover {
+    background-color: #009f8a; /* más oscuro en hover */
+    transform: scale(1.05);
+}
+
+.activeTab {
+    background-color: #007f6e; /* color distinto para el activo */
+}

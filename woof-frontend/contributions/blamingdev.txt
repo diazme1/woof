@@ -1,0 +1,60 @@
+📊Resumen de líneas por autor - 🌿Rama: dev
+
+📊 Total global por autor:
+Orlando-Abril: 542 líneas
+emiliadiaz: 493 líneas
+zitterg: 197 líneas
+Carolina Ciampini: 193 líneas
+Valentin Camaño: 41 líneas
+
+📁 Líneas por archivo y autor:
+
+📝 src/App.jsx
+   Orlando-Abril: 39 líneas
+   emiliadiaz: 4 líneas
+   Carolina Ciampini: 3 líneas
+   zitterg: 1 líneas
+   Valentin Camaño: 1 líneas
+
+📝 Body/Body.jsx
+   zitterg: 98 líneas
+
+📝 ClientForm/ClientForm.jsx
+   Carolina Ciampini: 139 líneas
+   Orlando-Abril: 75 líneas
+   emiliadiaz: 56 líneas
+
+📝 Dashboard/AdminDashboard.jsx
+   Orlando-Abril: 19 líneas
+
+📝 Dashboard/ClienteDashboard.jsx
+   Orlando-Abril: 19 líneas
+
+📝 Dashboard/PaseadorDashboard.jsx
+   Orlando-Abril: 132 líneas
+
+📝 Footer/Footer.jsx
+   Valentin Camaño: 40 líneas
+   zitterg: 2 líneas
+
+📝 Header/Header.jsx
+   emiliadiaz: 55 líneas
+   Carolina Ciampini: 51 líneas
+   zitterg: 51 líneas
+   Orlando-Abril: 19 líneas
+
+📝 Login/Login.jsx
+   Orlando-Abril: 92 líneas
+   emiliadiaz: 30 líneas
+   zitterg: 16 líneas
+
+📝 PaseoForm/PaseoForm.jsx
+   emiliadiaz: 205 líneas
+
+📝 Paseos/DashboardPaseos.jsx
+   emiliadiaz: 137 líneas
+
+📝 Validaciones/DashboardValidaciones.jsx
+   Orlando-Abril: 147 líneas
+   zitterg: 29 líneas
+   emiliadiaz: 6 líneas

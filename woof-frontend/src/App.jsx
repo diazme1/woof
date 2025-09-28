@@ -5,9 +5,13 @@ import Body from "./components/Body/Body";
 import Footer from "./components/Footer/Footer";
 import PaseoForm from "./components/PaseoForm/PaseoForm";
 import DashboardPaseos from "./components/Paseos/DashboardPaseos";
+import DashboardSolicitudes from "./components/Solicitudes/DashboardSolicitudes";
 import PaseadorDashboard from "./components/Dashboard/PaseadorDashboard";
 import ClienteDashboard from "./components/Dashboard/ClienteDashboard";
 import AdminDashboard from "./components/Dashboard/AdminDashboard";
+import DashboardPaseosAceptados from "./components/PaseosAceptados/DashboardPaseosAceptados";
+import Perfil from "./components/Perfil/Perfil";
+
 
 const App = () => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -38,7 +42,10 @@ const App = () => {
                 {/* Rutas adicionales */}
                 <Route path="/login" element={<Login />} />
                 <Route path="/solicitudes" element={<DashboardPaseos />} />
+                <Route path="/mis-solicitudes" element={<DashboardSolicitudes />} />
                 <Route path="/paseos" element={<PaseoForm />} />
+                <Route path="/paseos-aceptados" element={<DashboardPaseosAceptados />} />
+                <Route path="/perfil" element={<Perfil />} />
             </Routes>
 
             <Footer />

@@ -1,22 +1,19 @@
 package ar.edu.unq.woof.controller;
 
-import ar.edu.unq.woof.controller.dto.user.LoginResponseDTO;
 import ar.edu.unq.woof.controller.dto.user.UserDTO;
-import ar.edu.unq.woof.controller.dto.user.UserLoginRequestDTO;
 import ar.edu.unq.woof.controller.dto.user.UserRequestDTO;
 import ar.edu.unq.woof.modelo.Usuario;
 import ar.edu.unq.woof.service.interfaces.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/user")
@@ -34,6 +31,12 @@ public class UserControllerREST {
         userService.saveUser(newUsuario);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(UserDTO.desdeModelo(newUsuario));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> getUser(@PathVariable Long id){
+        Usuario user = userService.getUser(id).orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con id: " + id));
+        return ResponseEntity.status(HttpStatus.OK).body(UserDTO.desdeModelo(user));
     }
 
     @PostMapping("/{id}/validacion")
@@ -103,5 +106,9 @@ public class UserControllerREST {
                 .body(bytes);
     }
 
+    @GetMapping("/{id}/antiguedad")
+    public String getAntiguedad(@PathVariable Long id) {
+        return userService.calcularAntiguedad(id);
+    }
 
 }

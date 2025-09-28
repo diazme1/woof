@@ -1,20 +1,21 @@
 package ar.edu.unq.woof.service.impl;
 
+import ar.edu.unq.woof.modelo.SolicitudPaseo;
 import ar.edu.unq.woof.modelo.Usuario;
-import ar.edu.unq.woof.modelo.enums.EstadoSolicitud;
 import ar.edu.unq.woof.modelo.enums.EstadoValidacion;
 import ar.edu.unq.woof.modelo.exceptions.CorreoDuplicadoPaseadorException;
 import ar.edu.unq.woof.persistence.UserDAO;
 import ar.edu.unq.woof.service.interfaces.UserService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,8 +39,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<Usuario> getUser(Long idPaseador) {
-        return userDAO.findById(idPaseador);
+    public Optional<Usuario> getUser(Long id) {
+        return userDAO.findById(id);
     }
 
     @Override
@@ -127,5 +128,17 @@ public class UserServiceImpl implements UserService {
 
         return new File(usuario.getCv());
     }
+
+    @Override
+    public String calcularAntiguedad(Long idUsuario) {
+        Usuario u = userDAO.findById(idUsuario)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado"));
+
+        Period periodo = Period.between(u.getFechaRegistro(), LocalDate.now());
+
+        return String.format("%d días y %d meses",
+                periodo.getDays(), periodo.getMonths());
+    }
+
 
 }

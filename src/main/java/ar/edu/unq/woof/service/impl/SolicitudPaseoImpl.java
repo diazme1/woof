@@ -1,5 +1,6 @@
 package ar.edu.unq.woof.service.impl;
 
+import ar.edu.unq.woof.controller.dto.paseo.SolicitudPaseoDTO;
 import ar.edu.unq.woof.modelo.SolicitudPaseo;
 import ar.edu.unq.woof.modelo.enums.EstadoSolicitud;
 import ar.edu.unq.woof.modelo.exceptions.FranjaHorariaExcedida;
@@ -53,11 +54,50 @@ public class SolicitudPaseoImpl implements SolicitudPaseoService {
     }
 
     @Override
-    public void aceptarSolicitudPaseo(Long idPaseo) {
+    public int contarLosPaseosDePaseador(Long idPaseador) {
+        return paseoDAO.getPaseosPaseador(idPaseador).size();
+    }
+
+    @Override
+    public void aceptarSolicitudPaseo(Long idPaseo, Long idPaseador) {
         SolicitudPaseo solicitud = paseoDAO.recuperarSolicitudPaseo(idPaseo).orElseThrow(SolicitudNoEncontrada::new);
         if (solicitud.getEstado().equals(EstadoSolicitud.PENDIENTE)) {
             solicitud.setEstado(EstadoSolicitud.ACEPTADA);
+            solicitud.setIdPaseador(idPaseador);
             paseoDAO.save(solicitud);
         }
     }
+
+    @Override
+    public void cancelarSolicitudPaseo(Long idPaseo) {
+        SolicitudPaseo solicitud = paseoDAO.recuperarSolicitudPaseo(idPaseo).orElseThrow(SolicitudNoEncontrada::new);
+        if (!(solicitud.getEstado().equals(EstadoSolicitud.PENDIENTE) ||
+                solicitud.getEstado().equals(EstadoSolicitud.ACEPTADA))) {
+            throw new RuntimeException("La solicitud no se puede cancelar en este estado");
+        }
+        solicitud.setEstado(EstadoSolicitud.CANCELADA);
+        paseoDAO.save(solicitud);
+    }
+
+    @Override
+    public List<SolicitudPaseo> getSolicitudesDeCliente(Long idCliente) {
+        return paseoDAO.findByIdCliente(idCliente);
+    }
+
+    // utilizados para que el paseador pueda visualizar todos sus paseos (con filtros o no)
+    @Override
+    public List<SolicitudPaseo> obtenerPaseosAceptados(Long idPaseador) {
+        return paseoDAO.findPaseosPorPaseadorEnEstado(idPaseador, EstadoSolicitud.ACEPTADA);
+    }
+
+    @Override
+    public List<SolicitudPaseo> obtenerPaseosHistoricos(Long idPaseador) {
+        return paseoDAO.findPaseosPorPaseadorEnEstado(idPaseador, EstadoSolicitud.FINALIZADA);
+    }
+
+    @Override
+    public List<SolicitudPaseo> obtenerPaseosPaseador(Long id) {
+        return paseoDAO.findByIdPaseador(id);
+    }
+
 }

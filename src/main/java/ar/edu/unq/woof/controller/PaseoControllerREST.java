@@ -36,15 +36,56 @@ public class PaseoControllerREST {
                 .map(SolicitudPaseoDTO::desdeModelo).toList();
     }
 
+    @GetMapping("/cliente/{id}")
+    public List<SolicitudPaseoDTO> getSolicitudesPorCliente(@PathVariable("id") Long id) {
+        List<SolicitudPaseo> solicitudes = solicitudService.getSolicitudesDeCliente(id);
+        return solicitudes.stream()
+                .map(SolicitudPaseoDTO::desdeModelo).toList();
+    }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<SolicitudPaseoDTO> updateSolicitudPaseo(@PathVariable Long id) {
-        solicitudService.aceptarSolicitudPaseo(id);
+    @GetMapping("/solicitudes/{idPaseador}")
+    public int findAllSolicitudesPaseador(@PathVariable Long idPaseador){
+        return solicitudService.contarLosPaseosDePaseador(idPaseador);
+    }
+
+    @PutMapping("/{id}/paseador/{idPaseador}")
+    public ResponseEntity<SolicitudPaseoDTO> updateSolicitudPaseo(@PathVariable Long id, @PathVariable Long idPaseador) {
+        solicitudService.aceptarSolicitudPaseo(id, idPaseador);
 
         SolicitudPaseo solicitud = solicitudService.getSolicitud(id).orElseThrow(() -> new EntityNotFoundException("Solicitud de paseo no encontrada con id " + id));
 
         return ResponseEntity.ok(SolicitudPaseoDTO.desdeModelo(solicitud));
-
     }
 
+    @PutMapping("/cancelar/{id}")
+    public ResponseEntity<Void> cancelarSolicitud(@PathVariable Long id) {
+//      solicitudService.getSolicitud(id).orElseThrow(() -> new EntityNotFoundException("Solicitud de paseo no encontrada con id " + id));
+
+        solicitudService.cancelarSolicitudPaseo(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/paseador/historicos/{id}")
+    public List<SolicitudPaseoDTO> getPaseosHistoricosPorPaseador(@PathVariable Long id) {
+        // Devuelve paseos en estado finalizado
+        List<SolicitudPaseo> paseos = solicitudService.obtenerPaseosHistoricos(id);
+        return paseos.stream()
+                .map(SolicitudPaseoDTO::desdeModelo).toList();
+    }
+
+    @GetMapping("/paseador/actuales/{id}")
+    public List<SolicitudPaseoDTO> getPaseosActivosPorPaseador(@PathVariable Long id) {
+        // Devuelve paseos en estado aceptado
+        List<SolicitudPaseo> paseos = solicitudService.obtenerPaseosAceptados(id);
+        return paseos.stream()
+                .map(SolicitudPaseoDTO::desdeModelo).toList();
+    }
+
+    @GetMapping("/paseador/{id}")
+    public List<SolicitudPaseoDTO> getPaseosPaseador(@PathVariable Long id) {
+        List<SolicitudPaseo> paseos = solicitudService.obtenerPaseosPaseador(id);
+        return paseos.stream()
+                .map(SolicitudPaseoDTO::desdeModelo).toList();
+    }
 }

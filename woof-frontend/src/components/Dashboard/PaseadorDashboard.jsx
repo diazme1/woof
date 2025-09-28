@@ -8,32 +8,18 @@ const PaseadorDashboard = () => {
     const [fotoDni, setFotoDni] = useState(null);
     const [cv, setCv] = useState(null);
     const [mensaje, setMensaje] = useState("");
-    const [estadoValidacion, setEstadoValidacion] = useState(
-        user?.estadoValidacion || "NO_ENVIADO"
-    );
+    const [estadoValidacion, setEstadoValidacion] = useState("NO_ENVIADO");
 
+    console.log("Informacion usuario en local storage", user)
+
+    //recuperar estado validación usuario
     useEffect(() => {
-        // refresca el estado desde el backend al cargar
-        const fetchUser = async () => {
-            try {
-                const res = await axios.get(`http://localhost:8080/user/${user.id}`, {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
-                });
+        if (!user?.id) return;
+        axios.get(`http://localhost:8080/user/${user.id}`)
+            .then((res) => setEstadoValidacion(res.data.validado))
+            .catch(() => setEstadoValidacion("NO_ENVIADO"))
+    },  [user?.id]);
 
-                if (res.data.estadoValidacion) {
-                    setEstadoValidacion(res.data.estadoValidacion);
-                    // actualizo localStorage para que quede sincronizado
-                    localStorage.setItem("user", JSON.stringify(res.data));
-                }
-            } catch (err) {
-                console.error("Error al obtener usuario:", err);
-            }
-        };
-
-        fetchUser();
-    }, [user.id]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

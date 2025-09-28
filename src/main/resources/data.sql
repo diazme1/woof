@@ -1,11 +1,11 @@
-INSERT INTO usuario (nombre, dni, email, telefono, direccion, contrasena, rol)
-VALUES ('Administrador', 99999999, 'admin@woof.com', '0000000000', 'Universidad Nacional de Quilmes', 'Admin@123', 2)
+INSERT INTO usuario (nombre, dni, email, telefono, direccion, contrasena, rol, fecha_registro)
+VALUES ('Administrador', 99999999, 'admin@woof.com', '0000000000', 'Universidad Nacional de Quilmes', 'Admin@123', 2, now())
 ON CONFLICT (email) DO NOTHING;
 
-INSERT INTO usuario (nombre, dni, email, telefono, direccion, contrasena, rol)
-VALUES ('Paseador', 8888888, 'p@gmail.com', '0000000000', 'Universidad Nacional de Quilmes', 'Paseador@123', 0)
+INSERT INTO usuario (nombre, dni, email, telefono, direccion, contrasena, rol, fecha_registro)
+VALUES ('Paseador', 8888888, 'p@gmail.com', '0000000000', 'Universidad Nacional de Quilmes', 'Paseador@123', 0, now())
 ON CONFLICT (email) DO NOTHING;
 
-INSERT INTO usuario (nombre, dni, email, telefono, direccion, contrasena, rol)
-VALUES ('Cliente', 7777777, 'c@gmail.com', '0000000000', 'Universidad Nacional de Quilmes', 'Cliente@123', 1)
+INSERT INTO usuario (nombre, dni, email, telefono, direccion, contrasena, rol, fecha_registro)
+VALUES ('Cliente', 7777777, 'c@gmail.com', '0000000000', 'Universidad Nacional de Quilmes', 'Cliente@123', 1, now())
 ON CONFLICT (email) DO NOTHING;

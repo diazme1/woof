@@ -224,3 +224,12 @@
 .closeBtn:hover {
     color: #fff;
 }
+
+.profileIcon {
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    text-decoration: none;
+}
