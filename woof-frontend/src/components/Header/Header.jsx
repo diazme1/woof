@@ -65,7 +65,7 @@ const Header = () => {
                 {user?.rol == null && (
                     <ul className={`${styles.links} ${menuOpen ? styles.open : ""}`}>
                         <li><button onClick={() => handleScroll("como-funciona")}>Cómo funciona</button></li>
-                        <li><button onClick={() => handleScroll("paseadores")}>Paseadores</button></li>
+                        <li><button onClick={() => handleScroll("por-que-elegirnos")}>¿Por qué elegirnos?</button></li>
                         <li><button onClick={() => handleScroll("precios")}>Precios</button></li>
                         <li><button onClick={() => handleScroll("seguridad")}>Seguridad</button></li>
                         <li><button onClick={() => handleScroll("ayuda")}>Ayuda</button></li>

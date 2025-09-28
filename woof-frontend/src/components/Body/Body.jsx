@@ -15,50 +15,53 @@ const Body = () => {
             padding: "0 20px",
             fontFamily: "Arial, sans-serif",
             lineHeight: 1.6,
-            color: "#333" }}>
+            color: "#333"
+        }}>
 
             <div className={styles.fadeIn}>
                 <p>
-                    Somos un equipo de amantes de los animales que entendemos lo importante que es cada paseo para tu perro.
-                    Por eso creamos Woof! Una app en la que los dueños ocupados pueden encontrar paseadores confiables cerca de su zona, con perfiles verificados y reseñas reales.
+                    Somos un equipo de amantes de los animales que entendemos lo importante que es cada paseo para tu
+                    perro.
+                    Por eso creamos Woof! Una app en la que los dueños ocupados pueden encontrar paseadores confiables
+                    cerca de su zona, con perfiles verificados y reseñas reales.
                 </p>
                 <p>¿Nuestro objetivo? Comodidad para el dueño y felicidad para la mascota</p>
             </div>
 
-            <div style={{ maxWidth: "800px", margin: "50px auto" }}>
+            <div style={{maxWidth: "800px", margin: "50px auto"}}>
                 <Swiper
                     modules={[Navigation, Pagination]}
                     navigation
-                    pagination={{ clickable: true }}
+                    pagination={{clickable: true}}
                     loop={true}
-                    style={{ width: "100%", height: "500px", borderRadius: "20px", overflow: "hidden" }}
+                    style={{width: "100%", height: "500px", borderRadius: "20px", overflow: "hidden"}}
                 >
                     <SwiperSlide className={styles.slide}>
-                        <img src="/perrito3.jpg" alt="Perrito 3" className={styles.slideImage} />
+                        <img src="/perrito3.jpg" alt="Perrito 3" className={styles.slideImage}/>
                     </SwiperSlide>
                     <SwiperSlide className={styles.slide}>
-                        <img src="/perrito2.jpg" alt="Perrito 2" className={styles.slideImage} />
+                        <img src="/perrito2.jpg" alt="Perrito 2" className={styles.slideImage}/>
                     </SwiperSlide>
                     <SwiperSlide className={styles.slide}>
-                        <img src="/perrito1.jpg" alt="Perrito 1" className={styles.slideImage} />
+                        <img src="/perrito1.jpg" alt="Perrito 1" className={styles.slideImage}/>
                     </SwiperSlide>
                     <SwiperSlide className={styles.slide}>
-                        <img src="/perrito4.jpg" alt="Perrito 4" className={styles.slideImage} />
+                        <img src="/perrito4.jpg" alt="Perrito 4" className={styles.slideImage}/>
                     </SwiperSlide>
                     <SwiperSlide className={styles.slide}>
-                        <img src="/perrito5.jpg" alt="Perrito 5" className={styles.slideImage} />
+                        <img src="/perrito5.jpg" alt="Perrito 5" className={styles.slideImage}/>
                     </SwiperSlide>
                     <SwiperSlide className={styles.slide}>
-                        <img src="/perrito6.jpg" alt="Perrito 6" className={styles.slideImage} />
+                        <img src="/perrito6.jpg" alt="Perrito 6" className={styles.slideImage}/>
                     </SwiperSlide>
                     <SwiperSlide className={styles.slide}>
-                        <img src="/perrito8.jpg" alt="Perrito 8" className={styles.slideImage} />
+                        <img src="/perrito8.jpg" alt="Perrito 8" className={styles.slideImage}/>
                     </SwiperSlide>
                     <SwiperSlide className={styles.slide}>
-                        <img src="/perrito7.jpg" alt="Perrito 7" className={styles.slideImage} />
+                        <img src="/perrito7.jpg" alt="Perrito 7" className={styles.slideImage}/>
                     </SwiperSlide>
                     <SwiperSlide className={styles.slide}>
-                        <img src="/perrito9.jpg" alt="Perrito 9" className={styles.slideImage} />
+                        <img src="/perrito9.jpg" alt="Perrito 9" className={styles.slideImage}/>
                     </SwiperSlide>
                 </Swiper>
             </div>
@@ -81,16 +84,50 @@ const Body = () => {
                         <li className={styles.stepCard}>
                             <h3>3. Esperá la aceptación⏳</h3>
                             <p>La solicitud será enviada a los paseadores disponibles en tu zona.
-                                Cuando uno la acepte, vas a recibir la notificación en tu cuenta y por correo electrónico.</p>
+                                Cuando uno la acepte, vas a recibir la notificación en tu cuenta y por correo
+                                electrónico.</p>
                         </li>
                         <li className={styles.stepCard}>
                             <h3>4. A disfrutar el paseo!🐾</h3>
                             <p>Con la aceptación confirmada, tu perro ya tiene paseo asegurado!
-                                El paseador pasa en el horario acordado y el servicio queda registrado en la plataforma.</p>
+                                El paseador pasa en el horario acordado y el servicio queda registrado en la
+                                plataforma.</p>
                         </li>
                     </ul>
                 </section>
             </div>
+
+            <section id="por-que-elegirnos" className={styles.porqueElegirnos}>
+            <h1 className={styles.title}>¿Por qué elegirnos?</h1>
+                <p>
+                    Tu perro en buenas manos, siempre!<br/>
+                    Verificación de paseadores y comunicación transparente en cada paseo.
+                </p>
+                <img src="/perritoPorQueElegirnos.png" alt="Perrito con computadora" className={styles.sectionImage}/>
+                <h3>Nuestros diferenciales</h3>
+                <ul>
+                    <li>🛡️ <strong>Seguridad verificada:</strong> Cada paseador debe pasar por un proceso de validación
+                        de identidad y chequeo de antecedentes antes de ser aprobado. Esto genera confianza al dueño de
+                        la mascota.
+                    </li>
+                    <li>🐕 <strong>Calidad del servicio:</strong> Nuestros cuidadores son apasionados y experimentados,
+                        lo que garantiza que las mascotas reciban amor y atención.
+                    </li>
+                    <li>👀 <strong>Transparencia total:</strong> Durante cada paseo se registran el check-in y el
+                        check-out, además de permitir compartir notas y un chat en tiempo real con el paseador,
+                        reforzando la tranquilidad del usuario.
+                    </li>
+                    <li>⭐ <strong>Calidad con feedback:</strong> Los dueños califican a los paseadores y los paseadores
+                        también califican a los dueños. Esto fomenta un ecosistema justo y confiable.
+                    </li>
+                    <li>💳 <strong>Pagos protegidos:</strong> El sistema de pago integrado está certificado, lo que
+                        asegura transacciones seguras y evita fraudes.
+                    </li>
+                    <li>📞 <strong>Soporte claro 24/7:</strong> Un canal de ayuda está siempre
+                        disponible con tiempos de respuesta inmediatos para resolver cualquier inconveniente.
+                    </li>
+                </ul>
+            </section>
         </main>
     );
 };
