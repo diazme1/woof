@@ -9,6 +9,7 @@ const Perfil = () => {
     const [antiguedad, setAntiguedad] = useState("0 días y 0 meses");
     console.log("Usuario en localStorage:", user)
 
+    //recuperar paseos usuario
     useEffect(() => {
         if (!user?.id) return;
         axios.get(`http://localhost:8080/paseo/solicitudes/${user?.id}`)
@@ -22,6 +23,7 @@ const Perfil = () => {
     }, [user?.id]);
 
 
+    //recuperar antiguedad usuario
     useEffect(() => {
         if (!user?.id) return;
         axios.get(`http://localhost:8080/user/${user.id}/antiguedad`)
@@ -29,6 +31,7 @@ const Perfil = () => {
             .catch(() => setAntiguedad("0 días y 0 meses"));
     }, [user?.id]);
 
+    //recuperar información usuario
     useEffect(() => {
         if (!user?.id) return;
         axios.get(`http://localhost:8080/user/${user.id}`)
