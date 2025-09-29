@@ -141,4 +141,36 @@
     border-radius: 10px;
 }
 
+.actions {
+    margin-top: 8px;
+    display: flex;
+    gap: 8px;
+}
+
+.editBtn,
+.saveBtn,
+.cancelBtn {
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.editBtn {
+    background: #f5f5f5;
+    border-color: #ddd;
+}
+
+.saveBtn {
+    background: #1f8a52;
+    color: white;
+}
+
+.cancelBtn {
+    background: transparent;
+    border-color: #ccc;
+}
+
+
 

@@ -1,5 +1,6 @@
 package ar.edu.unq.woof.service.interfaces;
 
+import ar.edu.unq.woof.controller.dto.user.UserRequestDTO;
 import ar.edu.unq.woof.modelo.SolicitudPaseo;
 import ar.edu.unq.woof.modelo.Usuario;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,4 +21,6 @@ public interface UserService {
     File getFotoDNI(Long id) throws IOException;
     File getCV(Long id) throws IOException;
     String calcularAntiguedad(Long idUsuario);
+    Usuario updatePerfil(Long id, UserRequestDTO request);
+    //String actualizarFotoPerfil(Long id, MultipartFile file) throws IOException;
 }

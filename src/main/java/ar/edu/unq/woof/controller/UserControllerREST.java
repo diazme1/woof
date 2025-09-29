@@ -5,6 +5,7 @@ import ar.edu.unq.woof.controller.dto.user.UserRequestDTO;
 import ar.edu.unq.woof.modelo.Usuario;
 import ar.edu.unq.woof.service.interfaces.UserService;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -88,6 +90,8 @@ public class UserControllerREST {
                 .body(bytes);
     }
 
+
+
     @GetMapping("/{id}/cv")
     public ResponseEntity<byte[]> getCV(@PathVariable Long id) throws IOException {
         File file = userService.getCV(id);
@@ -110,5 +114,26 @@ public class UserControllerREST {
     public String getAntiguedad(@PathVariable Long id) {
         return userService.calcularAntiguedad(id);
     }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDTO> updatePerfil(
+            @PathVariable Long id,
+            @Valid @RequestBody UserRequestDTO request
+    ) {
+        Usuario actualizado = userService.updatePerfil(id, request);
+        return ResponseEntity.ok(UserDTO.desdeModelo(actualizado));
+    }
+
+//    @PutMapping(value = "/{id}/foto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    public ResponseEntity<Map<String, String>> actualizarFotoPerfil(
+//            @PathVariable Long id,
+//            @RequestPart("file") MultipartFile file
+//    ) throws IOException {
+//        String url = userService.actualizarFotoPerfil(id, file);
+//        return ResponseEntity.ok(Map.of("fotoUrl", url));
+//    }
+
+
 
 }

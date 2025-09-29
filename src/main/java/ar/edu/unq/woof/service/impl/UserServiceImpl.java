@@ -1,5 +1,7 @@
 package ar.edu.unq.woof.service.impl;
 
+import ar.edu.unq.woof.controller.dto.user.UserDTO;
+import ar.edu.unq.woof.controller.dto.user.UserRequestDTO;
 import ar.edu.unq.woof.modelo.SolicitudPaseo;
 import ar.edu.unq.woof.modelo.Usuario;
 import ar.edu.unq.woof.modelo.enums.EstadoValidacion;
@@ -140,5 +142,61 @@ public class UserServiceImpl implements UserService {
                 periodo.getDays(), periodo.getMonths());
     }
 
+    @Override
+    public Usuario updatePerfil(Long id, UserRequestDTO req) {
+        Usuario u = userDAO.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con id: " + id));
 
+
+        if (req.nombre() == null || req.nombre().isBlank()) {
+            throw new IllegalArgumentException("El nombre es obligatorio");
+        }
+
+        // Seteos (solo si vienen valores no nulos en el request)
+        u.setNombre(req.nombre().trim());
+
+
+        if (req.telefono() != null) {
+            u.setTelefono(req.telefono().trim());
+        }
+        if (req.direccion() != null) u.setDireccion(req.direccion().trim());
+        if (req.biografia() != null) u.setBiografia(req.biografia().trim());
+
+
+        return userDAO.save(u);
+    }
+//    @Override
+//    public String actualizarFotoPerfil(Long id, MultipartFile file) throws IOException {
+//        Usuario u = userDAO.findById(id)
+//                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con id: " + id));
+//
+//        if (file == null || file.isEmpty()) {
+//            throw new IllegalArgumentException("Archivo de imagen requerido");
+//        }
+//        if (file.getSize() > 5_000_000L) {
+//            throw new IllegalArgumentException("La imagen no puede superar 5MB");
+//        }
+//
+//        // Guardado simple en disco local (mismo patrón que usás para DNI/CV)
+//        Path dir = Paths.get("uploads", "avatars", String.valueOf(id));
+//        Files.createDirectories(dir);
+//
+//        String safeName = file.getOriginalFilename() == null ? "avatar.jpg" : file.getOriginalFilename();
+//        String filename = "avatar_" + System.currentTimeMillis() + "_" + safeName;
+//        Path dest = dir.resolve(filename);
+//
+//        Files.copy(file.getInputStream(), dest, StandardCopyOption.REPLACE_EXISTING);
+//
+//        // URL pública (ajustá según cómo sirvas estáticos)
+//        String publicUrl = "/static/avatars/" + id + "/" + filename;
+//
+//        u.setFotoPerfilUrl(publicUrl);
+//        userDAO.save(u);
+//
+//        return publicUrl;
+//    }
 }
+
+
+
+
