@@ -7,7 +7,7 @@ const AdminDashboard = () => {
 
     return (
         <main className={styles.dashboard}>
-            <h1>Bienvenido {user?.nombre} 🐶</h1>
+            <h1>Bienvenido/a {user?.nombre} 🐶</h1>
 
             <section>
                 <DashboardValidaciones />

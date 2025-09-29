@@ -10,6 +10,40 @@
     --line:#E4E7EB;
 }
 
+:global(:root){
+    --app-font: ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, "Noto Sans",
+    "Apple Color Emoji", "Segoe UI Emoji";
+}
+
+/* 2) Aplicar la fuente a todo lo que renderiza este header/módulo */
+.header,
+.header * ,
+.nav,
+.nav * ,
+.brand,
+.links,
+.links * ,
+.ctas,
+.btn,
+.ghost,
+.solid,
+.burger,
+.hero,
+.hero * ,
+.heroActions,
+.linkBtn,
+.trust,
+.backdrop,
+.modal,
+.modal * ,
+.modalHeader,
+.modalBody,
+.closeBtn,
+.profileIcon {
+    font-family: var(--app-font);
+}
+
 .header{
     color:#fff;
     background: linear-gradient(135deg,var(--primary) 0%, var(--primary-700) 100%);
