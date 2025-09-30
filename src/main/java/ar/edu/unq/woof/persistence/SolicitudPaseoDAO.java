@@ -30,4 +30,6 @@ public interface SolicitudPaseoDAO extends JpaRepository<SolicitudPaseo, Long> {
 
     @Query("SELECT p FROM SolicitudPaseo p WHERE p.idPaseador= :idPaseador")
     List<SolicitudPaseo> getPaseosPaseador(@Param("idPaseador") Long idPaseador);
+
+    void actualizar(SolicitudPaseo solicitud);
 }

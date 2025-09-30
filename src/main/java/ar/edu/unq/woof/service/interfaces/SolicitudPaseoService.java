@@ -18,4 +18,5 @@ public interface SolicitudPaseoService {
     List<SolicitudPaseo> obtenerPaseosHistoricos(Long idPaseador);
     List<SolicitudPaseo> obtenerPaseosPaseador(Long id);
     int contarLosPaseosDePaseador(Long idPaseador);
+    void finalizarSolicitud(Long id);
 }

@@ -2,6 +2,7 @@ package ar.edu.unq.woof.service.impl;
 
 import ar.edu.unq.woof.controller.dto.paseo.SolicitudPaseoDTO;
 import ar.edu.unq.woof.modelo.SolicitudPaseo;
+import ar.edu.unq.woof.modelo.enums.EstadoDePago;
 import ar.edu.unq.woof.modelo.enums.EstadoSolicitud;
 import ar.edu.unq.woof.modelo.exceptions.FranjaHorariaExcedida;
 import ar.edu.unq.woof.modelo.exceptions.HorarioIncorrecto;
@@ -56,6 +57,15 @@ public class SolicitudPaseoImpl implements SolicitudPaseoService {
     @Override
     public int contarLosPaseosDePaseador(Long idPaseador) {
         return paseoDAO.getPaseosPaseador(idPaseador).size();
+    }
+
+    @Override
+    public void finalizarSolicitud(Long id) {
+        SolicitudPaseo solicitud = paseoDAO.recuperarSolicitudPaseo(id).orElseThrow(SolicitudNoEncontrada::new);
+        if (solicitud.getEstadoDePago().equals(EstadoDePago.PAGO) && solicitud.getEstado().equals(EstadoSolicitud.ACEPTADA)) {
+            solicitud.setEstado(EstadoSolicitud.FINALIZADA);
+            paseoDAO.actualizar(solicitud);
+        }
     }
 
     @Override

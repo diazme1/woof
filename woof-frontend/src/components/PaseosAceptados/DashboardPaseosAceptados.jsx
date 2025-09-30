@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./DashboardPaseosAceptados.module.css";
@@ -16,6 +17,24 @@ const DashboardPaseosAceptados = () => {
             hour: "2-digit",
             minute: "2-digit",
         });
+    };
+
+    const finalizarPaseo = async (paseoId) => {
+        console.log("ID del paseo a finalizar:", paseoId);
+        try {
+            await axios.put(`http://localhost:8080/paseo/finalizar/${paseoId}`);
+            alert("Paseo finalizado con éxito!");
+
+            // refrescar lista
+            const resActivos = await axios.get(`http://localhost:8080/paseo/paseador/actuales/${user.id}`);
+            setPaseosActivos(resActivos.data);
+
+            const resHistoricos = await axios.get(`http://localhost:8080/paseo/paseador/historicos/${user.id}`);
+            setPaseosHistoricos(resHistoricos.data);
+        } catch (err) {
+            console.error("Error al finalizar paseo:", err);
+            alert(err.response?.data?.message || "Error al finalizar el paseo");
+        }
     };
 
     useEffect(() => {
@@ -78,6 +97,16 @@ const DashboardPaseosAceptados = () => {
                             <h3><strong>Fecha y Hora:</strong> {formatFecha(p.horario)}</h3>
                             <p><strong>Perro:</strong> {p.nombrePerro} ({p.raza})</p>
                             <p><strong>Estado:</strong> {p.estado}</p>
+
+                            {/* Botón Finalizar paseo */}
+                            {p.idPaseador === user.id && (
+                                    <button
+                                        className={styles.finalizarBtn}
+                                        onClick={() => finalizarPaseo(p.solicitudId)}
+                                    >
+                                        Finalizar paseo
+                                    </button>
+                                )}
                         </li>
                     ))}
                 </ul>
@@ -85,7 +114,8 @@ const DashboardPaseosAceptados = () => {
         </main>
     );
 };
-// <p><strong>Cliente:</strong> {p.nombreCliente}</p>
-//<p><strong>Precio:</strong> ${p.precio}</p>
+
+
 export default DashboardPaseosAceptados;
+
 
