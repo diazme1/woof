@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Usuario findByEmail(String email){
+    public Usuario findByEmail(String email) {
         return userDAO.findByEmail(email);
     }
 
@@ -105,7 +105,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void rechazarValidacion(Long id){
+    public void rechazarValidacion(Long id) {
         Usuario usuario = userDAO.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
@@ -171,36 +171,62 @@ public class UserServiceImpl implements UserService {
 
         return userDAO.save(u);
     }
-//    @Override
-//    public String actualizarFotoPerfil(Long id, MultipartFile file) throws IOException {
-//        Usuario u = userDAO.findById(id)
-//                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con id: " + id));
-//
-//        if (file == null || file.isEmpty()) {
-//            throw new IllegalArgumentException("Archivo de imagen requerido");
-//        }
-//        if (file.getSize() > 5_000_000L) {
-//            throw new IllegalArgumentException("La imagen no puede superar 5MB");
-//        }
-//
-//        // Guardado simple en disco local (mismo patrón que usás para DNI/CV)
-//        Path dir = Paths.get("uploads", "avatars", String.valueOf(id));
-//        Files.createDirectories(dir);
-//
-//        String safeName = file.getOriginalFilename() == null ? "avatar.jpg" : file.getOriginalFilename();
-//        String filename = "avatar_" + System.currentTimeMillis() + "_" + safeName;
-//        Path dest = dir.resolve(filename);
-//
-//        Files.copy(file.getInputStream(), dest, StandardCopyOption.REPLACE_EXISTING);
-//
-//        // URL pública (ajustá según cómo sirvas estáticos)
-//        String publicUrl = "/static/avatars/" + id + "/" + filename;
-//
-//        u.setFotoPerfilUrl(publicUrl);
-//        userDAO.save(u);
-//
-//        return publicUrl;
-//    }
+
+    @Override
+    public String actualizarFotoPerfil(Long idUser, MultipartFile file) throws IOException {
+        Usuario usuario = userDAO.findById(idUser)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        if (file == null || file.isEmpty()) {
+            throw new RuntimeException("Archivo vacío");
+        }
+
+        String contentType = file.getContentType();
+        if (contentType == null || !contentType.toLowerCase().startsWith("image/")) {
+            throw new RuntimeException("El archivo debe ser una imagen");
+        }
+
+        String projectDir = System.getProperty("user.dir");
+        String baseUploadDir = projectDir + File.separator + "src" + File.separator + "main" + File.separator + "uploads";
+        String uploadDir = baseUploadDir + File.separator + "user_" + idUser;
+        new File(uploadDir).mkdirs();
+
+
+        String original = file.getOriginalFilename() != null ? file.getOriginalFilename() : "foto";
+        String safeName = original.replaceAll("[\\s]+", "_").replaceAll("[^A-Za-z0-9._-]", "");
+        String ext = safeName.contains(".") ? safeName.substring(safeName.lastIndexOf('.')) : ".jpg";
+        String filename = "perfil_" + System.currentTimeMillis() + ext;
+
+        File destino = new File(uploadDir + File.separator + filename);
+        file.transferTo(destino);
+
+        // borrar la anterior si la guardabas en disco
+        if (usuario.getFotoPerfilUrl() != null && usuario.getFotoPerfilUrl().startsWith("file:")) {
+            try {
+                new File(usuario.getFotoPerfilUrl().substring("file:".length())).delete();
+            } catch (Exception ignored) {
+            }
+        }
+
+        // Guardamos la ruta física o lógica; acá guardo física con prefijo "file:" para poder borrarla luego
+        usuario.setFotoPerfilUrl(destino.getAbsolutePath());
+        userDAO.save(usuario);
+
+        // URL pública para el front (endpoint GET)
+        String publicUrl = "/user/" + idUser + "/foto-perfil";
+        return publicUrl;
+    }
+
+    @Override
+    public File getFotoPerfil(Long idUser) {
+        Usuario usuario = userDAO.findById(idUser)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        String stored = usuario.getFotoPerfilUrl();
+        if (stored == null) return null;
+
+
+        return new File(stored);
+    }
 }
 
 

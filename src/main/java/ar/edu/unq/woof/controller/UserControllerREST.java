@@ -126,15 +126,26 @@ public class UserControllerREST {
         return ResponseEntity.ok(UserDTO.desdeModelo(actualizado));
     }
 
-//    @PutMapping(value = "/{id}/foto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    public ResponseEntity<Map<String, String>> actualizarFotoPerfil(
-//            @PathVariable Long id,
-//            @RequestPart("file") MultipartFile file
-//    ) throws IOException {
-//        String url = userService.actualizarFotoPerfil(id, file);
-//        return ResponseEntity.ok(Map.of("fotoUrl", url));
-//    }
+    @PutMapping(value = "/{id}/foto", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<Map<String, String>> actualizarFotoPerfil(
+            @PathVariable Long id,
+            @RequestPart("file") MultipartFile file
+    ) throws IOException {
+        String url = userService.actualizarFotoPerfil(id, file);
+        return ResponseEntity.ok(Map.of("fotoUrl", url));
+    }
 
+    @GetMapping("/{id}/foto-perfil")
+    public ResponseEntity<byte[]> getFotoPerfil(@PathVariable Long id) throws IOException {
+        File file = userService.getFotoPerfil(id);
+        if (file == null || !file.exists()) return ResponseEntity.notFound().build();
+
+        byte[] bytes = Files.readAllBytes(file.toPath());
+        String mimeType = Files.probeContentType(file.toPath());
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(mimeType != null ? mimeType : "image/*"))
+                .body(bytes);
+    }
 
 
 }

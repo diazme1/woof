@@ -22,5 +22,7 @@ public interface UserService {
     File getCV(Long id) throws IOException;
     String calcularAntiguedad(Long idUsuario);
     Usuario updatePerfil(Long id, UserRequestDTO request);
-    //String actualizarFotoPerfil(Long id, MultipartFile file) throws IOException;
+    String actualizarFotoPerfil(Long idUser, MultipartFile file) throws IOException;
+    File getFotoPerfil(Long idUser) throws IOException;
+
 }

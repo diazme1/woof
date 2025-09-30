@@ -13,6 +13,23 @@ export default function Perfil() {
     const [dirty, setDirty] = useState(false);
     const fileRef = useRef(null);
 
+    // Helpers ----------------------------------------------------
+    // Normaliza lo que venga de la DB a una URL servible por el navegador
+    function toImageSrc(u, id) {
+        if (!u) return null;
+        // Si es ruta Windows o UNC, devolvé el endpoint público
+        if (/^[A-Za-z]:\\/.test(u) || u.startsWith("\\\\")) {
+            return `http://localhost:8080/user/${id}/foto-perfil`;
+        }
+        // Si es ruta relativa del backend, prefix con host/puerto del backend
+        if (u.startsWith("/")) {
+            return `http://localhost:8080${u}`;
+        }
+        // Si ya es absoluta http/https, usar tal cual
+        return u;
+    }
+    // ------------------------------------------------------------
+
     // Stats
     const [paseos, setPaseos] = useState(0);
     const [antiguedad, setAntiguedad] = useState("0 días y 0 meses");
@@ -60,7 +77,8 @@ export default function Perfil() {
             biografia: user?.biografia ?? "",
             direccion: user?.direccion ?? "",
             telefono: user?.telefono ?? "",
-            fotoPreview: user?.fotoPerfilUrl ?? null,
+            // importante: mostrar preview con URL servible
+            fotoPreview: toImageSrc(user?.fotoPerfilUrl, userId) ?? null,
             fotoFile: null,
         });
         setErrors({});
@@ -80,7 +98,11 @@ export default function Perfil() {
         setDirty(true);
         if (files) {
             const file = files[0];
-            setForm((prev) => ({ ...prev, fotoFile: file, fotoPreview: URL.createObjectURL(file) }));
+            setForm((prev) => ({
+                ...prev,
+                fotoFile: file,
+                fotoPreview: URL.createObjectURL(file),
+            }));
         } else {
             setForm((prev) => ({ ...prev, [name]: value }));
         }
@@ -110,6 +132,8 @@ export default function Perfil() {
         if (Object.keys(v).length) return;
 
         try {
+            let newFotoUrl = null;
+
             // 1) Subir foto si cambió
             if (form.fotoFile) {
                 const fd = new FormData();
@@ -117,7 +141,11 @@ export default function Perfil() {
                 const { data } = await axios.put(`http://localhost:8080/user/${userId}/foto`, fd, {
                     headers: { "Content-Type": "multipart/form-data" },
                 });
-                setUser((prev) => ({ ...prev, fotoPerfilUrl: data.fotoUrl }));
+                // data.fotoUrl debería ser algo como "/user/{id}/foto-perfil"
+                // la normalizamos y le agregamos cache-busting
+                newFotoUrl = `${toImageSrc(data.fotoUrl, userId)}?t=${Date.now()}`;
+                // seteamos en caliente para que se vea instantáneo
+                setUser((prev) => ({ ...prev, fotoPerfilUrl: newFotoUrl }));
             }
 
             // 2) PUT con campos del perfil
@@ -131,15 +159,24 @@ export default function Perfil() {
 
             const { data: updated } = await axios.put(`http://localhost:8080/user/${userId}`, payload);
 
-            // 3) Refrescar estado y LS
-            setUser(updated);
-            localStorage.setItem("user", JSON.stringify({ ...userLS, ...updated }));
+            // 3) Refrescar estado y LS SIN perder la foto que acabamos de setear
+            const merged = {
+                ...updated,
+                // priorizamos la nueva foto; si no hubo, normalizamos lo que venga del backend
+                fotoPerfilUrl:
+                    newFotoUrl ??
+                    toImageSrc(updated.fotoPerfilUrl, userId) ??
+                    toImageSrc(user?.fotoPerfilUrl, userId) ??
+                    null,
+            };
+
+            setUser(merged);
+            localStorage.setItem("user", JSON.stringify({ ...userLS, ...merged }));
 
             setDirty(false);
             setEditMode(false);
             setForm(null);
             alert("Datos modificados con éxito.");
-
         } catch (err) {
             if (err?.response?.data?.errors) setErrors(err.response.data.errors);
             else if (err?.response?.data) alert(err.response.data);
@@ -149,17 +186,19 @@ export default function Perfil() {
 
     if (!user) return <div>Cargando…</div>;
 
+    // En render, siempre usar una URL servible (por si user trae ruta física)
+    const liveUrl = toImageSrc(user.fotoPerfilUrl, userId);
+    const imgSrc = editMode
+        ? form.fotoPreview || liveUrl || "/avatar-placeholder.png"
+        : liveUrl || "/avatar-placeholder.png";
+
     return (
         <div className={styles.perfil}>
             {/* HEADER */}
             <div className={styles.header}>
                 <div style={{ position: "relative" }}>
                     <img
-                        src={
-                            editMode
-                                ? form.fotoPreview || user.fotoPerfilUrl || "/avatar-placeholder.png"
-                                : user.fotoPerfilUrl || "/avatar-placeholder.png"
-                        }
+                        src={imgSrc}
                         alt="avatar"
                         className={styles.avatar}
                         onClick={() => editMode && fileRef.current?.click()}
@@ -185,7 +224,9 @@ export default function Perfil() {
                             <h2 className={styles.title}>{user.nombre}</h2>
 
                             <div className={styles.actions}>
-                                <button className={styles.editBtn} onClick={startEdit}>Editar perfil</button>
+                                <button className={styles.editBtn} onClick={startEdit}>
+                                    Editar perfil
+                                </button>
                             </div>
                         </>
                     ) : (
@@ -199,11 +240,13 @@ export default function Perfil() {
                             />
                             {errors.nombre && <small style={{ color: "crimson", display: "block" }}>{errors.nombre}</small>}
 
-
-
                             <div className={styles.actions}>
-                                <button className={styles.saveBtn} onClick={save}>Guardar</button>
-                                <button className={styles.cancelBtn} onClick={cancelEdit}>Cancelar</button>
+                                <button className={styles.saveBtn} onClick={save}>
+                                    Guardar
+                                </button>
+                                <button className={styles.cancelBtn} onClick={cancelEdit}>
+                                    Cancelar
+                                </button>
                             </div>
                         </>
                     )}
@@ -235,21 +278,39 @@ export default function Perfil() {
                 <h3>Contacto</h3>
                 {!editMode ? (
                     <>
-                        <p><strong>Teléfono:</strong> {user.telefono || "—"}</p>
-                        <p><strong>Dirección:</strong> {user.direccion || "—"}</p>
-                        <p><strong>Alias para transferencias:</strong> {user.alias ?? "—"}</p>
+                        <p>
+                            <strong>Teléfono:</strong> {user.telefono || "—"}
+                        </p>
+                        <p>
+                            <strong>Dirección:</strong> {user.direccion || "—"}
+                        </p>
+                        <p>
+                            <strong>Alias para transferencias:</strong> {user.alias ?? "—"}
+                        </p>
                     </>
                 ) : (
                     <>
                         <div style={{ marginBottom: 10 }}>
                             <div style={{ fontSize: 12, opacity: 0.7 }}>Teléfono</div>
-                            <input name="telefono" value={form.telefono} onChange={onChange} placeholder="+54911..." style={{ width: "100%" }} />
+                            <input
+                                name="telefono"
+                                value={form.telefono}
+                                onChange={onChange}
+                                placeholder="+54911..."
+                                style={{ width: "100%" }}
+                            />
                             {errors.telefono && <small style={{ color: "crimson" }}>{errors.telefono}</small>}
                         </div>
 
                         <div style={{ marginBottom: 10 }}>
                             <div style={{ fontSize: 12, opacity: 0.7 }}>Dirección</div>
-                            <input name="direccion" value={form.direccion} onChange={onChange} placeholder="Calle 123, Ciudad" style={{ width: "100%" }} />
+                            <input
+                                name="direccion"
+                                value={form.direccion}
+                                onChange={onChange}
+                                placeholder="Calle 123, Ciudad"
+                                style={{ width: "100%" }}
+                            />
                             {errors.direccion && <small style={{ color: "crimson" }}>{errors.direccion}</small>}
                         </div>
 
@@ -264,7 +325,9 @@ export default function Perfil() {
                                 maxLength={20}
                                 style={{ width: "100%" }}
                             />
-                            {errors.aliasTransferencia && <small style={{ color: "crimson" }}>{errors.aliasTransferencia}</small>}
+                            {errors.alias && (
+                                <small style={{ color: "crimson" }}>{errors.alias}</small>
+                            )}
                             <div style={{ fontSize: 11, opacity: 0.6, marginTop: 4 }}>
                                 6–20 caracteres. Permitidos: letras, números, punto y guion.
                             </div>
@@ -283,7 +346,7 @@ export default function Perfil() {
                     </div>
                     <div className={styles.statItem}>
                         <span className={styles.statNumber}>{antiguedad}</span>
-                        <span>Antigüedad</span>
+                        <span>Antiguedad</span>
                     </div>
                 </div>
             </section>
