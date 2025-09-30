@@ -60,13 +60,14 @@
 .btnPrimary {
     background: var(--primary);
     color: #fff;
-    padding: 12px 20px;
+    padding: 12px 20px ;
     font-size: 1rem;
     border: none;
     border-radius: 10px;
     font-weight: 600;
     cursor: pointer;
     transition: background 0.2s ease, transform 0.1s ease;
+    margin-left: 5px;
 }
 
 .btnPrimary:hover {

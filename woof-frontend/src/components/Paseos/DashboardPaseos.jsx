@@ -10,12 +10,18 @@ const DashboardPaseos = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [showSuccess, setShowSuccess] = useState(false);
+
+    // NUEVO: estado para modal "Más info."
+    const [showDetalles, setShowDetalles] = useState(false);
+    const [solicitudSeleccionada, setSolicitudSeleccionada] = useState(null);
+
     const usuario = JSON.parse(localStorage.getItem("user"));
     const idPaseador = usuario?.id;
+
     const tamanosMap = {
         PEQUENO: "Pequeño",
         GRANDE: "Grande",
-        MEDIANO: "Mediano"
+        MEDIANO: "Mediano",
     };
     const zonasMap = {
         QUILMES: "Quilmes",
@@ -23,19 +29,24 @@ const DashboardPaseos = () => {
         LA_PLATA: "La Plata",
         BERNAL: "Bernal",
         AVELLANEDA: "Avellaneda",
-        DON_BOSCO: "Don Bosco"
+        DON_BOSCO: "Don Bosco",
     };
+
     const formatFecha = (fechaISO) => {
         const f = new Date(fechaISO);
-        return f.toLocaleDateString("en-GB") + " " + f.toLocaleTimeString("en-US", {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: true
-        });
+        return (
+            f.toLocaleDateString("en-GB") +
+            " " +
+            f.toLocaleTimeString("en-US", {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true,
+            })
+        );
     };
 
     useEffect(() => {
-        let isMounted = true; // para evitar actualizar estado si el componente se desmonta
+        let isMounted = true;
         const fetchSolicitudes = async () => {
             try {
                 const response = await axios.get("http://localhost:8080/paseo/solicitudes");
@@ -59,8 +70,6 @@ const DashboardPaseos = () => {
         };
     }, []);
 
-
-
     const aceptarSolicitud = async (id) => {
         try {
             await axios.put(`http://localhost:8080/paseo/${id}/paseador/${idPaseador}`);
@@ -72,6 +81,24 @@ const DashboardPaseos = () => {
         }
     };
 
+    // NUEVO: handlers modal "Más info."
+    const abrirDetalles = (solicitud) => {
+        setSolicitudSeleccionada(solicitud);
+        setShowDetalles(true);
+    };
+    const cerrarDetalles = () => {
+        setShowDetalles(false);
+        setSolicitudSeleccionada(null);
+    };
+
+    // NUEVO: cerrar modal con Escape
+    useEffect(() => {
+        if (!showDetalles) return;
+        const onKey = (e) => e.key === "Escape" && cerrarDetalles();
+        window.addEventListener("keydown", onKey);
+        return () => window.removeEventListener("keydown", onKey);
+    }, [showDetalles]);
+
     if (loading) return <p>Cargando solicitudes...</p>;
     if (error) return <p>{error}</p>;
 
@@ -79,7 +106,7 @@ const DashboardPaseos = () => {
         <main className={styles.dashboardContainer}>
             <h2 className={styles.title}>🐾 Solicitudes de Paseos disponibles 🐾</h2>
 
-            {/* Mensaje de éxito */}
+            {/* Modal de éxito existente */}
             {showSuccess && (
                 <div
                     className={styles.overlay}
@@ -96,10 +123,13 @@ const DashboardPaseos = () => {
                         onClick={(e) => e.stopPropagation()}
                     >
                         <p>Solicitud aceptada con éxito 🐾</p>
-                        <button type="button" onClick={() => {
-                            setShowSuccess(false);
-                            navigate("/solicitudes");
-                        }}>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setShowSuccess(false);
+                                navigate("/solicitudes");
+                            }}
+                        >
                             Cerrar
                         </button>
                     </div>
@@ -109,18 +139,39 @@ const DashboardPaseos = () => {
             {solicitudes.length === 0 ? (
                 <div className={styles.emptyMessageContainer}>
                     <div className={styles.emptyMessageBox}>
-                        <p> No hay solicitudes disponibles en este momento. </p>
+                        <p>No hay solicitudes disponibles en este momento.</p>
                     </div>
                 </div>
             ) : (
                 <ul className={styles.lista}>
                     {solicitudes.map((s) => (
                         <li key={s.solicitudId} className={styles.item}>
-                            <h3><strong>Zona:</strong> {zonasMap[s.zona] || s.zona}</h3>
-                            <p><strong>Horario:</strong> {formatFecha(s.horario)}</p>
-                            <p><strong>Perro:</strong> {s.nombrePerro} ({s.raza})</p>
-                            <p><strong>Tamaño:</strong> {tamanosMap[s.tamanoPerro] || s.tamanoPerro}</p>
+                            <h3>
+                                <strong>Zona:</strong> {zonasMap[s.zona] || s.zona}
+                            </h3>
+                            <p>
+                                <strong>Horario:</strong> {formatFecha(s.horario)}
+                            </p>
+                            <p>
+                                <strong>Perro:</strong> {s.nombrePerro} ({s.raza})
+                            </p>
+                            <p>
+                                <strong>Tamaño:</strong> {tamanosMap[s.tamanoPerro] || s.tamanoPerro}
+                            </p>
+
                             <div className={styles.cardActions}>
+                                {/* NUEVO: Botón Más info. solo si hay detalles */}
+                                {s.detalles && s.detalles.trim().length > 0 && (
+                                    <button
+                                        className={styles.btnSecondary || styles.btnPrimary}
+                                        type="button"
+                                        onClick={() => abrirDetalles(s)}
+                                        title="Ver detalles del paseo"
+                                    >
+                                        Más info.
+                                    </button>
+                                )}
+
                                 <button
                                     className={styles.btnPrimary}
                                     onClick={() => aceptarSolicitud(s.solicitudId)}
@@ -131,6 +182,37 @@ const DashboardPaseos = () => {
                         </li>
                     ))}
                 </ul>
+            )}
+
+            {/* NUEVO: Modal con Detalles */}
+            {showDetalles && solicitudSeleccionada && (
+                <div
+                    className={styles.overlay}
+                    role="presentation"
+                    onClick={cerrarDetalles}
+                >
+                    <div
+                        className={styles.modal}
+                        role="dialog"
+                        aria-modal="true"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <h3>Detalles del paseo</h3>
+                        <div
+                            style={{
+                                whiteSpace: "pre-wrap",
+                                maxHeight: "45vh",
+                                overflowY: "auto",
+                                marginBottom: 16,
+                            }}
+                        >
+                            {solicitudSeleccionada.detalles}
+                        </div>
+                        <button type="button" onClick={cerrarDetalles}>
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
             )}
         </main>
     );

@@ -27,7 +27,7 @@ public class SolicitudPaseoTest {
         LocalDateTime horario = now.plusMinutes(15);
 
 
-        SolicitudPaseo solicitudPaseo = new SolicitudPaseo(ZonaOperativa.QUILMES, horario, "Abdu", TamanoPerro.GRANDE, "Labrador", 4L);
+        SolicitudPaseo solicitudPaseo = new SolicitudPaseo(ZonaOperativa.QUILMES, horario, "Abdu", TamanoPerro.GRANDE, "Labrador", 4L, "Toma medicamentos a las 18hs");
         solicitudPaseoService.savePaseo(solicitudPaseo);
     }
 
@@ -37,7 +37,7 @@ public class SolicitudPaseoTest {
 //      LocalDateTime now = LocalDateTime.of(2025, Month.SEPTEMBER, 24, 14, 0);
         LocalDateTime horario = now.plusMinutes(15);
 
-        SolicitudPaseo solicitudPaseo = new SolicitudPaseo(ZonaOperativa.QUILMES, horario, "Oli", TamanoPerro.MEDIANO, "Caniche", 4L);
+        SolicitudPaseo solicitudPaseo = new SolicitudPaseo(ZonaOperativa.QUILMES, horario, "Oli", TamanoPerro.MEDIANO, "Caniche", 4L, "detalles");
         solicitudPaseoService.savePaseo(solicitudPaseo);
         solicitudPaseoService.cancelarSolicitudPaseo(solicitudPaseo.getId());
     }

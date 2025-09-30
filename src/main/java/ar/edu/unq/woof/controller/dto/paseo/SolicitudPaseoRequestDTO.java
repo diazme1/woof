@@ -12,9 +12,10 @@ public record SolicitudPaseoRequestDTO(
         String nombrePerro,
         TamanoPerro tamanoPerro,
         String raza,
-        Long idCliente
+        Long idCliente,
+        String detalles
 ) {
     public SolicitudPaseo aModelo() {
-        return new SolicitudPaseo(zona, horario, nombrePerro, tamanoPerro, raza, idCliente);
+        return new SolicitudPaseo(zona, horario, nombrePerro, tamanoPerro, raza, idCliente, detalles);
     }
 }

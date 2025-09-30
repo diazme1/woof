@@ -15,7 +15,8 @@ public record SolicitudPaseoDTO(
         TamanoPerro tamanoPerro,
         String raza,
         EstadoSolicitud estado,
-        Long idCliente
+        Long idCliente,
+        String detalles
 ) {
 
     public static SolicitudPaseoDTO desdeModelo(SolicitudPaseo solicitudPaseo) {
@@ -27,7 +28,8 @@ public record SolicitudPaseoDTO(
                 solicitudPaseo.getTamanoPerro(),
                 solicitudPaseo.getRaza(),
                 solicitudPaseo.getEstado(),
-                solicitudPaseo.getIdCliente()
+                solicitudPaseo.getIdCliente(),
+                solicitudPaseo.getDetalles()
         );
     }
 }
