@@ -1,4 +1,3 @@
-// Perfil.jsx
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import styles from "./Perfil.module.css";
@@ -13,50 +12,48 @@ export default function Perfil() {
     const [dirty, setDirty] = useState(false);
     const fileRef = useRef(null);
 
-    // Helpers ----------------------------------------------------
-    // Normaliza lo que venga de la DB a una URL servible por el navegador
+    // 🔔 Toast state
+    const [toastOpen, setToastOpen] = useState(false);
+    const [toastMsg, setToastMsg] = useState("");
+
+    function openToast(msg) {
+        setToastMsg(msg);
+        setToastOpen(true);
+        // autocerrar a los ~2.5s
+        setTimeout(() => setToastOpen(false), 2500);
+    }
+
     function toImageSrc(u, id) {
         if (!u) return null;
-        // Si es ruta Windows o UNC, devolvé el endpoint público
         if (/^[A-Za-z]:\\/.test(u) || u.startsWith("\\\\")) {
             return `http://localhost:8080/user/${id}/foto-perfil`;
         }
-        // Si es ruta relativa del backend, prefix con host/puerto del backend
-        if (u.startsWith("/")) {
-            return `http://localhost:8080${u}`;
-        }
-        // Si ya es absoluta http/https, usar tal cual
+        if (u.startsWith("/")) return `http://localhost:8080${u}`;
         return u;
     }
-    // ------------------------------------------------------------
 
     // Stats
     const [paseos, setPaseos] = useState(0);
     const [antiguedad, setAntiguedad] = useState("0 días y 0 meses");
 
-    // Paseos realizados
     useEffect(() => {
         if (!userId) return;
-        axios
-            .get(`http://localhost:8080/paseo/solicitudes/${userId}`)
+        axios.get(`http://localhost:8080/paseo/solicitudes/${userId}`)
             .then((res) => setPaseos(res.data))
             .catch(() => setPaseos(0));
     }, [userId]);
 
-    // Antiguedad
     useEffect(() => {
         if (!userId) return;
-        axios
-            .get(`http://localhost:8080/user/${userId}/antiguedad`)
+        axios.get(`http://localhost:8080/user/${userId}/antiguedad`)
             .then((res) => setAntiguedad(`${res.data}`))
             .catch(() => setAntiguedad("0 días y 0 meses"));
     }, [userId]);
 
-    // Datos de usuario
     useEffect(() => {
         if (!userId) return;
         axios.get(`http://localhost:8080/user/${userId}`).then(({ data }) => {
-            setUser(data); // data.alias esperado del backend
+            setUser(data);
         });
     }, [userId]);
 
@@ -77,7 +74,6 @@ export default function Perfil() {
             biografia: user?.biografia ?? "",
             direccion: user?.direccion ?? "",
             telefono: user?.telefono ?? "",
-            // importante: mostrar preview con URL servible
             fotoPreview: toImageSrc(user?.fotoPerfilUrl, userId) ?? null,
             fotoFile: null,
         });
@@ -111,19 +107,30 @@ export default function Perfil() {
     const validate = () => {
         const v = {};
         if (!form.nombre.trim()) v.nombre = "Nombre completo obligatorio";
-
-        // Alias
         if (form.alias?.trim()) {
             const a = form.alias.trim();
             if (a.length < 6 || a.length > 20 || !/^[A-Za-z0-9.-]+$/.test(a)) {
                 v.alias = "Alias inválido";
             }
         }
-
         if (form.telefono && !/^\+?\d[\d\s-]{6,}$/i.test(form.telefono)) v.telefono = "Teléfono inválido";
         if (form.direccion && form.direccion.length > 255) v.direccion = "Dirección demasiado larga";
         if (form.biografia && form.biografia.length > 500) v.biografia = "Biografía demasiado larga";
         return v;
+    };
+
+    // 🔍 Detectar si realmente hay cambios
+    const computeDiffs = (u, f) => {
+        if (!u || !f) return [];
+        const norm = (s) => (s ?? "").trim();
+        const diffs = [];
+        if (norm(u.nombre) !== norm(f.nombre)) diffs.push("nombre");
+        if (norm(u.alias ?? "") !== norm(f.alias ?? "")) diffs.push("alias");
+        if ((u.telefono ?? "") !== (f.telefono ?? "")) diffs.push("telefono");
+        if ((u.direccion ?? "") !== (f.direccion ?? "")) diffs.push("direccion");
+        if ((u.biografia ?? "") !== (f.biografia ?? "")) diffs.push("biografia");
+        if (f.fotoFile) diffs.push("foto");
+        return diffs;
     };
 
     const save = async () => {
@@ -131,24 +138,28 @@ export default function Perfil() {
         setErrors(v);
         if (Object.keys(v).length) return;
 
+        const diffs = computeDiffs(user, form);
+        // Si no hubo cambios, salir “silenciosamente” del modo edición
+        if (diffs.length === 0) {
+            setDirty(false);
+            setEditMode(false);
+            setForm(null);
+            return;
+        }
+
         try {
             let newFotoUrl = null;
 
-            // 1) Subir foto si cambió
             if (form.fotoFile) {
                 const fd = new FormData();
                 fd.append("file", form.fotoFile);
                 const { data } = await axios.put(`http://localhost:8080/user/${userId}/foto`, fd, {
                     headers: { "Content-Type": "multipart/form-data" },
                 });
-                // data.fotoUrl debería ser algo como "/user/{id}/foto-perfil"
-                // la normalizamos y le agregamos cache-busting
                 newFotoUrl = `${toImageSrc(data.fotoUrl, userId)}?t=${Date.now()}`;
-                // seteamos en caliente para que se vea instantáneo
                 setUser((prev) => ({ ...prev, fotoPerfilUrl: newFotoUrl }));
             }
 
-            // 2) PUT con campos del perfil
             const payload = {
                 nombre: form.nombre.trim(),
                 alias: form.alias.trim(),
@@ -159,10 +170,8 @@ export default function Perfil() {
 
             const { data: updated } = await axios.put(`http://localhost:8080/user/${userId}`, payload);
 
-            // 3) Refrescar estado y LS SIN perder la foto que acabamos de setear
             const merged = {
                 ...updated,
-                // priorizamos la nueva foto; si no hubo, normalizamos lo que venga del backend
                 fotoPerfilUrl:
                     newFotoUrl ??
                     toImageSrc(updated.fotoPerfilUrl, userId) ??
@@ -176,7 +185,9 @@ export default function Perfil() {
             setDirty(false);
             setEditMode(false);
             setForm(null);
-            alert("Datos modificados con éxito.");
+
+            // ✅ Mostrar toast de éxito SÓLO si hubo cambios reales
+            openToast("Datos modificados con éxito.");
         } catch (err) {
             if (err?.response?.data?.errors) setErrors(err.response.data.errors);
             else if (err?.response?.data) alert(err.response.data);
@@ -186,7 +197,6 @@ export default function Perfil() {
 
     if (!user) return <div>Cargando…</div>;
 
-    // En render, siempre usar una URL servible (por si user trae ruta física)
     const liveUrl = toImageSrc(user.fotoPerfilUrl, userId);
     const imgSrc = editMode
         ? form.fotoPreview || liveUrl || "/avatar-placeholder.png"
@@ -217,12 +227,10 @@ export default function Perfil() {
                     )}
                 </div>
 
-                {/* Nombre + Alias + acciones */}
                 <div>
                     {!editMode ? (
                         <>
                             <h2 className={styles.title}>{user.nombre}</h2>
-
                             <div className={styles.actions}>
                                 <button className={styles.editBtn} onClick={startEdit}>
                                     Editar perfil
@@ -239,14 +247,9 @@ export default function Perfil() {
                                 style={{ fontSize: 18, width: "100%" }}
                             />
                             {errors.nombre && <small style={{ color: "crimson", display: "block" }}>{errors.nombre}</small>}
-
                             <div className={styles.actions}>
-                                <button className={styles.saveBtn} onClick={save}>
-                                    Guardar
-                                </button>
-                                <button className={styles.cancelBtn} onClick={cancelEdit}>
-                                    Cancelar
-                                </button>
+                                <button className={styles.saveBtn} onClick={save}>Guardar</button>
+                                <button className={styles.cancelBtn} onClick={cancelEdit}>Cancelar</button>
                             </div>
                         </>
                     )}
@@ -278,15 +281,9 @@ export default function Perfil() {
                 <h3>Contacto</h3>
                 {!editMode ? (
                     <>
-                        <p>
-                            <strong>Teléfono:</strong> {user.telefono || "—"}
-                        </p>
-                        <p>
-                            <strong>Dirección:</strong> {user.direccion || "—"}
-                        </p>
-                        <p>
-                            <strong>Alias para transferencias:</strong> {user.alias ?? "—"}
-                        </p>
+                        <p><strong>Teléfono:</strong> {user.telefono || "—"}</p>
+                        <p><strong>Dirección:</strong> {user.direccion || "—"}</p>
+                        <p><strong>Alias para transferencias:</strong> {user.alias ?? "—"}</p>
                     </>
                 ) : (
                     <>
@@ -314,7 +311,6 @@ export default function Perfil() {
                             {errors.direccion && <small style={{ color: "crimson" }}>{errors.direccion}</small>}
                         </div>
 
-                        {/* 👇 Nuevo campo */}
                         <div style={{ marginBottom: 10 }}>
                             <div style={{ fontSize: 12, opacity: 0.7 }}>Alias para transferencias</div>
                             <input
@@ -325,9 +321,7 @@ export default function Perfil() {
                                 maxLength={20}
                                 style={{ width: "100%" }}
                             />
-                            {errors.alias && (
-                                <small style={{ color: "crimson" }}>{errors.alias}</small>
-                            )}
+                            {errors.alias && <small style={{ color: "crimson" }}>{errors.alias}</small>}
                             <div style={{ fontSize: 11, opacity: 0.6, marginTop: 4 }}>
                                 6–20 caracteres. Permitidos: letras, números, punto y guion.
                             </div>
@@ -350,6 +344,29 @@ export default function Perfil() {
                     </div>
                 </div>
             </section>
+
+            {/* ✅ MODAL CENTRADO */}
+            {toastOpen && (
+                <div className={styles.toastOverlay} role="presentation" onClick={() => setToastOpen(false)}>
+                    <div
+                        className={styles.toastModal}
+                        role="dialog"
+                        aria-modal="true"
+                        aria-live="polite"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <span>{toastMsg}</span>
+                        <button
+                            className={styles.toastClose}
+                            onClick={() => setToastOpen(false)}
+                            aria-label="Cerrar notificación"
+                            type="button"
+                        >
+                            ×
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
