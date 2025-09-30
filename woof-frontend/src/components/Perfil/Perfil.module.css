@@ -172,7 +172,7 @@
     border-color: #1f8a52;
 }
 
-/* Backdrop a pantalla completa */
+
 .toastOverlay {
     position: fixed;
     inset: 0;
@@ -184,7 +184,7 @@
     animation: fadeIn 180ms ease-out;
 }
 
-/* Caja modal centrada */
+
 .toastModal {
     position: relative;
     max-width: min(520px, 92vw);
@@ -199,7 +199,7 @@
     animation: popIn 160ms ease-out;
 }
 
-/* Botón cerrar (×) */
+
 .toastClose {
     position: absolute;
     top: 6px;
@@ -215,7 +215,7 @@
 }
 .toastClose:hover { opacity: 1; }
 
-/* Animaciones */
+
 @keyframes fadeIn {
     from { opacity: 0; } to { opacity: 1; }
 }

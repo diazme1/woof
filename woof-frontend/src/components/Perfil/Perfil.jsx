@@ -12,14 +12,14 @@ export default function Perfil() {
     const [dirty, setDirty] = useState(false);
     const fileRef = useRef(null);
 
-    // 🔔 Toast state
+    // POP UP
     const [toastOpen, setToastOpen] = useState(false);
     const [toastMsg, setToastMsg] = useState("");
 
     function openToast(msg) {
         setToastMsg(msg);
         setToastOpen(true);
-        // autocerrar a los ~2.5s
+
         setTimeout(() => setToastOpen(false), 2500);
     }
 
@@ -345,7 +345,7 @@ export default function Perfil() {
                 </div>
             </section>
 
-            {/* ✅ MODAL CENTRADO */}
+            {/* POP UP  */}
             {toastOpen && (
                 <div className={styles.toastOverlay} role="presentation" onClick={() => setToastOpen(false)}>
                     <div
