@@ -51,13 +51,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void validarUsuario(Long idUser, MultipartFile fotoDni, MultipartFile cv) throws IOException {
+    public void validarUsuario(Long idUser, MultipartFile fotoDni, MultipartFile cv, String alias) throws IOException {
         Usuario usuario = userDAO.findById(idUser)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         if (!usuario.getRol().name().equals("ROLE_PASEADOR")) {
             throw new RuntimeException("Solo los paseadores pueden validar documentos");
         }
+
+
+        if (alias == null || alias.isBlank()) {
+            throw new RuntimeException("El alias es obligatorio");
+        }
+        usuario.setAlias(alias);
 
         String projectDir = System.getProperty("user.dir");
         String baseUploadDir = projectDir + File.separator + "src" + File.separator + "main" + File.separator + "uploads";
@@ -152,7 +158,6 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("El nombre es obligatorio");
         }
 
-        // Seteos (solo si vienen valores no nulos en el request)
         u.setNombre(req.nombre().trim());
 
 
@@ -161,6 +166,7 @@ public class UserServiceImpl implements UserService {
         }
         if (req.direccion() != null) u.setDireccion(req.direccion().trim());
         if (req.biografia() != null) u.setBiografia(req.biografia().trim());
+        if (req.alias() != null) u.setAlias(req.alias().trim());
 
 
         return userDAO.save(u);

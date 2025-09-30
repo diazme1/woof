@@ -158,18 +158,18 @@
 }
 
 .editBtn {
-    background: #f5f5f5;
+    background: #00BFA6FF;
     border-color: #ddd;
 }
 
 .saveBtn {
-    background: #1f8a52;
+    background: #00BFA6FF;
     color: white;
 }
 
 .cancelBtn {
-    background: transparent;
-    border-color: #ccc;
+    background: #00BFA6FF;
+    border-color: #1f8a52;
 }
 
 

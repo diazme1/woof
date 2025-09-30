@@ -5,7 +5,7 @@ import styles from "./Perfil.module.css";
 
 export default function Perfil() {
     const userLS = JSON.parse(localStorage.getItem("user"));
-    const userId = userLS?.id ?? userLS?.idPaseador; // ajustá si sólo guardás uno
+    const userId = userLS?.id ?? userLS?.idPaseador;
     const [user, setUser] = useState(null);
     const [editMode, setEditMode] = useState(false);
     const [form, setForm] = useState(null);
@@ -26,7 +26,7 @@ export default function Perfil() {
             .catch(() => setPaseos(0));
     }, [userId]);
 
-    // Antigüedad
+    // Antiguedad
     useEffect(() => {
         if (!userId) return;
         axios
@@ -35,15 +35,14 @@ export default function Perfil() {
             .catch(() => setAntiguedad("0 días y 0 meses"));
     }, [userId]);
 
-    // Traer usuario
+    // Datos de usuario
     useEffect(() => {
         if (!userId) return;
         axios.get(`http://localhost:8080/user/${userId}`).then(({ data }) => {
-            setUser(data);
+            setUser(data); // data.alias esperado del backend
         });
     }, [userId]);
 
-    // Guard salir sin guardar
     useEffect(() => {
         const onBeforeUnload = (e) => {
             if (!dirty) return;
@@ -54,10 +53,10 @@ export default function Perfil() {
         return () => window.removeEventListener("beforeunload", onBeforeUnload);
     }, [dirty]);
 
-    // Entrar a modo edición
     const startEdit = () => {
         setForm({
             nombre: user?.nombre ?? "",
+            alias: user?.alias ?? "",
             biografia: user?.biografia ?? "",
             direccion: user?.direccion ?? "",
             telefono: user?.telefono ?? "",
@@ -69,7 +68,6 @@ export default function Perfil() {
         setEditMode(true);
     };
 
-    // Cancelar edición
     const cancelEdit = () => {
         setEditMode(false);
         setForm(null);
@@ -88,13 +86,21 @@ export default function Perfil() {
         }
     };
 
-    // Validación front mínima
     const validate = () => {
         const v = {};
-        if (!form.nombre.trim()) v.nombre = "Nombre (completo) obligatorio";
+        if (!form.nombre.trim()) v.nombre = "Nombre completo obligatorio";
+
+        // Alias
+        if (form.alias?.trim()) {
+            const a = form.alias.trim();
+            if (a.length < 6 || a.length > 20 || !/^[A-Za-z0-9.-]+$/.test(a)) {
+                v.alias = "Alias inválido";
+            }
+        }
+
         if (form.telefono && !/^\+?\d[\d\s-]{6,}$/i.test(form.telefono)) v.telefono = "Teléfono inválido";
         if (form.direccion && form.direccion.length > 255) v.direccion = "Dirección demasiado larga";
-        if (form.biografia && form.biografia.length > 1000) v.biografia = "Biografía demasiado larga";
+        if (form.biografia && form.biografia.length > 500) v.biografia = "Biografía demasiado larga";
         return v;
     };
 
@@ -117,6 +123,7 @@ export default function Perfil() {
             // 2) PUT con campos del perfil
             const payload = {
                 nombre: form.nombre.trim(),
+                alias: form.alias.trim(),
                 telefono: form.telefono || null,
                 direccion: form.direccion || null,
                 biografia: form.biografia || null,
@@ -132,8 +139,10 @@ export default function Perfil() {
             setEditMode(false);
             setForm(null);
             alert("Datos modificados con éxito.");
+
         } catch (err) {
             if (err?.response?.data?.errors) setErrors(err.response.data.errors);
+            else if (err?.response?.data) alert(err.response.data);
             else alert("No se pudo guardar. Intentá nuevamente.");
         }
     };
@@ -169,11 +178,12 @@ export default function Perfil() {
                     )}
                 </div>
 
-                {/* Nombre + acciones */}
+                {/* Nombre + Alias + acciones */}
                 <div>
                     {!editMode ? (
                         <>
                             <h2 className={styles.title}>{user.nombre}</h2>
+
                             <div className={styles.actions}>
                                 <button className={styles.editBtn} onClick={startEdit}>Editar perfil</button>
                             </div>
@@ -188,6 +198,8 @@ export default function Perfil() {
                                 style={{ fontSize: 18, width: "100%" }}
                             />
                             {errors.nombre && <small style={{ color: "crimson", display: "block" }}>{errors.nombre}</small>}
+
+
 
                             <div className={styles.actions}>
                                 <button className={styles.saveBtn} onClick={save}>Guardar</button>
@@ -225,6 +237,7 @@ export default function Perfil() {
                     <>
                         <p><strong>Teléfono:</strong> {user.telefono || "—"}</p>
                         <p><strong>Dirección:</strong> {user.direccion || "—"}</p>
+                        <p><strong>Alias para transferencias:</strong> {user.alias ?? "—"}</p>
                     </>
                 ) : (
                     <>
@@ -233,16 +246,34 @@ export default function Perfil() {
                             <input name="telefono" value={form.telefono} onChange={onChange} placeholder="+54911..." style={{ width: "100%" }} />
                             {errors.telefono && <small style={{ color: "crimson" }}>{errors.telefono}</small>}
                         </div>
-                        <div>
+
+                        <div style={{ marginBottom: 10 }}>
                             <div style={{ fontSize: 12, opacity: 0.7 }}>Dirección</div>
                             <input name="direccion" value={form.direccion} onChange={onChange} placeholder="Calle 123, Ciudad" style={{ width: "100%" }} />
                             {errors.direccion && <small style={{ color: "crimson" }}>{errors.direccion}</small>}
+                        </div>
+
+                        {/* 👇 Nuevo campo */}
+                        <div style={{ marginBottom: 10 }}>
+                            <div style={{ fontSize: 12, opacity: 0.7 }}>Alias para transferencias</div>
+                            <input
+                                name="alias"
+                                value={form.alias}
+                                onChange={onChange}
+                                placeholder="mi.alias.banco"
+                                maxLength={20}
+                                style={{ width: "100%" }}
+                            />
+                            {errors.aliasTransferencia && <small style={{ color: "crimson" }}>{errors.aliasTransferencia}</small>}
+                            <div style={{ fontSize: 11, opacity: 0.6, marginTop: 4 }}>
+                                6–20 caracteres. Permitidos: letras, números, punto y guion.
+                            </div>
                         </div>
                     </>
                 )}
             </section>
 
-            {/* ESTADÍSTICAS */}
+            {/* ESTADISTICAS */}
             <section className={styles.stats}>
                 <h3>Estadísticas</h3>
                 <div className={styles.statsContainer}>

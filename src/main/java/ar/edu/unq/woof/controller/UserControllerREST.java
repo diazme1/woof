@@ -45,9 +45,10 @@ public class UserControllerREST {
     public ResponseEntity<String> validarUsuario(
             @PathVariable Long id,
             @RequestParam("fotoDni") MultipartFile fotoDni,
-            @RequestParam("cv") MultipartFile cv) throws IOException {
+            @RequestParam("cv") MultipartFile cv,
+            @RequestParam("alias") String alias) throws IOException {
 
-        userService.validarUsuario(id, fotoDni, cv);
+        userService.validarUsuario(id, fotoDni, cv, alias);
         return ResponseEntity.ok("Documentos subidos correctamente. Usuario en proceso de validación.");
     }
 

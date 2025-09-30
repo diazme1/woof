@@ -14,7 +14,7 @@ public interface UserService {
     void saveUser(Usuario user);
     Optional<Usuario> getUser(Long idUser);
     Usuario findByEmail(String email);
-    void validarUsuario(Long idUser, MultipartFile fotoDni, MultipartFile cv) throws IOException;
+    void validarUsuario(Long idUser, MultipartFile fotoDni, MultipartFile cv, String alias) throws IOException;
     void aprobarValidacion(Long idUser);
     List<Usuario> getUsuariosPendientesValidacion();
     void rechazarValidacion(Long id);
