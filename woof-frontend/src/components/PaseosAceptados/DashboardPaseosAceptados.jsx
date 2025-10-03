@@ -92,17 +92,18 @@ const DashboardPaseosAceptados = () => {
                 </div>
             ) : (
                 <ul className={styles.lista}>
-                    {lista.map((p) => (
-                        <li key={p.id} className={styles.item}>
-                            <h3><strong>Fecha y Hora:</strong> {formatFecha(p.horario)}</h3>
-                            <p><strong>Perro:</strong> {p.nombrePerro} ({p.raza})</p>
-                            <p><strong>Estado:</strong> {p.estado}</p>
+                    {lista.map((s) => (
+                        <li key={s.id} className={styles.item}>
+                            <h3><strong>Fecha y Hora:</strong> {formatFecha(s.horario)}</h3>
+                            <p><strong>Perro:</strong> {s.nombrePerro} ({s.raza})</p>
+                            <p><strong>Estado:</strong> {s.estado}</p>
 
                             {/* Botón Finalizar paseo */}
-                            {p.idPaseador === user.id && (
+                            {s.idPaseador === user.id
+                                &&(
                                     <button
                                         className={styles.finalizarBtn}
-                                        onClick={() => finalizarPaseo(p.solicitudId)}
+                                        onClick={() => finalizarPaseo(s.id)}
                                     >
                                         Finalizar paseo
                                     </button>

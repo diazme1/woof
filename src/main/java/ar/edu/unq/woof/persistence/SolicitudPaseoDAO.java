@@ -17,19 +17,18 @@ public interface SolicitudPaseoDAO extends JpaRepository<SolicitudPaseo, Long> {
     @Query("SELECT e FROM SolicitudPaseo e WHERE e.id = :id")
     Optional<SolicitudPaseo> recuperarSolicitudPaseo(@Param("id") Long id);
 
-    @Query("SELECT p FROM SolicitudPaseo p WHERE p.estado= :estado")
+    @Query("SELECT p FROM SolicitudPaseo p WHERE p.estadoDeSolicitud= :estado")
     List<SolicitudPaseo> findAllEstado(@Param("estado") EstadoSolicitud estado);
 
     List<SolicitudPaseo> findByIdCliente(Long idCliente);
 
     List<SolicitudPaseo> findByIdPaseador(Long idPaseador);
 
-    @Query("SELECT p FROM SolicitudPaseo p WHERE p.idPaseador = :idPaseador AND p.estado = :estado")
+    @Query("SELECT p FROM SolicitudPaseo p WHERE p.idPaseador = :idPaseador AND p.estadoDeSolicitud = :estado")
     List<SolicitudPaseo> findPaseosPorPaseadorEnEstado(@Param("idPaseador") Long idPaseador,
                                                         @Param("estado") EstadoSolicitud estado);
 
     @Query("SELECT p FROM SolicitudPaseo p WHERE p.idPaseador= :idPaseador")
     List<SolicitudPaseo> getPaseosPaseador(@Param("idPaseador") Long idPaseador);
 
-    void actualizar(SolicitudPaseo solicitud);
 }

@@ -28,7 +28,7 @@ public record SolicitudPaseoDTO(
                 solicitudPaseo.getNombrePerro(),
                 solicitudPaseo.getTamanoPerro(),
                 solicitudPaseo.getRaza(),
-                solicitudPaseo.getEstado(),
+                solicitudPaseo.getEstadoDeSolicitud(),
                 solicitudPaseo.getIdCliente(),
                 solicitudPaseo.getIdPaseador(),
                 solicitudPaseo.getEstadoDePago()

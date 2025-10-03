@@ -62,17 +62,17 @@ public class SolicitudPaseoImpl implements SolicitudPaseoService {
     @Override
     public void finalizarSolicitud(Long id) {
         SolicitudPaseo solicitud = paseoDAO.recuperarSolicitudPaseo(id).orElseThrow(SolicitudNoEncontrada::new);
-        if (solicitud.getEstadoDePago().equals(EstadoDePago.PAGO) && solicitud.getEstado().equals(EstadoSolicitud.ACEPTADA)) {
-            solicitud.setEstado(EstadoSolicitud.FINALIZADA);
-            paseoDAO.actualizar(solicitud);
+        if (solicitud.getEstadoDePago().equals(EstadoDePago.PAGO) && solicitud.getEstadoDeSolicitud().equals(EstadoSolicitud.ACEPTADA)) {
+            solicitud.setEstadoDeSolicitud(EstadoSolicitud.FINALIZADA);
+            paseoDAO.save(solicitud);
         }
     }
 
     @Override
     public void aceptarSolicitudPaseo(Long idPaseo, Long idPaseador) {
         SolicitudPaseo solicitud = paseoDAO.recuperarSolicitudPaseo(idPaseo).orElseThrow(SolicitudNoEncontrada::new);
-        if (solicitud.getEstado().equals(EstadoSolicitud.PENDIENTE)) {
-            solicitud.setEstado(EstadoSolicitud.ACEPTADA);
+        if (solicitud.getEstadoDeSolicitud().equals(EstadoSolicitud.PENDIENTE)) {
+            solicitud.setEstadoDeSolicitud(EstadoSolicitud.ACEPTADA);
             solicitud.setIdPaseador(idPaseador);
             paseoDAO.save(solicitud);
         }
@@ -81,11 +81,11 @@ public class SolicitudPaseoImpl implements SolicitudPaseoService {
     @Override
     public void cancelarSolicitudPaseo(Long idPaseo) {
         SolicitudPaseo solicitud = paseoDAO.recuperarSolicitudPaseo(idPaseo).orElseThrow(SolicitudNoEncontrada::new);
-        if (!(solicitud.getEstado().equals(EstadoSolicitud.PENDIENTE) ||
-                solicitud.getEstado().equals(EstadoSolicitud.ACEPTADA))) {
+        if (!(solicitud.getEstadoDeSolicitud().equals(EstadoSolicitud.PENDIENTE) ||
+                solicitud.getEstadoDeSolicitud().equals(EstadoSolicitud.ACEPTADA))) {
             throw new RuntimeException("La solicitud no se puede cancelar en este estado");
         }
-        solicitud.setEstado(EstadoSolicitud.CANCELADA);
+        solicitud.setEstadoDeSolicitud(EstadoSolicitud.CANCELADA);
         paseoDAO.save(solicitud);
     }
 

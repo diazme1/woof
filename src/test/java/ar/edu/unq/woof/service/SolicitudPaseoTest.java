@@ -1,6 +1,7 @@
 package ar.edu.unq.woof.service;
 
 import ar.edu.unq.woof.modelo.SolicitudPaseo;
+import ar.edu.unq.woof.modelo.enums.EstadoDePago;
 import ar.edu.unq.woof.modelo.enums.TamanoPerro;
 import ar.edu.unq.woof.modelo.enums.ZonaOperativa;
 import ar.edu.unq.woof.service.interfaces.SolicitudPaseoService;
@@ -24,7 +25,7 @@ public class SolicitudPaseoTest {
         LocalDateTime horario = now.plusMinutes(15);
 
 
-        SolicitudPaseo solicitudPaseo = new SolicitudPaseo(ZonaOperativa.QUILMES, horario, "Abdu", TamanoPerro.GRANDE, "Labrador", idCliente, 4L, estadoPago);
+        SolicitudPaseo solicitudPaseo = new SolicitudPaseo(ZonaOperativa.QUILMES, horario, "Abdu", TamanoPerro.GRANDE, "Labrador", 1L);
         solicitudPaseoService.savePaseo(solicitudPaseo);
     }
 
@@ -34,7 +35,7 @@ public class SolicitudPaseoTest {
 //      LocalDateTime now = LocalDateTime.of(2025, Month.SEPTEMBER, 24, 14, 0);
         LocalDateTime horario = now.plusMinutes(15);
 
-        SolicitudPaseo solicitudPaseo = new SolicitudPaseo(ZonaOperativa.QUILMES, horario, "Oli", TamanoPerro.MEDIANO, "Caniche", idCliente, 4L, estadoPago);
+        SolicitudPaseo solicitudPaseo = new SolicitudPaseo(ZonaOperativa.QUILMES, horario, "Oli", TamanoPerro.MEDIANO, "Caniche",4L);
         solicitudPaseoService.savePaseo(solicitudPaseo);
         solicitudPaseoService.cancelarSolicitudPaseo(solicitudPaseo.getId());
     }
