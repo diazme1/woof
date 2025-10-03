@@ -47,6 +47,9 @@ public class SolicitudPaseo {
     @Column
     private Long idPaseador;
 
+    @Column
+    private String comprobanteDePago;
+
     public SolicitudPaseo(ZonaOperativa zona, LocalDateTime horario, String nombrePerro, TamanoPerro tamanoPerro, String raza, Long idCliente) {
         this.zona = zona;
         this.horario = horario;

@@ -8,7 +8,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,6 +30,14 @@ public class PaseoControllerREST {
         SolicitudPaseo saved = solicitudService.savePaseo(newSolicitud);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(SolicitudPaseoDTO.desdeModelo(saved));
+    }
+
+    @PostMapping("/{id}/comprobante")
+    public ResponseEntity<String> saveComprobanteDePago(@PathVariable Long id,
+                                                        @RequestParam("comprobante") MultipartFile comprobante)
+                                                        throws IOException{
+        solicitudService.guardarComprobante(id,comprobante);
+        return ResponseEntity.ok("Documentos subidos correctamente. Usuario en proceso de validación.");
     }
 
     @GetMapping("/solicitudes")

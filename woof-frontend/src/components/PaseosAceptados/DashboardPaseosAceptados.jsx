@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./DashboardPaseosAceptados.module.css";
@@ -7,8 +6,9 @@ const DashboardPaseosAceptados = () => {
     const [paseosActivos, setPaseosActivos] = useState([]);
     const [paseosHistoricos, setPaseosHistoricos] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [view, setView] = useState("activos"); // activos | historicos
+    const [view, setView] = useState("activos");
     const [error, setError] = useState(null);
+    const [showFinalizadoPopup, setShowFinalizadoPopup] = useState(false);
     const user = JSON.parse(localStorage.getItem("user"));
 
     const formatFecha = (fechaISO) => {
@@ -20,12 +20,10 @@ const DashboardPaseosAceptados = () => {
     };
 
     const finalizarPaseo = async (paseoId) => {
-        console.log("ID del paseo a finalizar:", paseoId);
         try {
             await axios.put(`http://localhost:8080/paseo/finalizar/${paseoId}`);
-            alert("Paseo finalizado con éxito!");
+            setShowFinalizadoPopup(true);
 
-            // refrescar lista
             const resActivos = await axios.get(`http://localhost:8080/paseo/paseador/actuales/${user.id}`);
             setPaseosActivos(resActivos.data);
 
@@ -58,16 +56,23 @@ const DashboardPaseosAceptados = () => {
         fetchPaseos();
     }, [user.id]);
 
-    if (loading) return <p>Cargando paseos...</p>;
-    if (error) return <p>{error}</p>;
-
     const lista = view === "activos" ? paseosActivos : paseosHistoricos;
 
     return (
         <main className={styles.dashboardContainer}>
             <h2 className={styles.title}>Mis Paseos Aceptados</h2>
 
-            {/* Selector de tabs */}
+            {/* Popup de finalización */}
+            {showFinalizadoPopup && (
+                <div className={styles.overlay} onClick={() => setShowFinalizadoPopup(false)}>
+                    <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+                        <p>¡Paseo finalizado con éxito! 🐾</p>
+                        <button onClick={() => setShowFinalizadoPopup(false)}>Cerrar</button>
+                    </div>
+                </div>
+            )}
+
+            {/* Tabs */}
             <div className={styles.tabs}>
                 <button
                     className={`${styles.tabBtn} ${view === "activos" ? styles.activeTab : ""}`}
@@ -83,7 +88,7 @@ const DashboardPaseosAceptados = () => {
                 </button>
             </div>
 
-            {/* Lista de paseos */}
+            {/* Lista */}
             {lista.length === 0 ? (
                 <div className={styles.emptyMessageContainer}>
                     <div className={styles.emptyMessageBox}>
@@ -96,18 +101,19 @@ const DashboardPaseosAceptados = () => {
                         <li key={s.id} className={styles.item}>
                             <h3><strong>Fecha y Hora:</strong> {formatFecha(s.horario)}</h3>
                             <p><strong>Perro:</strong> {s.nombrePerro} ({s.raza})</p>
-                            <p><strong>Estado:</strong> {s.estado}</p>
+                            <p><strong>Estado de solicitud:</strong> {s.estado}</p>
+                            { (s.estadoPago === "PAGO") && (<p><strong>Estado de pago:</strong> {"Pagada"}</p>)}
+                            { (s.estadoPago === "PENDIENTE_DE_PAGO") && (<p><strong>Estado de pago:</strong> {"Pendiente"}</p>)}
 
-                            {/* Botón Finalizar paseo */}
-                            {s.idPaseador === user.id
-                                &&(
-                                    <button
-                                        className={styles.finalizarBtn}
-                                        onClick={() => finalizarPaseo(s.id)}
-                                    >
-                                        Finalizar paseo
-                                    </button>
-                                )}
+
+                            {s.idPaseador === user.id && (
+                                <button
+                                    className={styles.finalizarBtn}
+                                    onClick={() => finalizarPaseo(s.id)}
+                                >
+                                    Finalizar paseo
+                                </button>
+                            )}
                         </li>
                     ))}
                 </ul>
@@ -116,7 +122,4 @@ const DashboardPaseosAceptados = () => {
     );
 };
 
-
 export default DashboardPaseosAceptados;
-
-

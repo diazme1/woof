@@ -3,7 +3,7 @@ VALUES ('Administrador', 99999999, 'admin@woof.com', '0000000000', 'Universidad 
 ON CONFLICT (email) DO NOTHING;
 
 INSERT INTO usuario (nombre, dni, email, telefono, direccion, contrasena, rol, fecha_registro, alias, biografia )
-VALUES ('Paseador', 8888888, 'p@gmail.com', '0000000000', 'Universidad Nacional de Quilmes', 'Paseador@123', 0, now(), null , null )
+VALUES ('Paseador', 8888888, 'p@gmail.com', '0000000000', 'Universidad Nacional de Quilmes', 'Paseador@123', 0, now(), 'paseadoralias123' , null )
 ON CONFLICT (email) DO NOTHING;
 
 INSERT INTO usuario (nombre, dni, email, telefono, direccion, contrasena, rol, fecha_registro, alias, biografia)

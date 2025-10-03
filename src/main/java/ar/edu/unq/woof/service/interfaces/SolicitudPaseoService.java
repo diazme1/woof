@@ -1,8 +1,9 @@
 package ar.edu.unq.woof.service.interfaces;
 
-import ar.edu.unq.woof.controller.dto.paseo.SolicitudPaseoDTO;
 import ar.edu.unq.woof.modelo.SolicitudPaseo;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,4 +20,5 @@ public interface SolicitudPaseoService {
     List<SolicitudPaseo> obtenerPaseosPaseador(Long id);
     int contarLosPaseosDePaseador(Long idPaseador);
     void finalizarSolicitud(Long id);
+    void guardarComprobante(Long id, MultipartFile comprobante) throws IOException;
 }
