@@ -7,6 +7,10 @@ const DashboardSolicitudes = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [showSuccess, setShowSuccess] = useState(false);
+    const [showPagoPopup, setShowPagoPopup] = useState(false);
+    const [aliasPaseador, setAliasPaseador] = useState("");
+    const [solicitudSeleccionada, setSolicitudSeleccionada] = useState(null);
+    const [comprobanteEnviado, setComprobanteEnviado] = useState(false);
     const user = JSON.parse(localStorage.getItem("user"));
 
     const tamanosMap = {
@@ -39,7 +43,6 @@ const DashboardSolicitudes = () => {
         });
     };
 
-    // Traer solicitudes del cliente
     const fetchSolicitudes = async () => {
         try {
             const response = await axios.get(`http://localhost:8080/paseo/cliente/${user?.id}`);
@@ -51,14 +54,13 @@ const DashboardSolicitudes = () => {
         }
     };
 
+
     useEffect(() => {
         fetchSolicitudes();
-
-        const interval = setInterval(fetchSolicitudes, 10000); // refresco cada 10s
+        const interval = setInterval(fetchSolicitudes, 10000);
         return () => clearInterval(interval);
     }, []);
 
-    // Cancelar solicitud
     const cancelarSolicitud = async (id) => {
         try {
             await axios.put(`http://localhost:8080/paseo/cancelar/${id}`);
@@ -72,6 +74,41 @@ const DashboardSolicitudes = () => {
         }
     };
 
+    const obtenerAliasPaseador = async (idPaseador) => {
+        try {
+            const response = await axios.get(`http://localhost:8080/user/${idPaseador}`);
+            return response.data.alias;
+        } catch (err) {
+            console.error("Error al obtener alias del paseador:", err);
+            return "Alias no disponible";
+        }
+    };
+
+    const abrirPagoPopup = (solicitud) => {
+        console.log(solicitud);
+        setAliasPaseador(obtenerAliasPaseador(solicitud.idPaseador) || "Sin alias");
+        setSolicitudSeleccionada(solicitud);
+        setShowPagoPopup(true);
+        setComprobanteEnviado(false);
+    };
+
+    const enviarComprobante = async (e) => {
+        const file = e.target.files[0];
+        if (!file || !solicitudSeleccionada) return;
+
+        const formData = new FormData();
+        formData.append("comprobante", file);
+
+        try {
+            await axios.post(`http://localhost:8080/paseo/${solicitudSeleccionada.id}/comprobante`,
+                formData);
+            setComprobanteEnviado(true);
+        } catch (err) {
+            console.error("Error al enviar comprobante:", err);
+            alert("Error al subir el comprobante.");
+        }
+    };
+
     if (loading) return <p>Cargando solicitudes...</p>;
     if (error) return <p>{error}</p>;
 
@@ -80,10 +117,29 @@ const DashboardSolicitudes = () => {
             <h2 className={styles.title}>Mis solicitudes de paseo🐶</h2>
 
             {showSuccess && (
-                <div className={styles.overlay} role="presentation" onClick={() => setShowSuccess(false)}>
-                    <div className={styles.modal} role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
+                <div className={styles.overlay} onClick={() => setShowSuccess(false)}>
+                    <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
                         <p>Solicitud cancelada con éxito 🐾</p>
-                        <button type="button" onClick={() => setShowSuccess(false)}>Cerrar</button>
+                        <button onClick={() => setShowSuccess(false)}>Cerrar</button>
+                    </div>
+                </div>
+            )}
+
+            {showPagoPopup && (
+                <div className={styles.overlay} onClick={() => setShowPagoPopup(false)}>
+                    <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+                        {!comprobanteEnviado ? (
+                            <>
+                                <p><strong>Alias del paseador:</strong> {aliasPaseador}</p>
+                                <input type="file" accept="image/*" onChange={enviarComprobante} />
+                                <button onClick={() => setShowPagoPopup(false)}>Cerrar</button>
+                            </>
+                        ) : (
+                            <>
+                                <p>¡Comprobante de pago enviado con éxito! 🎉</p>
+                                <button onClick={() => setShowPagoPopup(false)}>Cerrar</button>
+                            </>
+                        )}
                     </div>
                 </div>
             )}
@@ -102,15 +158,19 @@ const DashboardSolicitudes = () => {
                             <p><strong>Horario:</strong> {formatFecha(s.horario)}</p>
                             <p><strong>Perro:</strong> {s.nombrePerro} ({s.raza})</p>
                             <p><strong>Tamaño:</strong> {tamanosMap[s.tamanoPerro] || s.tamanoPerro}</p>
-                            <p><strong>Estado:</strong> {estadoMap[s.estado] || s.estado}</p>
+                            <p><strong>Estado de solicitud:</strong> {estadoMap[s.estado] || s.estado}</p>
+                            { (s.estadoPago === "PAGO") && (<p><strong>Estado de pago:</strong> {"Pagada ✅"}</p>)}
+                            { (s.estadoPago === "PENDIENTE_DE_PAGO") && (<p><strong>Estado de pago:</strong> {"Pendiente"}</p>)}
 
                             <div className={styles.cardActions}>
                                 {(s.estado === "PENDIENTE" || s.estado === "ACEPTADA") && (
-                                    <button
-                                        className={styles.btnPrimary}
-                                        onClick={() => cancelarSolicitud(s.solicitudId)}
-                                    >
+                                    <button className={styles.btnPrimary} onClick={() => cancelarSolicitud(s.solicitudId)}>
                                         Cancelar
+                                    </button>
+                                )}
+                                {(s.estado === "ACEPTADA") && (s.estadoPago === "PENDIENTE_DE_PAGO") && (
+                                    <button className={styles.btnPagar} onClick={() => abrirPagoPopup(s)}>
+                                        Pagar
                                     </button>
                                 )}
                             </div>
@@ -123,4 +183,3 @@ const DashboardSolicitudes = () => {
 };
 
 export default DashboardSolicitudes;
-

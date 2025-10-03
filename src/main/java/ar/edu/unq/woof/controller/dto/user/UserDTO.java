@@ -15,7 +15,10 @@ public record UserDTO(
         String fotoDni,
         String cv,
         EstadoValidacion validado,
-        LocalDate fechaRegistro
+        LocalDate fechaRegistro,
+        String biografia,
+        String fotoPerfilUrl,
+        String alias
 ) {
 
     public static UserDTO desdeModelo(Usuario usuario) {
@@ -29,7 +32,10 @@ public record UserDTO(
                 usuario.getFotoDni(),
                 usuario.getCv(),
                 usuario.getEstadoValidacion(),
-                usuario.getFechaRegistro()
+                usuario.getFechaRegistro(),
+                usuario.getBiografia(),
+                usuario.getFotoPerfilUrl(),
+                usuario.getAlias()
         );
     }
 }

@@ -1,8 +1,10 @@
 package ar.edu.unq.woof.service.impl;
 
-import ar.edu.unq.woof.controller.dto.paseo.SolicitudPaseoDTO;
 import ar.edu.unq.woof.modelo.SolicitudPaseo;
+import ar.edu.unq.woof.modelo.Usuario;
+import ar.edu.unq.woof.modelo.enums.EstadoDePago;
 import ar.edu.unq.woof.modelo.enums.EstadoSolicitud;
+import ar.edu.unq.woof.modelo.enums.EstadoValidacion;
 import ar.edu.unq.woof.modelo.exceptions.FranjaHorariaExcedida;
 import ar.edu.unq.woof.modelo.exceptions.HorarioIncorrecto;
 import ar.edu.unq.woof.modelo.exceptions.SolicitudNoEncontrada;
@@ -10,7 +12,10 @@ import ar.edu.unq.woof.persistence.SolicitudPaseoDAO;
 import ar.edu.unq.woof.service.interfaces.SolicitudPaseoService;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -59,10 +64,50 @@ public class SolicitudPaseoImpl implements SolicitudPaseoService {
     }
 
     @Override
+    public void finalizarSolicitud(Long id) {
+        SolicitudPaseo solicitud = paseoDAO.recuperarSolicitudPaseo(id).orElseThrow(SolicitudNoEncontrada::new);
+        if (solicitud.getEstadoDePago().equals(EstadoDePago.PAGO) && solicitud.getEstadoDeSolicitud().equals(EstadoSolicitud.ACEPTADA)) {
+            solicitud.setEstadoDeSolicitud(EstadoSolicitud.FINALIZADA);
+            paseoDAO.save(solicitud);
+        }
+    }
+
+    @Override
+    public void guardarComprobante(Long id, MultipartFile comprobante) throws IOException {
+        SolicitudPaseo solicitud = paseoDAO.findById(id)
+                                            .orElseThrow(SolicitudNoEncontrada::new);
+
+        if (!solicitud.getEstadoDePago().equals(EstadoDePago.PENDIENTE_DE_PAGO) ||
+                !solicitud.getEstadoDeSolicitud().equals(EstadoSolicitud.ACEPTADA)) {
+            throw new RuntimeException("La solicitud está pagada o no está en estado ACEPTADA");
+        }
+
+        // Crear carpeta de destino
+        String projectDir = System.getProperty("user.dir");
+        String baseUploadDir = projectDir + File.separator + "src" + File.separator + "main" + File.separator + "uploads";
+        String uploadDir = baseUploadDir + File.separator + "solicitud_" + solicitud.getId();
+
+        File dir = new File(uploadDir);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+
+        // Guardar comprobante
+        String comprobantePath = uploadDir + File.separator + "comprobante_" + comprobante.getOriginalFilename();
+        comprobante.transferTo(new File(comprobantePath));
+
+        // Actualizar solicitud
+        solicitud.setComprobanteDePago(comprobantePath);
+        solicitud.setEstadoDePago(EstadoDePago.PAGO);
+
+        paseoDAO.save(solicitud);
+    }
+
+    @Override
     public void aceptarSolicitudPaseo(Long idPaseo, Long idPaseador) {
         SolicitudPaseo solicitud = paseoDAO.recuperarSolicitudPaseo(idPaseo).orElseThrow(SolicitudNoEncontrada::new);
-        if (solicitud.getEstado().equals(EstadoSolicitud.PENDIENTE)) {
-            solicitud.setEstado(EstadoSolicitud.ACEPTADA);
+        if (solicitud.getEstadoDeSolicitud().equals(EstadoSolicitud.PENDIENTE)) {
+            solicitud.setEstadoDeSolicitud(EstadoSolicitud.ACEPTADA);
             solicitud.setIdPaseador(idPaseador);
             paseoDAO.save(solicitud);
         }
@@ -71,11 +116,11 @@ public class SolicitudPaseoImpl implements SolicitudPaseoService {
     @Override
     public void cancelarSolicitudPaseo(Long idPaseo) {
         SolicitudPaseo solicitud = paseoDAO.recuperarSolicitudPaseo(idPaseo).orElseThrow(SolicitudNoEncontrada::new);
-        if (!(solicitud.getEstado().equals(EstadoSolicitud.PENDIENTE) ||
-                solicitud.getEstado().equals(EstadoSolicitud.ACEPTADA))) {
+        if (!(solicitud.getEstadoDeSolicitud().equals(EstadoSolicitud.PENDIENTE) ||
+                solicitud.getEstadoDeSolicitud().equals(EstadoSolicitud.ACEPTADA))) {
             throw new RuntimeException("La solicitud no se puede cancelar en este estado");
         }
-        solicitud.setEstado(EstadoSolicitud.CANCELADA);
+        solicitud.setEstadoDeSolicitud(EstadoSolicitud.CANCELADA);
         paseoDAO.save(solicitud);
     }
 
