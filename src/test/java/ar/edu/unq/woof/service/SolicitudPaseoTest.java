@@ -1,7 +1,7 @@
 package ar.edu.unq.woof.service;
 
 import ar.edu.unq.woof.modelo.SolicitudPaseo;
-import ar.edu.unq.woof.modelo.enums.EstadoSolicitud;
+import ar.edu.unq.woof.modelo.enums.EstadoDePago;
 import ar.edu.unq.woof.modelo.enums.TamanoPerro;
 import ar.edu.unq.woof.modelo.enums.ZonaOperativa;
 import ar.edu.unq.woof.service.interfaces.SolicitudPaseoService;
@@ -10,8 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
-import java.time.Month;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -27,6 +25,7 @@ public class SolicitudPaseoTest {
         LocalDateTime horario = now.plusMinutes(15);
 
 
+        SolicitudPaseo solicitudPaseo = new SolicitudPaseo(ZonaOperativa.QUILMES, horario, "Abdu", TamanoPerro.GRANDE, "Labrador", 1L);
         SolicitudPaseo solicitudPaseo = new SolicitudPaseo(ZonaOperativa.QUILMES, horario, "Abdu", TamanoPerro.GRANDE, "Labrador", 4L, "Toma medicamentos a las 18hs");
         solicitudPaseoService.savePaseo(solicitudPaseo);
     }
@@ -38,6 +37,7 @@ public class SolicitudPaseoTest {
         LocalDateTime horario = now.plusMinutes(15);
 
         SolicitudPaseo solicitudPaseo = new SolicitudPaseo(ZonaOperativa.QUILMES, horario, "Oli", TamanoPerro.MEDIANO, "Caniche", 4L, "detalles");
+        SolicitudPaseo solicitudPaseo = new SolicitudPaseo(ZonaOperativa.QUILMES, horario, "Oli", TamanoPerro.MEDIANO, "Caniche",4L);
         solicitudPaseoService.savePaseo(solicitudPaseo);
         solicitudPaseoService.cancelarSolicitudPaseo(solicitudPaseo.getId());
     }
