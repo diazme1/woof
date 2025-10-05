@@ -8,6 +8,7 @@ import ar.edu.unq.woof.modelo.enums.EstadoValidacion;
 import ar.edu.unq.woof.modelo.exceptions.FranjaHorariaExcedida;
 import ar.edu.unq.woof.modelo.exceptions.HorarioIncorrecto;
 import ar.edu.unq.woof.modelo.exceptions.SolicitudNoEncontrada;
+import ar.edu.unq.woof.modelo.exceptions.SolicitudaNoPagadaAceptada;
 import ar.edu.unq.woof.persistence.SolicitudPaseoDAO;
 import ar.edu.unq.woof.service.interfaces.SolicitudPaseoService;
 import jakarta.transaction.Transactional;
@@ -69,6 +70,8 @@ public class SolicitudPaseoImpl implements SolicitudPaseoService {
         if (solicitud.getEstadoDePago().equals(EstadoDePago.PAGO) && solicitud.getEstadoDeSolicitud().equals(EstadoSolicitud.ACEPTADA)) {
             solicitud.setEstadoDeSolicitud(EstadoSolicitud.FINALIZADA);
             paseoDAO.save(solicitud);
+        } else {
+            throw new SolicitudaNoPagadaAceptada();
         }
     }
 

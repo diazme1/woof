@@ -19,6 +19,22 @@ const DashboardPaseosAceptados = () => {
         });
     };
 
+    const zonasMap = {
+        QUILMES: "Quilmes",
+        FLORENCIO_VARELA: "Florencio Varela",
+        LA_PLATA: "La Plata",
+        BERNAL: "Bernal",
+        AVELLANEDA: "Avellaneda",
+        DON_BOSCO: "Don Bosco"
+    };
+
+    const estadoMap = {
+        PENDIENTE: "Pendiente",
+        ACEPTADA: "Aceptada",
+        CANCELADA: "Cancelada",
+        FINALIZADA: "Finalizada"
+    };
+
     const finalizarPaseo = async (paseoId) => {
         try {
             await axios.put(`http://localhost:8080/paseo/finalizar/${paseoId}`);
@@ -99,14 +115,15 @@ const DashboardPaseosAceptados = () => {
                 <ul className={styles.lista}>
                     {lista.map((s) => (
                         <li key={s.id} className={styles.item}>
-                            <h3><strong>Fecha y Hora:</strong> {formatFecha(s.horario)}</h3>
+                            <h3><strong>Zona:</strong> {zonasMap[s.zona] || s.zona}</h3>
+                            <p><strong>Fecha y Hora:</strong> {formatFecha(s.horario)}</p>
                             <p><strong>Perro:</strong> {s.nombrePerro} ({s.raza})</p>
-                            <p><strong>Estado de solicitud:</strong> {s.estado}</p>
+                            <p><strong>Estado de solicitud:</strong> {estadoMap[s.estado] || s.estado}</p>
                             { (s.estadoPago === "PAGO") && (<p><strong>Estado de pago:</strong> {"Pagada"}</p>)}
                             { (s.estadoPago === "PENDIENTE_DE_PAGO") && (<p><strong>Estado de pago:</strong> {"Pendiente"}</p>)}
 
 
-                            {s.idPaseador === user.id && (
+                            {s.idPaseador === user.id && s.estadoPago === "PAGO" && view === "activos" && (
                                 <button
                                     className={styles.finalizarBtn}
                                     onClick={() => finalizarPaseo(s.id)}
