@@ -66,7 +66,7 @@ const DashboardSolicitudes = () => {
         try {
             await axios.put(`http://localhost:8080/paseo/cancelar/${id}`);
             setSolicitudes(prev => prev.map(s =>
-                s.solicitudId === id ? { ...s, estado: "CANCELADA" } : s
+                s.id === id ? { ...s, estado: "CANCELADA" } : s
             ));
             setShowSuccess(true);
         } catch (err) {
@@ -154,7 +154,7 @@ const DashboardSolicitudes = () => {
             ) : (
                 <ul className={styles.lista}>
                     {solicitudes.map((s) => (
-                        <li key={s.solicitudId} className={styles.item}>
+                        <li key={s.id} className={styles.item}>
                             <h3><strong>Zona:</strong> {zonasMap[s.zona] || s.zona}</h3>
                             <p><strong>Horario:</strong> {formatFecha(s.horario)}</p>
                             <p><strong>Perro:</strong> {s.nombrePerro} ({s.raza})</p>
@@ -165,7 +165,7 @@ const DashboardSolicitudes = () => {
 
                             <div className={styles.cardActions}>
                                 {(s.estado === "PENDIENTE" || s.estado === "ACEPTADA") && (
-                                    <button className={styles.btnPrimary} onClick={() => cancelarSolicitud(s.solicitudId)}>
+                                    <button className={styles.btnPrimary} onClick={() => cancelarSolicitud(s.id)}>
                                         Cancelar
                                     </button>
                                 )}
