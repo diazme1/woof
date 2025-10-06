@@ -18,8 +18,7 @@ public record SolicitudPaseoDTO(
         EstadoSolicitud estado,
         Long idCliente,
         Long idPaseador,
-        EstadoDePago estadoPago
-        Long idCliente,
+        EstadoDePago estadoPago,
         String detalles
 ) {
     public static SolicitudPaseoDTO desdeModelo(SolicitudPaseo solicitudPaseo) {
@@ -30,13 +29,11 @@ public record SolicitudPaseoDTO(
                 solicitudPaseo.getNombrePerro(),
                 solicitudPaseo.getTamanoPerro(),
                 solicitudPaseo.getRaza(),
-                solicitudPaseo.getEstado(),
-                solicitudPaseo.getIdCliente(),
-                solicitudPaseo.getDetalles()
                 solicitudPaseo.getEstadoDeSolicitud(),
                 solicitudPaseo.getIdCliente(),
                 solicitudPaseo.getIdPaseador(),
-                solicitudPaseo.getEstadoDePago()
+                solicitudPaseo.getEstadoDePago(),
+                solicitudPaseo.getDetalles()
         );
     }
 }

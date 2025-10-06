@@ -52,19 +52,16 @@ public class SolicitudPaseo {
     @Column
     private String detalles;
 
-
-    public SolicitudPaseo(ZonaOperativa zona, LocalDateTime horario, String nombrePerro, TamanoPerro tamanoPerro, String raza, Long idCliente, String detalles) {
     @Column
     private String comprobanteDePago;
 
-    public SolicitudPaseo(ZonaOperativa zona, LocalDateTime horario, String nombrePerro, TamanoPerro tamanoPerro, String raza, Long idCliente) {
+    public SolicitudPaseo(ZonaOperativa zona, LocalDateTime horario, String nombrePerro, TamanoPerro tamanoPerro, String raza, Long idCliente, String detalles) {
         this.zona = zona;
         this.horario = horario;
         this.nombrePerro = nombrePerro;
         this.tamanoPerro = tamanoPerro;
         this.raza = raza;
         this.idCliente = idCliente;
-
         this.detalles = detalles;
     }
 
