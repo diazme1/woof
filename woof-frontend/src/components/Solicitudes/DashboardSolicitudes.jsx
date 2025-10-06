@@ -37,10 +37,10 @@ const DashboardSolicitudes = () => {
 
     const formatFecha = (fechaISO) => {
         const f = new Date(fechaISO);
-        return f.toLocaleDateString("en-GB") + " " + f.toLocaleTimeString("en-US", {
+        return f.toLocaleDateString("es-AR") + " " + f.toLocaleTimeString("es-AR", {
             hour: "2-digit",
             minute: "2-digit",
-            hour12: true
+            hour12: false
         });
     };
 
@@ -54,7 +54,6 @@ const DashboardSolicitudes = () => {
             setLoading(false);
         }
     };
-
 
     useEffect(() => {
         fetchSolicitudes();
@@ -73,6 +72,15 @@ const DashboardSolicitudes = () => {
             console.error("Error al cancelar la solicitud:", err);
             alert("Hubo un error al cancelar la solicitud.");
         }
+    };
+
+    // 🔹 Función que determina si una solicitud es cancelable
+    const esCancelable = (solicitud) => {
+        if (solicitud.estado !== "PENDIENTE" && solicitud.estado !== "ACEPTADA") return false;
+
+        const ahora = new Date();
+        const horarioPaseo = new Date(solicitud.horario);
+        return ahora < horarioPaseo; // Solo cancelable si aún no llegó la hora
     };
 
     const obtenerAliasPaseador = async (idPaseador) => {
@@ -164,8 +172,11 @@ const DashboardSolicitudes = () => {
                             { (s.estadoPago === "PENDIENTE_DE_PAGO") && (<p><strong>Estado de pago:</strong> {"Pendiente"}</p>)}
 
                             <div className={styles.cardActions}>
-                                {(s.estado === "PENDIENTE" || s.estado === "ACEPTADA") && (
-                                    <button className={styles.btnPrimary} onClick={() => cancelarSolicitud(s.id)}>
+                                {esCancelable(s) && (
+                                    <button
+                                        className={styles.btnPrimary}
+                                        onClick={() => cancelarSolicitud(s.solicitudId)}
+                                    >
                                         Cancelar
                                     </button>
                                 )}
@@ -184,3 +195,4 @@ const DashboardSolicitudes = () => {
 };
 
 export default DashboardSolicitudes;
+
