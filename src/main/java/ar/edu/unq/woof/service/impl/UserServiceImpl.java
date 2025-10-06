@@ -1,5 +1,7 @@
 package ar.edu.unq.woof.service.impl;
 
+import ar.edu.unq.woof.controller.dto.user.UserDTO;
+import ar.edu.unq.woof.controller.dto.user.UserRequestDTO;
 import ar.edu.unq.woof.modelo.SolicitudPaseo;
 import ar.edu.unq.woof.modelo.Usuario;
 import ar.edu.unq.woof.modelo.enums.EstadoValidacion;
@@ -44,18 +46,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Usuario findByEmail(String email){
+    public Usuario findByEmail(String email) {
         return userDAO.findByEmail(email);
     }
 
     @Override
-    public void validarUsuario(Long idUser, MultipartFile fotoDni, MultipartFile cv) throws IOException {
+    public void validarUsuario(Long idUser, MultipartFile fotoDni, MultipartFile cv, String alias) throws IOException {
         Usuario usuario = userDAO.findById(idUser)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         if (!usuario.getRol().name().equals("ROLE_PASEADOR")) {
             throw new RuntimeException("Solo los paseadores pueden validar documentos");
         }
+
+
+        if (alias == null || alias.isBlank()) {
+            throw new RuntimeException("El alias es obligatorio");
+        }
+        usuario.setAlias(alias);
 
         String projectDir = System.getProperty("user.dir");
         String baseUploadDir = projectDir + File.separator + "src" + File.separator + "main" + File.separator + "uploads";
@@ -97,7 +105,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void rechazarValidacion(Long id){
+    public void rechazarValidacion(Long id) {
         Usuario usuario = userDAO.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
@@ -140,5 +148,87 @@ public class UserServiceImpl implements UserService {
                 periodo.getDays(), periodo.getMonths());
     }
 
+    @Override
+    public Usuario updatePerfil(Long id, UserRequestDTO req) {
+        Usuario u = userDAO.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con id: " + id));
 
+
+        if (req.nombre() == null || req.nombre().isBlank()) {
+            throw new IllegalArgumentException("El nombre es obligatorio");
+        }
+
+        u.setNombre(req.nombre().trim());
+
+
+        if (req.telefono() != null) {
+            u.setTelefono(req.telefono().trim());
+        }
+        if (req.direccion() != null) u.setDireccion(req.direccion().trim());
+        if (req.biografia() != null) u.setBiografia(req.biografia().trim());
+        if (req.alias() != null) u.setAlias(req.alias().trim());
+
+
+        return userDAO.save(u);
+    }
+
+    @Override
+    public String actualizarFotoPerfil(Long idUser, MultipartFile file) throws IOException {
+        Usuario usuario = userDAO.findById(idUser)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        if (file == null || file.isEmpty()) {
+            throw new RuntimeException("Archivo vacío");
+        }
+
+        String contentType = file.getContentType();
+        if (contentType == null || !contentType.toLowerCase().startsWith("image/")) {
+            throw new RuntimeException("El archivo debe ser una imagen");
+        }
+
+        String projectDir = System.getProperty("user.dir");
+        String baseUploadDir = projectDir + File.separator + "src" + File.separator + "main" + File.separator + "uploads";
+        String uploadDir = baseUploadDir + File.separator + "user_" + idUser;
+        new File(uploadDir).mkdirs();
+
+
+        String original = file.getOriginalFilename() != null ? file.getOriginalFilename() : "foto";
+        String safeName = original.replaceAll("[\\s]+", "_").replaceAll("[^A-Za-z0-9._-]", "");
+        String ext = safeName.contains(".") ? safeName.substring(safeName.lastIndexOf('.')) : ".jpg";
+        String filename = "perfil_" + System.currentTimeMillis() + ext;
+
+        File destino = new File(uploadDir + File.separator + filename);
+        file.transferTo(destino);
+
+        // borrar la anterior si la guardabas en disco
+        if (usuario.getFotoPerfilUrl() != null && usuario.getFotoPerfilUrl().startsWith("file:")) {
+            try {
+                new File(usuario.getFotoPerfilUrl().substring("file:".length())).delete();
+            } catch (Exception ignored) {
+            }
+        }
+
+        // Guardamos la ruta física o lógica; acá guardo física con prefijo "file:" para poder borrarla luego
+        usuario.setFotoPerfilUrl(destino.getAbsolutePath());
+        userDAO.save(usuario);
+
+        // URL pública para el front (endpoint GET)
+        String publicUrl = "/user/" + idUser + "/foto-perfil";
+        return publicUrl;
+    }
+
+    @Override
+    public File getFotoPerfil(Long idUser) {
+        Usuario usuario = userDAO.findById(idUser)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        String stored = usuario.getFotoPerfilUrl();
+        if (stored == null) return null;
+
+
+        return new File(stored);
+    }
 }
+
+
+
+

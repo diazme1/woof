@@ -49,11 +49,20 @@ public class Usuario {
     @Column
     private String cv;
 
+    @Column(length = 500)
+    private String biografia;
+
+    @Column
+    private String fotoPerfilUrl;
+
+    @Column
+    private String alias;
+
     @Enumerated(EnumType.STRING)
     private EstadoValidacion estadoValidacion = EstadoValidacion.NO_ENVIADO;
 
 
-    public Usuario(String nombre, Integer dni, String email, String telefono, String direccion, String contrasena, UserRole rol) {
+    public Usuario(String nombre, Integer dni, String email, String telefono, String direccion, String contrasena, UserRole rol, String alias, String biografia ) {
         this.nombre = nombre;
         this.dni = dni;
         this.email = email;
@@ -62,5 +71,7 @@ public class Usuario {
         this.contrasena = contrasena;
         this.rol = rol;
         this.fechaRegistro = LocalDate.now();
+        this.biografia = biografia;
+        this.alias = alias;
     }
 }
