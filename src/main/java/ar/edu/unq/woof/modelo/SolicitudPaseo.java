@@ -37,7 +37,7 @@ public class SolicitudPaseo {
     private String raza;
 
     @Column(nullable = false)
-    private EstadoSolicitud estado = EstadoSolicitud.PENDIENTE;
+    private EstadoSolicitud estadoDeSolicitud = EstadoSolicitud.PENDIENTE;
 
     @Column (nullable = false)
     private EstadoDePago estadoDePago = EstadoDePago.PENDIENTE_DE_PAGO;
@@ -52,6 +52,8 @@ public class SolicitudPaseo {
     @Column
     private String detalles;
 
+    @Column
+    private String comprobanteDePago;
 
     public SolicitudPaseo(ZonaOperativa zona, LocalDateTime horario, String nombrePerro, TamanoPerro tamanoPerro, String raza, Long idCliente, String detalles) {
         this.zona = zona;
@@ -60,7 +62,6 @@ public class SolicitudPaseo {
         this.tamanoPerro = tamanoPerro;
         this.raza = raza;
         this.idCliente = idCliente;
-
         this.detalles = detalles;
     }
 

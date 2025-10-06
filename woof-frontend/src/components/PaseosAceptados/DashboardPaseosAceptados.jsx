@@ -6,8 +6,9 @@ const DashboardPaseosAceptados = () => {
     const [paseosActivos, setPaseosActivos] = useState([]);
     const [paseosHistoricos, setPaseosHistoricos] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [view, setView] = useState("activos"); // activos | historicos
+    const [view, setView] = useState("activos");
     const [error, setError] = useState(null);
+    const [showFinalizadoPopup, setShowFinalizadoPopup] = useState(false);
     const user = JSON.parse(localStorage.getItem("user"));
 
     const formatFecha = (fechaISO) => {
@@ -16,6 +17,38 @@ const DashboardPaseosAceptados = () => {
             hour: "2-digit",
             minute: "2-digit",
         });
+    };
+
+    const zonasMap = {
+        QUILMES: "Quilmes",
+        FLORENCIO_VARELA: "Florencio Varela",
+        LA_PLATA: "La Plata",
+        BERNAL: "Bernal",
+        AVELLANEDA: "Avellaneda",
+        DON_BOSCO: "Don Bosco"
+    };
+
+    const estadoMap = {
+        PENDIENTE: "Pendiente",
+        ACEPTADA: "Aceptada",
+        CANCELADA: "Cancelada",
+        FINALIZADA: "Finalizada"
+    };
+
+    const finalizarPaseo = async (paseoId) => {
+        try {
+            await axios.put(`http://localhost:8080/paseo/finalizar/${paseoId}`);
+            setShowFinalizadoPopup(true);
+
+            const resActivos = await axios.get(`http://localhost:8080/paseo/paseador/actuales/${user.id}`);
+            setPaseosActivos(resActivos.data);
+
+            const resHistoricos = await axios.get(`http://localhost:8080/paseo/paseador/historicos/${user.id}`);
+            setPaseosHistoricos(resHistoricos.data);
+        } catch (err) {
+            console.error("Error al finalizar paseo:", err);
+            alert(err.response?.data?.message || "Error al finalizar el paseo");
+        }
     };
 
     useEffect(() => {
@@ -39,16 +72,23 @@ const DashboardPaseosAceptados = () => {
         fetchPaseos();
     }, [user.id]);
 
-    if (loading) return <p>Cargando paseos...</p>;
-    if (error) return <p>{error}</p>;
-
     const lista = view === "activos" ? paseosActivos : paseosHistoricos;
 
     return (
         <main className={styles.dashboardContainer}>
             <h2 className={styles.title}>Mis Paseos Aceptados</h2>
 
-            {/* Selector de tabs */}
+            {/* Popup de finalización */}
+            {showFinalizadoPopup && (
+                <div className={styles.overlay} onClick={() => setShowFinalizadoPopup(false)}>
+                    <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+                        <p>¡Paseo finalizado con éxito! 🐾</p>
+                        <button onClick={() => setShowFinalizadoPopup(false)}>Cerrar</button>
+                    </div>
+                </div>
+            )}
+
+            {/* Tabs */}
             <div className={styles.tabs}>
                 <button
                     className={`${styles.tabBtn} ${view === "activos" ? styles.activeTab : ""}`}
@@ -64,7 +104,7 @@ const DashboardPaseosAceptados = () => {
                 </button>
             </div>
 
-            {/* Lista de paseos */}
+            {/* Lista */}
             {lista.length === 0 ? (
                 <div className={styles.emptyMessageContainer}>
                     <div className={styles.emptyMessageBox}>
@@ -73,11 +113,24 @@ const DashboardPaseosAceptados = () => {
                 </div>
             ) : (
                 <ul className={styles.lista}>
-                    {lista.map((p) => (
-                        <li key={p.id} className={styles.item}>
-                            <h3><strong>Fecha y Hora:</strong> {formatFecha(p.horario)}</h3>
-                            <p><strong>Perro:</strong> {p.nombrePerro} ({p.raza})</p>
-                            <p><strong>Estado:</strong> {p.estado}</p>
+                    {lista.map((s) => (
+                        <li key={s.id} className={styles.item}>
+                            <h3><strong>Zona:</strong> {zonasMap[s.zona] || s.zona}</h3>
+                            <p><strong>Fecha y Hora:</strong> {formatFecha(s.horario)}</p>
+                            <p><strong>Perro:</strong> {s.nombrePerro} ({s.raza})</p>
+                            <p><strong>Estado de solicitud:</strong> {estadoMap[s.estado] || s.estado}</p>
+                            { (s.estadoPago === "PAGO") && (<p><strong>Estado de pago:</strong> {"Pagada"}</p>)}
+                            { (s.estadoPago === "PENDIENTE_DE_PAGO") && (<p><strong>Estado de pago:</strong> {"Pendiente"}</p>)}
+
+
+                            {s.idPaseador === user.id && s.estadoPago === "PAGO" && view === "activos" && (
+                                <button
+                                    className={styles.finalizarBtn}
+                                    onClick={() => finalizarPaseo(s.id)}
+                                >
+                                    Finalizar paseo
+                                </button>
+                            )}
                         </li>
                     ))}
                 </ul>
@@ -85,7 +138,5 @@ const DashboardPaseosAceptados = () => {
         </main>
     );
 };
-// <p><strong>Cliente:</strong> {p.nombreCliente}</p>
-//<p><strong>Precio:</strong> ${p.precio}</p>
-export default DashboardPaseosAceptados;
 
+export default DashboardPaseosAceptados;

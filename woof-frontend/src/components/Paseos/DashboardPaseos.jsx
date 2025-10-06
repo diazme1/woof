@@ -73,7 +73,7 @@ const DashboardPaseos = () => {
     const aceptarSolicitud = async (id) => {
         try {
             await axios.put(`http://localhost:8080/paseo/${id}/paseador/${idPaseador}`);
-            setSolicitudes((prev) => prev.filter((s) => s.solicitudId !== id));
+            setSolicitudes((prev) => prev.filter((s) => s.id !== id));
             setShowSuccess(true);
         } catch (err) {
             console.error("Error al aceptar la solicitud:", err);
@@ -145,20 +145,11 @@ const DashboardPaseos = () => {
             ) : (
                 <ul className={styles.lista}>
                     {solicitudes.map((s) => (
-                        <li key={s.solicitudId} className={styles.item}>
-                            <h3>
-                                <strong>Zona:</strong> {zonasMap[s.zona] || s.zona}
-                            </h3>
-                            <p>
-                                <strong>Horario:</strong> {formatFecha(s.horario)}
-                            </p>
-                            <p>
-                                <strong>Perro:</strong> {s.nombrePerro} ({s.raza})
-                            </p>
-                            <p>
-                                <strong>Tamaño:</strong> {tamanosMap[s.tamanoPerro] || s.tamanoPerro}
-                            </p>
-
+                        <li key={s.id} className={styles.item}>
+                            <h3><strong>Zona:</strong> {zonasMap[s.zona] || s.zona}</h3>
+                            <p><strong>Horario:</strong> {formatFecha(s.horario)}</p>
+                            <p><strong>Perro:</strong> {s.nombrePerro} ({s.raza})</p>
+                            <p><strong>Tamaño:</strong> {tamanosMap[s.tamanoPerro] || s.tamanoPerro}</p>
                             <div className={styles.cardActions}>
                                 {/* NUEVO: Botón Más info. solo si hay detalles */}
                                 {s.detalles && s.detalles.trim().length > 0 && (
@@ -174,7 +165,7 @@ const DashboardPaseos = () => {
 
                                 <button
                                     className={styles.btnPrimary}
-                                    onClick={() => aceptarSolicitud(s.solicitudId)}
+                                    onClick={() => aceptarSolicitud(s.id)}
                                 >
                                     Aceptar
                                 </button>
