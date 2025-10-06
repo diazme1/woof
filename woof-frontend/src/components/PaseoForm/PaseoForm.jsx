@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import styles from "./PaseoForm.module.css";
 import axios from 'axios';
 
-const initial = { zona:"", horario:"", nombrePerro:"", tamanoPerro:"", raza:""};
+const initial = { zona:"", horario:"", nombrePerro:"", tamanoPerro:"", raza:"", detalles:"" };
 
 const validate = (v) => {
     const errors = {};
@@ -23,8 +23,6 @@ export default function PaseoForm() {
     const [touched, setTouched] = useState({});
     const [errors, setErrors] = useState({});
     const [showSuccess, setShowSuccess] = useState(false);
-    const [showPassword, setShowPassword] = useState(false);
-
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -49,23 +47,21 @@ export default function PaseoForm() {
         setTouched({ zona: true, horario:true, nombrePerro: true, tamanoPerro: true, raza: true});
         if (Object.keys(nextErrors).length) return;
 
-        //mostrar pop up
         try {
             const today = new Date().toISOString().split("T")[0];
             const horarioCompleto = `${today}T${formData.horario}:00`;
-            // datos al back
             const response = await axios.post("http://localhost:8080/paseo", {
                 zona: formData.zona,
                 horario: horarioCompleto,
                 nombrePerro: formData.nombrePerro,
                 tamanoPerro: formData.tamanoPerro,
                 raza: formData.raza,
+                detalles: formData.detalles || null,
                 idCliente: user?.id
             });
 
             console.log("Respuesta del backend:", response.data);
 
-            // success y reset
             setFormData(initial);
             setTouched({});
             setErrors({});
@@ -75,7 +71,6 @@ export default function PaseoForm() {
             alert("Hubo un problema al generar la solicitud de paseo. Intenta nuevamente.");
         }
     };
-
 
     useEffect(() => {
         if (!showSuccess) return;
@@ -176,6 +171,25 @@ export default function PaseoForm() {
                     {fieldError("raza") && (
                         <small className={styles.error}>{errors.raza}</small>
                     )}
+                </label>
+
+
+                <label>
+                    Detalles (opcional):
+                    <textarea
+                        name="detalles"
+                        value={formData.detalles}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        rows={5}
+                        maxLength={500}
+                        placeholder={`Ej.: medicación a las 18hs, usa pechera, no sociabiliza con machos, tiene alergia, timbre roto (tocar puerta)`}
+                        style={{ whiteSpace: "pre-wrap" }}
+                    />
+                    <div style={{display:"flex", justifyContent:"space-between"}}>
+                        <small>Se permiten letras, números, signos de puntuación y saltos de línea.</small>
+                        <small>{(formData.detalles?.length || 0)}/500</small>
+                    </div>
                 </label>
 
                 <button type="submit">Guardar</button>

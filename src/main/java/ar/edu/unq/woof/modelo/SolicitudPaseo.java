@@ -5,6 +5,7 @@ import ar.edu.unq.woof.modelo.enums.EstadoSolicitud;
 import ar.edu.unq.woof.modelo.enums.TamanoPerro;
 import ar.edu.unq.woof.modelo.enums.ZonaOperativa;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -47,16 +48,21 @@ public class SolicitudPaseo {
     @Column
     private Long idPaseador;
 
+    @Size(max = 500)
+    @Column
+    private String detalles;
+
     @Column
     private String comprobanteDePago;
 
-    public SolicitudPaseo(ZonaOperativa zona, LocalDateTime horario, String nombrePerro, TamanoPerro tamanoPerro, String raza, Long idCliente) {
+    public SolicitudPaseo(ZonaOperativa zona, LocalDateTime horario, String nombrePerro, TamanoPerro tamanoPerro, String raza, Long idCliente, String detalles) {
         this.zona = zona;
         this.horario = horario;
         this.nombrePerro = nombrePerro;
         this.tamanoPerro = tamanoPerro;
         this.raza = raza;
         this.idCliente = idCliente;
+        this.detalles = detalles;
     }
 
 }
