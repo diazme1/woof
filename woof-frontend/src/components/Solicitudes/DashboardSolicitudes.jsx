@@ -32,14 +32,13 @@ const DashboardSolicitudes = () => {
 
     const formatFecha = (fechaISO) => {
         const f = new Date(fechaISO);
-        return f.toLocaleDateString("en-GB") + " " + f.toLocaleTimeString("en-US", {
+        return f.toLocaleDateString("es-AR") + " " + f.toLocaleTimeString("es-AR", {
             hour: "2-digit",
             minute: "2-digit",
-            hour12: true
+            hour12: false
         });
     };
 
-    // Traer solicitudes del cliente
     const fetchSolicitudes = async () => {
         try {
             const response = await axios.get(`http://localhost:8080/paseo/cliente/${user?.id}`);
@@ -53,23 +52,32 @@ const DashboardSolicitudes = () => {
 
     useEffect(() => {
         fetchSolicitudes();
-
-        const interval = setInterval(fetchSolicitudes, 10000); // refresco cada 10s
+        const interval = setInterval(fetchSolicitudes, 10000);
         return () => clearInterval(interval);
     }, []);
 
-    // Cancelar solicitud
     const cancelarSolicitud = async (id) => {
         try {
             await axios.put(`http://localhost:8080/paseo/cancelar/${id}`);
-            setSolicitudes(prev => prev.map(s =>
-                s.solicitudId === id ? { ...s, estado: "CANCELADA" } : s
-            ));
+            setSolicitudes(prev =>
+                prev.map(s =>
+                    s.solicitudId === id ? { ...s, estado: "CANCELADA" } : s
+                )
+            );
             setShowSuccess(true);
         } catch (err) {
             console.error("Error al cancelar la solicitud:", err);
             alert("Hubo un error al cancelar la solicitud.");
         }
+    };
+
+    // 🔹 Función que determina si una solicitud es cancelable
+    const esCancelable = (solicitud) => {
+        if (solicitud.estado !== "PENDIENTE" && solicitud.estado !== "ACEPTADA") return false;
+
+        const ahora = new Date();
+        const horarioPaseo = new Date(solicitud.horario);
+        return ahora < horarioPaseo; // Solo cancelable si aún no llegó la hora
     };
 
     if (loading) return <p>Cargando solicitudes...</p>;
@@ -105,7 +113,7 @@ const DashboardSolicitudes = () => {
                             <p><strong>Estado:</strong> {estadoMap[s.estado] || s.estado}</p>
 
                             <div className={styles.cardActions}>
-                                {(s.estado === "PENDIENTE" || s.estado === "ACEPTADA") && (
+                                {esCancelable(s) && (
                                     <button
                                         className={styles.btnPrimary}
                                         onClick={() => cancelarSolicitud(s.solicitudId)}
@@ -123,4 +131,3 @@ const DashboardSolicitudes = () => {
 };
 
 export default DashboardSolicitudes;
-
