@@ -20,8 +20,8 @@ public class ReseniaServiceImpl implements ReseniaService {
     }
 
     @Override
-    public void saveResenia(Resenia resenia) {
-        reseniaDAO.save(resenia);
+    public Resenia saveResenia(Resenia resenia) {
+        return reseniaDAO.save(resenia);
     }
 
     @Override

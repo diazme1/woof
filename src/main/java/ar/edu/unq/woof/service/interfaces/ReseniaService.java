@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ReseniaService {
 
-    void saveResenia(Resenia resenia);
+    Resenia saveResenia(Resenia resenia);
     Resenia getReseniaById(Long idResenia);
     List<Resenia> getAllReseniasByPaseadorId(Long idPaseador);
 }
