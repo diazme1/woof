@@ -8,6 +8,34 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 const Body = () => {
+
+    const ShieldIcon = ({ className }) => (
+        <svg className={className} viewBox="0 0 24 24" stroke="currentColor" fill="none" aria-hidden="true">
+            <path d="M12 3l7 3v5c0 4.5-2.9 8.6-7 10-4.1-1.4-7-5.5-7-10V6l7-3z" strokeWidth="1.8" strokeLinejoin="round"/>
+            <path d="M16 10l-4 4-2-2" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+    );
+
+    const LockCardIcon = ({ className }) => (
+        <svg className={className} viewBox="0 0 24 24" stroke="currentColor" fill="none" aria-hidden="true">
+            <rect x="3" y="7" width="18" height="12" rx="2" strokeWidth="1.8"/>
+            <path d="M7 7V6a5 5 0 0 1 10 0v1" strokeWidth="1.8"/>
+            <circle cx="12" cy="13" r="1.2" fill="currentColor"/>
+            <path d="M12 14.2V16" strokeWidth="1.8" strokeLinecap="round"/>
+        </svg>
+    );
+
+    const PawInfoIcon = ({ className }) => (
+        <svg className={className} viewBox="0 0 24 24" stroke="currentColor" fill="none" aria-hidden="true">
+            <circle cx="7" cy="8" r="2.2" strokeWidth="1.6"/>
+            <circle cx="17" cy="8" r="2.2" strokeWidth="1.6"/>
+            <circle cx="9" cy="5" r="1.4" strokeWidth="1.6"/>
+            <circle cx="15" cy="5" r="1.4" strokeWidth="1.6"/>
+            <path d="M7 17c1.5-2.5 8.5-2.5 10 0 .7 1.2-.2 3-2 3H9c-1.8 0-2.7-1.8-2-3z" strokeWidth="1.6"/>
+            <path d="M12 11v5" strokeWidth="1.6" strokeLinecap="round"/>
+        </svg>
+    );
+
     return (
         <main style={{
             maxWidth: "1000px",
@@ -98,7 +126,7 @@ const Body = () => {
             </div>
 
             <section id="por-que-elegirnos" className={styles.porqueElegirnos}>
-            <h1 className={styles.title}>¿Por qué elegirnos?</h1>
+                <h1 className={styles.title}>¿Por qué elegirnos?</h1>
                 <p>
                     Tu perro en buenas manos, siempre!<br/>
                     Verificación de paseadores y comunicación transparente en cada paseo.
@@ -128,6 +156,60 @@ const Body = () => {
                     </li>
                 </ul>
             </section>
+            {/* --- SEGURIDAD --- */}
+            <section id="seguridad" aria-labelledby="seguridad-title" className={styles.securitySection}>
+                <div className={styles.securityContent}>
+                    <h1 id="seguridad-title" className={styles.title}>Seguridad en cada paseo</h1>
+                    <p className={styles.securityIntro}>
+                        Cuando un paseador se postula en Woof!, revisamos cuidadosamente sus datos, currículum y documentos.
+                        Solo quienes cumplen con los requisitos de identidad y experiencia son aprobados para recibir solicitudes.
+                        Así aseguramos que cada paseo sea realizado por alguien confiable y capacitado.
+                    </p>
+
+                    <div className={styles.securityGrid}>
+                        {/* Card 1 - Verificación */}
+                        <article className={styles.securityCard}>
+                            <span className={styles.iconCircle} aria-hidden>
+                                <ShieldIcon className={styles.icon}/>
+                            </span>
+                            <div>
+                                <h3 className={styles.securityCardTitle}>Verificación y antecedentes</h3>
+                                <p className={styles.securityCardText}>
+                                    Validamos identidad y documentación de cada paseador antes de habilitarlo. Revisión periódica para mantener el estándar.
+                                </p>
+                            </div>
+                        </article>
+
+                        {/* Card 2 - Pagos seguros */}
+                        <article className={styles.securityCard}>
+                            <span className={styles.iconCircle} aria-hidden>
+                                <LockCardIcon className={styles.icon}/>
+                            </span>
+                            <div>
+                                <h3 className={styles.securityCardTitle}>Pagos seguros y confiables</h3>
+                                <p className={styles.securityCardText}>
+                                    Sistema certificado que protege la información financiera de clientes y paseadores, evitando fraudes.
+                                </p>
+                            </div>
+                        </article>
+
+                        {/* Card 3 - Diferencial de cada mascota */}
+                        <article className={styles.securityCard}>
+                            <span className={styles.iconCircle} aria-hidden>
+                                <PawInfoIcon className={styles.icon}/>
+                            </span>
+                            <div>
+                                <h3 className={styles.securityCardTitle}>Diferencial de cada mascota</h3>
+                                <p className={styles.securityCardText}>
+                                    Al crear una solicitud, podés detallar comportamiento, rutinas, preferencias o restricciones.
+                                    El paseador llega informado y preparado, logrando un paseo más seguro y adaptado.
+                                </p>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
         </main>
     );
 };
