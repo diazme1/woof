@@ -259,11 +259,82 @@
     color: #fff;
 }
 
+/* ====== Patch nuevas features ====== */
+
+/* 1) Avatar redondo en el header (foto o ícono fallback) */
 .profileIcon {
-    color: white;
+    /* ya tenés color:white y flex; agrego tamaño y forma */
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    overflow: hidden;                  /* recorta la imagen circular */
+    border: 1px solid rgba(255,255,255,.35);
+    background: rgba(255,255,255,.08); /* leve contraste sobre gradiente */
+    box-shadow: 0 2px 6px rgba(0,0,0,.12);
+}
+.profileIcon:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
+.avatarHeader {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;   /* rellena sin deformar */
+    display: block;
+    border-radius: 999px;
+}
+
+.avatarHeaderFallback {
+    /* ícono cuando no hay foto */
+    width: 28px;
+    height: 28px;
+    color: #fff;
+    opacity: .95;
+}
+
+/* 2) Estado abierto del menú (además del mobile) */
+.links.open {
+    /* útil si querés mostrarlo también en otros breakpoints */
     display: flex;
     align-items: center;
-    justify-content: center;
-    margin-right: 10px;
-    text-decoration: none;
+    gap: 18px;
+}
+
+/* 3) Botones accesibles (hover/focus) */
+.btn:focus-visible,
+.ghost:focus-visible,
+.solid:focus-visible,
+.links button:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
+/* 4) Ajustes de CTAs para que no se aplasten en pantallas justas */
+.ctas {
+    gap: 10px; /* ya tenías 8px; un pelín más respirable */
+    flex-wrap: wrap;
+}
+
+/* 5) Burger mejor clickable (sin alterar tu estilo visual) */
+.burger {
+    min-width: 40px; /* área clickeable cómoda */
+    min-height: 40px;
+    border-radius: 8px;
+}
+.burger:hover { background: rgba(255,255,255,.08); }
+.burger:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+/* 6) Modal close hover no invierta colores del header */
+.closeBtn:hover { color: #111; }
+
+/* 7) Hero: microtuning en pantallas medianas */
+@media (max-width: 960px) {
+    .hero { padding: 28px 20px 40px; }
+}
+
+/* 8) Mobile: avatar un poquito más chico si el header es bajo */
+@media (max-width: 760px) {
+    .profileIcon { width: 36px; height: 36px; }
+    .avatarHeaderFallback { width: 26px; height: 26px; }
 }
