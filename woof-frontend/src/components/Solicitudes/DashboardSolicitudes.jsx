@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "./DashboardSolicitudes.module.css";
+import ReseniaForm from "../ReseniaForm/ReseniaForm";
 
 const DashboardSolicitudes = () => {
     const [solicitudes, setSolicitudes] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [showReseniaPopup, setShowReseniaPopup] = useState(false);
+    const [solicitudParaResenia, setSolicitudParaResenia] = useState(null);
     const [showSuccess, setShowSuccess] = useState(false);
     const [showPagoPopup, setShowPagoPopup] = useState(false);
     const [aliasPaseador, setAliasPaseador] = useState("");
@@ -185,10 +188,34 @@ const DashboardSolicitudes = () => {
                                         Pagar
                                     </button>
                                 )}
+
+                                {s.estado === "FINALIZADA" && (
+                                    <button
+                                        className={styles.finalizarBtn}
+                                        onClick={() => {
+                                            setSolicitudParaResenia(s);
+                                            setShowReseniaPopup(true);
+                                        }}
+                                    >
+                                        Opinar
+                                    </button>
+                                )}
                             </div>
                         </li>
                     ))}
                 </ul>
+            )}
+            {showReseniaPopup && (
+                <div className={styles.overlay} onClick={() => setShowReseniaPopup(false)}>
+                    <div className={styles.modalResenia} onClick={(e) => e.stopPropagation()}>
+                        <ReseniaForm
+                            idPaseador={solicitudParaResenia.idPaseador}
+                            idCliente={solicitudParaResenia.idCliente}
+                            idPaseo={solicitudParaResenia.id}
+                            onClose={() => setShowReseniaPopup(false)}
+                        />
+                    </div>
+                </div>
             )}
         </main>
     );

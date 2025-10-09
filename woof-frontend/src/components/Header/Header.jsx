@@ -8,7 +8,6 @@ import { FaUserCircle } from "react-icons/fa";
 const Header = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [showPaseoForm, setShowPaseoForm] = useState(false);
-    const token = localStorage.getItem("token");
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const navigate = useNavigate();

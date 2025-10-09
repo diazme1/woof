@@ -193,3 +193,11 @@
     transform: scale(1.03);
 }
 
+.modalResenia {
+    padding: 20px 30px;
+    text-align: center;
+    font-weight: 600;
+    animation: fadeIn 0.3s ease-out;
+    max-width: 400px;
+    width: 90%;
+}
