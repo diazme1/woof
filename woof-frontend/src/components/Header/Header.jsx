@@ -196,7 +196,7 @@ const Header = () => {
                                                 onError={() => setPhotoOk(false)}
                                             />
                                         ) : (
-                                            <FaUserCircle className={styles.avatarHeaderFallback} size={32} />
+                                            <FaUserCircle className={styles.avatarHeaderFallback} />
                                         )}
                                     </Link>
                                     <Link className={`${styles.btn} ${styles.ghost}`} to="/solicitudes">
