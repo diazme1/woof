@@ -3,8 +3,11 @@ package ar.edu.unq.woof.controller;
 import ar.edu.unq.woof.controller.dto.paseo.SolicitudPaseoDTO;
 import ar.edu.unq.woof.controller.dto.resenia.ReseniaDTO;
 import ar.edu.unq.woof.controller.dto.resenia.ReseniaRequestDTO;
+import ar.edu.unq.woof.controller.dto.user.UserDTO;
 import ar.edu.unq.woof.modelo.Resenia;
+import ar.edu.unq.woof.service.impl.UserServiceImpl;
 import ar.edu.unq.woof.service.interfaces.ReseniaService;
+import ar.edu.unq.woof.service.interfaces.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +20,11 @@ import java.util.stream.Collectors;
 public class ReseniaControllerREST {
 
     private final ReseniaService reseniaService;
+    private final UserService userService;
 
-    public ReseniaControllerREST(ReseniaService reseniaService) {
+    public ReseniaControllerREST(ReseniaService reseniaService, UserServiceImpl userService) {
         this.reseniaService = reseniaService;
+        this.userService = userService;
     }
 
     @PostMapping
@@ -48,5 +53,11 @@ public class ReseniaControllerREST {
     public ResponseEntity<List<Long>> getAllIdPaseosConResenia() {
         List<Long> idPaseos = reseniaService.getAllIdPaseosConResenia();
         return ResponseEntity.ok(idPaseos);
+    }
+
+    @GetMapping("/cliente/{idCliente}")
+    public ResponseEntity<UserDTO> getClienteResenia(@PathVariable Long idCliente) {
+        UserDTO clienteDTO = UserDTO.desdeModelo(userService.getUser(idCliente).orElseThrow());
+        return ResponseEntity.ok(clienteDTO);
     }
 }

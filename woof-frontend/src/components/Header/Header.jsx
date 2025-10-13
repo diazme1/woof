@@ -76,7 +76,7 @@ const Header = () => {
                         <>
                             {user?.rol === "ROLE_PASEADOR" && (
                                 <>
-                                    <Link className={styles.profileIcon} to="/perfil">
+                                    <Link className={styles.profileIcon} to={`/perfil/${user.id}`}>
                                         <FaUserCircle size={32} />
                                     </Link>
                                     <Link className={`${styles.btn} ${styles.ghost}`} to="/solicitudes">
