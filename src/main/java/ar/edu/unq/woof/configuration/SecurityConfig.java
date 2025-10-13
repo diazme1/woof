@@ -25,6 +25,7 @@ public class SecurityConfig {
                         .requestMatchers("/user/validaciones/**").hasRole("ADMIN")
                         .requestMatchers("/user/**").permitAll()
                         .requestMatchers("/paseo/**").permitAll()
+                        .requestMatchers("/resenia/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/paseador/**").hasRole("PASEADOR")
                         .requestMatchers("/api/cliente/**").hasRole("CLIENTE")

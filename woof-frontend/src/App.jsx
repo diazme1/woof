@@ -11,6 +11,7 @@ import ClienteDashboard from "./components/Dashboard/ClienteDashboard";
 import AdminDashboard from "./components/Dashboard/AdminDashboard";
 import DashboardPaseosAceptados from "./components/PaseosAceptados/DashboardPaseosAceptados";
 import Perfil from "./components/Perfil/Perfil";
+import ReseniaForm from "./components/ReseniaForm/ReseniaForm";
 
 
 const App = () => {
@@ -46,6 +47,7 @@ const App = () => {
                 <Route path="/paseos" element={<PaseoForm />} />
                 <Route path="/paseos-aceptados" element={<DashboardPaseosAceptados />} />
                 <Route path="/perfil" element={<Perfil />} />
+                <Route path="/resenia" element={<ReseniaForm />} />
             </Routes>
 
             <Footer />
