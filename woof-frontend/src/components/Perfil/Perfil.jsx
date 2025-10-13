@@ -185,6 +185,11 @@ export default function Perfil() {
             setDirty(false);
             setEditMode(false);
             setForm(null);
+            const bump = Date.now();
+            localStorage.setItem("avatarVersion", String(bump)); // opcional, útil si tenés otras pestañas
+            window.dispatchEvent(
+                new CustomEvent("avatar-changed", { detail: { userId, bump } })
+            );
 
             // ✅ Mostrar toast de éxito SÓLO si hubo cambios reales
             openToast("Datos modificados con éxito.");

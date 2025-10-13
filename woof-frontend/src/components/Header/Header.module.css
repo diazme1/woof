@@ -259,11 +259,94 @@
     color: #fff;
 }
 
+
+
 .profileIcon {
-    color: white;
-    display: flex;
+    display: inline-flex;           /* centra el contenido */
     align-items: center;
     justify-content: center;
-    margin-right: 10px;
-    text-decoration: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.35);
+    background: rgba(255,255,255,.08);
+    box-shadow: 0 2px 6px rgba(0,0,0,.12);
+    line-height: 0;                 /* elimina baseline del inline */
 }
+
+.avatarHeader {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;                 /* sin baseline gap */
+    border-radius: 999px;
+}
+
+.avatarHeaderFallback {
+    width: 70%;                     /* escala dentro del frame */
+    height: 70%;
+    display: block;                 /* quita baseline gap */
+    flex-shrink: 0;                 /* no se achica por flex */
+    color: #fff;
+    opacity: .95;
+}
+
+.profileIcon:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
+
+
+.links.open {
+    /* útil si querés mostrarlo también en otros breakpoints */
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+/* 3) Botones accesibles (hover/focus) */
+.btn:focus-visible,
+.ghost:focus-visible,
+.solid:focus-visible,
+.links button:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
+/* 4) Ajustes de CTAs para que no se aplasten en pantallas justas */
+.ctas {
+    gap: 10px; /* ya tenías 8px; un pelín más respirable */
+    flex-wrap: wrap;
+}
+
+/* 5) Burger mejor clickable (sin alterar tu estilo visual) */
+.burger {
+    min-width: 40px; /* área clickeable cómoda */
+    min-height: 40px;
+    border-radius: 8px;
+}
+.burger:hover { background: rgba(255,255,255,.08); }
+.burger:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+
+/* 6) Modal close hover no invierta colores del header */
+.closeBtn:hover { color: #111; }
+
+/* 7) Hero: microtuning en pantallas medianas */
+@media (max-width: 960px) {
+    .hero { padding: 28px 20px 40px; }
+}
+
+.validationBanner {
+    background: #fff3cd;         /* amarillo suave */
+    color: #664d03;
+    border: 1px solid #ffe69c;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    margin: 0.75rem 1rem;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+
