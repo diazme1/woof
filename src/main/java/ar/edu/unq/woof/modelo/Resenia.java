@@ -30,7 +30,7 @@ public class Resenia {
     @Column(nullable = false)
     private String descripcion;
 
-    public Resenia(Long idCliente, Long idPaseador, Long idPaseo, Integer puntuacion, String descripcion) {
+    public Resenia(Long idPaseador, Long idCliente, Long idPaseo, Integer puntuacion, String descripcion) {
         this.idCliente = idCliente;
         this.idPaseador = idPaseador;
         this.idPaseo = idPaseo;

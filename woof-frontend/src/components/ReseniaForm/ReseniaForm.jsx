@@ -27,6 +27,8 @@ export default function ReseniaForm({ idPaseador, idCliente, idPaseo, onClose })
             idCliente,
             idPaseo
         }));
+
+        console.log("IDs actualizados:", { idPaseador, idCliente, idPaseo });
     }, [idPaseador, idCliente, idPaseo]);
 
     const handleBlur = (e) => {

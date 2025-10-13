@@ -28,7 +28,7 @@ public class ReseniaServiceTest {
 
     @BeforeEach
     void setUp() {
-        resenia = new Resenia(ID_CLIENTE, ID_PASEADOR, ID_PASEO, 5, "Excelente servicio");
+        resenia = new Resenia(ID_PASEADOR, ID_CLIENTE, ID_PASEO, 5, "Excelente servicio");
     }
 
     @Test
@@ -54,9 +54,9 @@ public class ReseniaServiceTest {
 
     @Test
     void getAllReseniasPaseador() {
-        Resenia resenia1 = new Resenia(1L, ID_PASEADOR, 1L, 5, "Muy bueno");
-        Resenia resenia2 = new Resenia(2L, ID_PASEADOR, 2L, 4, "Buen servicio");
-        Resenia resenia3 = new Resenia(3L, ID_PASEADOR, 3L, 5, "Excelente");
+        Resenia resenia1 = new Resenia(ID_PASEADOR, 1L, 1L, 5, "Muy bueno");
+        Resenia resenia2 = new Resenia(ID_PASEADOR, 2L, 2L, 4, "Buen servicio");
+        Resenia resenia3 = new Resenia(ID_PASEADOR, 3L, 3L, 5, "Excelente");
 
         reseniaService.saveResenia(resenia1);
         reseniaService.saveResenia(resenia2);

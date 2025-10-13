@@ -1,16 +1,21 @@
 import { useEffect, useState, useRef } from "react";
+import {Link, useParams} from "react-router-dom";
 import axios from "axios";
 import styles from "./Perfil.module.css";
 
 export default function Perfil() {
+    const { paramUserId } = useParams();
     const userLS = JSON.parse(localStorage.getItem("user"));
-    const userId = userLS?.id ?? userLS?.idPaseador;
+    const userId = paramUserId || userLS?.id;
     const [user, setUser] = useState(null);
     const [editMode, setEditMode] = useState(false);
     const [form, setForm] = useState(null);
     const [errors, setErrors] = useState({});
     const [dirty, setDirty] = useState(false);
     const fileRef = useRef(null);
+    const [resenias, setResenias] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     // POP UP
     const [toastOpen, setToastOpen] = useState(false);
@@ -66,6 +71,26 @@ export default function Perfil() {
         window.addEventListener("beforeunload", onBeforeUnload);
         return () => window.removeEventListener("beforeunload", onBeforeUnload);
     }, [dirty]);
+
+    useEffect(() => {
+        if (!userId) return;
+        fetchResenias();
+        const interval = setInterval(fetchResenias, 10000);
+        return () => clearInterval(interval);
+    }, [userId]);
+
+    const fetchResenias = async () => {
+        try {
+            console.log("Obteniendo reseñas del paseador:", userId);
+            const response = await axios.get(`http://localhost:8080/resenia/paseador/${userId}`);
+            setResenias(response.data);
+        } catch (err) {
+            console.error("Error al obtener reseñas:", err);
+            setResenias([]);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const startEdit = () => {
         setForm({
@@ -168,7 +193,7 @@ export default function Perfil() {
                 biografia: form.biografia || null,
             };
 
-            const { data: updated } = await axios.put(`http://localhost:8080/user/${userId}`, payload);
+            const { data: updated } = await axios.put(`http://localhost:8080/user/${user.id}`, payload);
 
             const merged = {
                 ...updated,
@@ -207,6 +232,8 @@ export default function Perfil() {
         ? form.fotoPreview || liveUrl || "/avatar-placeholder.png"
         : liveUrl || "/avatar-placeholder.png";
 
+    const isOwnProfile = userLS?.id === userId || userLS?.idPaseador === userId;
+
     return (
         <div className={styles.perfil}>
             {/* HEADER */}
@@ -218,7 +245,7 @@ export default function Perfil() {
                         className={styles.avatar}
                         onClick={() => editMode && fileRef.current?.click()}
                     />
-                    {editMode && (
+                    {editMode && isOwnProfile && (
                         <>
                             <button
                                 type="button"
@@ -236,11 +263,13 @@ export default function Perfil() {
                     {!editMode ? (
                         <>
                             <h2 className={styles.title}>{user.nombre}</h2>
-                            <div className={styles.actions}>
-                                <button className={styles.editBtn} onClick={startEdit}>
-                                    Editar perfil
-                                </button>
-                            </div>
+                            {isOwnProfile && (
+                                <div className={styles.actions}>
+                                    <button className={styles.editBtn} onClick={startEdit}>
+                                        Editar perfil
+                                    </button>
+                                </div>
+                            )}
                         </>
                     ) : (
                         <>
@@ -348,6 +377,27 @@ export default function Perfil() {
                         <span>Antiguedad</span>
                     </div>
                 </div>
+            </section>
+
+            {/* RESEÑAS */}
+            <section className={styles.resenias}>
+                <h3>Reseñas y Opiniones</h3>
+                {resenias.length === 0 ? (
+                    <div className={styles.emptyResenias}>
+                        <p>Este paseador aún no posee reseñas.</p>
+                    </div>
+                ) : (
+                    <ul className={styles.reseniasList}>
+                        {resenias.map((r) => (
+                            <li key={r.id} className={styles.reseniaCard}>
+                                <div className={styles.puntuacion}>
+                                    {r.puntuacion} ⭐
+                                </div>
+                                <p className={styles.descripcion}>{r.descripcion}</p>
+                            </li>
+                        ))}
+                    </ul>
+                )}
             </section>
 
             {/* POP UP  */}
