@@ -12,6 +12,9 @@ const PaseadorDashboard = () => {
     const [estadoValidacion, setEstadoValidacion] = useState("NO_ENVIADO");
     const [errores, setErrores] = useState({});
 
+
+
+
     // recuperar estado validación usuario
     useEffect(() => {
         if (!user?.id) return;

@@ -3,11 +3,13 @@ package ar.edu.unq.woof.service;
 import ar.edu.unq.woof.modelo.SolicitudPaseo;
 import ar.edu.unq.woof.modelo.enums.*;
 import ar.edu.unq.woof.service.interfaces.SolicitudPaseoService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.TimeZone;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -16,6 +18,12 @@ public class SolicitudPaseoServiceTest {
 
     @Autowired
     private SolicitudPaseoService solicitudPaseoService;
+
+    @BeforeEach
+    public void setUp() {
+        TimeZone.setDefault(TimeZone.getTimeZone("America/Argentina/Buenos_Aires"));
+
+    }
 
     @Test
     public void cuandoSeCreaSolicitudPaseoSeGuardaCorrectamente() {
