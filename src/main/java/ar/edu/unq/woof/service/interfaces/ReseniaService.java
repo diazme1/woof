@@ -9,4 +9,5 @@ public interface ReseniaService {
     Resenia saveResenia(Resenia resenia);
     Resenia getReseniaById(Long idResenia);
     List<Resenia> getAllReseniasByPaseadorId(Long idPaseador);
+    List<Long> getAllIdPaseosConResenia();
 }

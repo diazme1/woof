@@ -43,4 +43,10 @@ public class ReseniaControllerREST {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(reseniaDTOs);
     }
+
+    @GetMapping("/resenias-paseos")
+    public ResponseEntity<List<Long>> getAllIdPaseosConResenia() {
+        List<Long> idPaseos = reseniaService.getAllIdPaseosConResenia();
+        return ResponseEntity.ok(idPaseos);
+    }
 }

@@ -33,4 +33,9 @@ public class ReseniaServiceImpl implements ReseniaService {
     public List<Resenia> getAllReseniasByPaseadorId(Long idPaseador) {
         return reseniaDAO.findByIdPaseador(idPaseador);
     }
+
+    @Override
+    public List<Long> getAllIdPaseosConResenia() {
+        return reseniaDAO.findAllIdPaseosConResenia();
+    }    
 }

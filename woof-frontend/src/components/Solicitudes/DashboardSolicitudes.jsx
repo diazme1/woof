@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import styles from "./DashboardSolicitudes.module.css";
 import ReseniaForm from "../ReseniaForm/ReseniaForm";
@@ -13,7 +14,9 @@ const DashboardSolicitudes = () => {
     const [showPagoPopup, setShowPagoPopup] = useState(false);
     const [aliasPaseador, setAliasPaseador] = useState("");
     const [solicitudSeleccionada, setSolicitudSeleccionada] = useState(null);
+    const [solicitudesConResenia, setSolicitudesConResenia] = useState([]);
     const [comprobanteEnviado, setComprobanteEnviado] = useState(false);
+    const [paseadores, setPaseadores] = useState({});
     const user = JSON.parse(localStorage.getItem("user"));
 
     const tamanosMap = {
@@ -64,9 +67,18 @@ const DashboardSolicitudes = () => {
         return () => clearInterval(interval);
     }, []);
 
+    useEffect(() => {
+        axios.get(`http://localhost:8080/resenia/resenias-paseos`)
+            .then((res) => {
+                console.log("Ids con reseñas", res.data);
+                setSolicitudesConResenia(res.data);
+            })
+            .catch(() => setSolicitudesConResenia([]));
+    }, []);
+
     const cancelarSolicitud = async (id) => {
         try {
-            await axios.put(`http://localhost:8080/paseo/cancelar/${id}`);
+            await axios.put(`http://localhost:8080/paseo/solicitudes/${id}`);
             setSolicitudes(prev => prev.map(s =>
                 s.id === id ? { ...s, estado: "CANCELADA" } : s
             ));
@@ -89,12 +101,40 @@ const DashboardSolicitudes = () => {
     const obtenerAliasPaseador = async (idPaseador) => {
         try {
             const response = await axios.get(`http://localhost:8080/user/${idPaseador}`);
-            return response.data.alias;
+            return response.data.alias || "Sin alias";
         } catch (err) {
             console.error("Error al obtener alias del paseador:", err);
-            return "Alias no disponible";
+            return "Sin alias";
         }
     };
+
+    const obtenerNombrePaseador = (idPaseador) => {
+        if (!paseadores[idPaseador]) return "Cargando...";
+        const paseador = paseadores[idPaseador];
+        return `${paseador.nombre}`;
+    };
+
+    useEffect(() => {
+        const fetchPaseadoresInfo = async () => {
+            const paseadoresData = {};
+            for (const solicitud of solicitudes) {
+                if (solicitud.idPaseador) {
+                    try {
+                        const response = await axios.get(`http://localhost:8080/user/${solicitud.idPaseador}`);
+                        paseadoresData[solicitud.idPaseador] = response.data;
+                    } catch (err) {
+                        console.error(`Error al obtener datos del paseador ${solicitud.idPaseador}:`, err);
+                    }
+                }
+            }
+            setPaseadores(paseadoresData);
+            console.log("Paseadores", paseadoresData);
+        };
+
+        if (solicitudes.length > 0) {
+            fetchPaseadoresInfo();
+        }
+    }, [solicitudes]);
 
     const abrirPagoPopup = (solicitud) => {
         console.log(solicitud);
@@ -120,6 +160,10 @@ const DashboardSolicitudes = () => {
             alert("Error al subir el comprobante.");
         }
     };
+
+    const poseeResenia = (idPaseo) => {
+        return solicitudesConResenia.some(reseniaId => reseniaId === idPaseo);
+    }
 
     if (loading) return <p>Cargando solicitudes...</p>;
     if (error) return <p>{error}</p>;
@@ -170,6 +214,11 @@ const DashboardSolicitudes = () => {
                             <p><strong>Horario:</strong> {formatFecha(s.horario)}</p>
                             <p><strong>Perro:</strong> {s.nombrePerro} ({s.raza})</p>
                             <p><strong>Tamaño:</strong> {tamanosMap[s.tamanoPerro] || s.tamanoPerro}</p>
+                            {s.idPaseador && (
+                                <p><strong>Paseador:</strong> <Link to={`/perfil`} className={styles.paseadorLink}>
+                                    {obtenerNombrePaseador(s.idPaseador)}
+                                </Link></p>
+                            )}
                             <p><strong>Estado de solicitud:</strong> {estadoMap[s.estado] || s.estado}</p>
                             { (s.estadoPago === "PAGO") && (<p><strong>Estado de pago:</strong> {"Pagada ✅"}</p>)}
                             { (s.estadoPago === "PENDIENTE_DE_PAGO") && (<p><strong>Estado de pago:</strong> {"Pendiente"}</p>)}
@@ -189,7 +238,7 @@ const DashboardSolicitudes = () => {
                                     </button>
                                 )}
 
-                                {s.estado === "FINALIZADA" && (
+                                {s.estado === "FINALIZADA" && !poseeResenia(s.id) && (
                                     <button
                                         className={styles.finalizarBtn}
                                         onClick={() => {
@@ -222,4 +271,3 @@ const DashboardSolicitudes = () => {
 };
 
 export default DashboardSolicitudes;
-

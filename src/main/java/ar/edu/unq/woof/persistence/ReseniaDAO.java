@@ -10,4 +10,7 @@ public interface ReseniaDAO extends JpaRepository<Resenia, Long> {
 
     @Query("SELECT r FROM Resenia r WHERE r.idPaseador = :id")
     List<Resenia> findByIdPaseador(@Param("id") Long id);
+
+    @Query("SELECT DISTINCT r.idPaseo FROM Resenia r")
+    List<Long> findAllIdPaseosConResenia();
 }
