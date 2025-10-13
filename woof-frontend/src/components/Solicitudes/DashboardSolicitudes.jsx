@@ -215,7 +215,7 @@ const DashboardSolicitudes = () => {
                             <p><strong>Perro:</strong> {s.nombrePerro} ({s.raza})</p>
                             <p><strong>Tamaño:</strong> {tamanosMap[s.tamanoPerro] || s.tamanoPerro}</p>
                             {s.idPaseador && (
-                                <p><strong>Paseador:</strong> <Link to={`/perfil`} className={styles.paseadorLink}>
+                                <p><strong>Paseador:</strong> <Link to={`/perfil/${s.idPaseador}`} className={styles.paseadorLink}>
                                     {obtenerNombrePaseador(s.idPaseador)}
                                 </Link></p>
                             )}
