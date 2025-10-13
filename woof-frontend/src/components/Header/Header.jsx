@@ -11,6 +11,7 @@ const Header = () => {
     const [showPaseoForm, setShowPaseoForm] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState(null);
+    const [userI, setUserI] = useState(null);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -148,6 +149,15 @@ const Header = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [user?.id, user?.idPaseador]);
 
+    useEffect(() => {
+        if (!userId) return;
+        axios.get(`http://localhost:8080/user/${userId}`).then(({ data }) => {
+            console.log("DATOS", data)
+            setUserI(data);
+        });
+    }, [userId]);
+
+
     return (
         <header className={styles.header}>
             <nav className={styles.nav}>
@@ -199,9 +209,15 @@ const Header = () => {
                                             <FaUserCircle className={styles.avatarHeaderFallback} />
                                         )}
                                     </Link>
-                                    <Link className={`${styles.btn} ${styles.ghost}`} to="/solicitudes">
-                                        Solicitudes activas
-                                    </Link>
+
+
+                                    {userI?.validado === "APROBADO" && (
+                                        <Link className={`${styles.btn} ${styles.ghost}`} to="/solicitudes">
+                                            Solicitudes activas
+                                        </Link>
+                                    )}
+
+
                                     <Link className={`${styles.btn} ${styles.ghost}`} to="/paseos-aceptados">
                                         Paseos aceptados
                                     </Link>
