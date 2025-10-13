@@ -1,6 +1,7 @@
 package ar.edu.unq.woof.service.interfaces;
 
 import ar.edu.unq.woof.modelo.Resenia;
+import ar.edu.unq.woof.modelo.Usuario;
 
 import java.util.List;
 

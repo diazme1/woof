@@ -1,6 +1,7 @@
 package ar.edu.unq.woof.service.impl;
 
 import ar.edu.unq.woof.modelo.Resenia;
+import ar.edu.unq.woof.modelo.Usuario;
 import ar.edu.unq.woof.persistence.ReseniaDAO;
 import ar.edu.unq.woof.service.interfaces.ReseniaService;
 import jakarta.persistence.EntityNotFoundException;
@@ -37,5 +38,5 @@ public class ReseniaServiceImpl implements ReseniaService {
     @Override
     public List<Long> getAllIdPaseosConResenia() {
         return reseniaDAO.findAllIdPaseosConResenia();
-    }    
+    }
 }

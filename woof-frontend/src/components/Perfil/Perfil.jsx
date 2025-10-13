@@ -81,9 +81,21 @@ export default function Perfil() {
 
     const fetchResenias = async () => {
         try {
-            console.log("Obteniendo reseñas del paseador:", userId);
-            const response = await axios.get(`http://localhost:8080/resenia/paseador/${userId}`);
-            setResenias(response.data);
+            const { data: resenias } = await axios.get(`http://localhost:8080/resenia/paseador/${userId}`);
+
+            // Pedimos la info de cada cliente en paralelo
+            const reseniasConClientes = await Promise.all(
+                resenias.map(async (r) => {
+                    try {
+                        const { data: cliente } = await axios.get(`http://localhost:8080/resenia/cliente/${r.idCliente}`);
+                        return { ...r, cliente };
+                    } catch {
+                        return { ...r, cliente: null };
+                    }
+                })
+            );
+
+            setResenias(reseniasConClientes);
         } catch (err) {
             console.error("Error al obtener reseñas:", err);
             setResenias([]);
@@ -232,7 +244,10 @@ export default function Perfil() {
         ? form.fotoPreview || liveUrl || "/avatar-placeholder.png"
         : liveUrl || "/avatar-placeholder.png";
 
-    const isOwnProfile = userLS?.id === userId || userLS?.idPaseador === userId;
+    const isOwnProfile = !!userLS && (
+        Number(userLS.id) === Number(userId) ||
+        Number(userLS.idPaseador) === Number(userId)
+    );
 
     return (
         <div className={styles.perfil}>
@@ -393,6 +408,8 @@ export default function Perfil() {
                                 <div className={styles.puntuacion}>
                                     {r.puntuacion} ⭐
                                 </div>
+                                <p className={styles.descripcion}><strong>{r.cliente.nombre}</strong></p>
+                                <p className={styles.descripcion}>{r.cliente.email}</p>
                                 <p className={styles.descripcion}>{r.descripcion}</p>
                             </li>
                         ))}
