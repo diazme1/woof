@@ -227,7 +227,7 @@ const Header = () => {
                             {user?.rol === "ROLE_CLIENTE" && (
                                 <>
                                     <Link className={`${styles.btn} ${styles.ghost}`} to="/mis-solicitudes">
-                                        Mis solicitudes
+                                        Mi historial
                                     </Link>
                                     <button onClick={() => setShowPaseoForm(true)}>
                                         Registrar solicitud
