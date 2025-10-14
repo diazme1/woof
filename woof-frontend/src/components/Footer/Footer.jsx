@@ -26,14 +26,16 @@ const Footer = () => {
                     <a href="/paises" className={styles.footerLink}>Woof.com en Otros Países</a>
                 </div>
 
-                {/* Derecha: Redes sociales */}
+
                 <div className={styles.footerSocials}>
-                    <a href="#" className={styles.footerIcon}><FaInstagram/></a>
-                    <a href="#" className={styles.footerIcon}><FaWhatsapp/></a>
-                    <a href="#" className={styles.footerIcon}><FaTiktok/></a>
-                    <a href="#" className={styles.footerIcon}><FaYoutube/></a>
-                    <a href="#" className={styles.footerIcon}><FaTwitter/></a>
-                    <a href="#" className={styles.footerIcon}><FaFacebook/></a>
+                    <a  href="https://www.instagram.com/WoofArgentinaOk/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={styles.footerIcon}><FaInstagram/></a>
+                    <a href="https://wa.me/5491156238162"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       className={styles.footerIcon}><FaWhatsapp/></a>
                 </div>
             </div>
         </footer>
