@@ -227,6 +227,11 @@ public class UserServiceImpl implements UserService {
 
         return new File(stored);
     }
+
+    @Override
+    public void deleteAll() {
+        userDAO.deleteAll();
+    }
 }
 
 

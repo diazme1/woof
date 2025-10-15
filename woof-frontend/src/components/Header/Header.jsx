@@ -197,7 +197,7 @@ const Header = () => {
                         <>
                             {user?.rol === "ROLE_PASEADOR" && (
                                 <>
-                                    <Link className={styles.profileIcon} to="/perfil" title="Mi perfil">
+                                    <Link className={styles.profileIcon} to={`/perfil/${user.id}`} title="Mi perfil">
                                         {photoOk && avatarUrl ? (
                                             <img
                                                 src={avatarUrl}

@@ -24,5 +24,5 @@ public interface UserService {
     Usuario updatePerfil(Long id, UserRequestDTO request);
     String actualizarFotoPerfil(Long idUser, MultipartFile file) throws IOException;
     File getFotoPerfil(Long idUser) throws IOException;
-
+    void deleteAll();
 }

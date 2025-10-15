@@ -79,12 +79,16 @@ public class ReseniaServiceTest {
 
     @Test
     void saveReseniaConPuntakeInvalido() {
-        assertThrows(PuntajeInvalidoException.class, () -> {
+        PuntajeInvalidoException exception1 = assertThrows(PuntajeInvalidoException.class, () -> {
             new Resenia(ID_CLIENTE, ID_PASEADOR, ID_PASEO, 6, "Puntaje inválido");
         });
 
-        assertThrows(PuntajeInvalidoException.class, () -> {
+        assertEquals("La puntuación debe estar entre 0 y 5.", exception1.getMessage());
+
+        PuntajeInvalidoException exception2 = assertThrows(PuntajeInvalidoException.class, () -> {
             new Resenia(ID_CLIENTE, ID_PASEADOR, ID_PASEO, -1, "Puntaje inválido");
         });
+
+        assertEquals("La puntuación debe estar entre 0 y 5.", exception2.getMessage());
     }
 }
