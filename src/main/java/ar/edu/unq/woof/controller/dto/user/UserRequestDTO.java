@@ -19,7 +19,7 @@ public record UserRequestDTO(
 ) {
 
     public Usuario aModelo(){
-        return new Usuario(nombre, dni, email, telefono, direccion, contrasena, rol, biografia, alias );
+        return new Usuario(nombre, dni, email, telefono, direccion, contrasena, rol, alias, biografia);
     }
 
 //    public record UpdateUserRequest(
