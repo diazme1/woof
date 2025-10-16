@@ -276,8 +276,19 @@ const Header = () => {
 
             {/* Hero */}
             <section className={styles.hero}>
-                <h1>Paseos confiables cerca tuyo</h1>
-                <p>Encontrá paseadores verificados con reseñas reales. Reservá en 2 minutos.</p>
+                {!isLoggedIn ? (
+                    <>
+                        <h1>Paseos confiables cerca tuyo</h1>
+                        <p>Encontrá paseadores verificados con reseñas reales. Reservá en 2 minutos.</p>
+                    </>
+                ) : (
+                    <>
+                        <h1>
+                            Bienvenido/a {user?.nombre || "usuario"} 🐶 🐾
+                        </h1>
+                        <p>Nos alegra tenerte de vuelta 🐾</p>
+                    </>
+                )}
             </section>
         </header>
     );

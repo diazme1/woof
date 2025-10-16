@@ -90,7 +90,6 @@ const PaseadorDashboard = () => {
 
     return (
         <main className={styles.dashboard}>
-            <h1>Bienvenido/a {user?.nombre} 🐶</h1>
             <p>
                 Ahora podés aceptar solicitudes de paseo ✨. <br />
                 Esperamos que repartas tu amor a todos los perritos de tus paseos 🐾
