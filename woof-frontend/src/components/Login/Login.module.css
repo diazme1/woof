@@ -1,7 +1,9 @@
 .wrapper {
     display: grid;
+    align-items: start;
     place-items: center;
-    min-height: 100vh;
+    justify-items: center;
+    min-height: 50vh;
     padding: 16px;
 }
 
