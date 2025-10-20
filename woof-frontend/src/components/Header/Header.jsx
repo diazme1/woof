@@ -187,7 +187,6 @@ const Header = () => {
                         <li><button onClick={() => handleScroll("por-que-elegirnos")}>¿Por qué elegirnos?</button></li>
                         <li><button onClick={() => handleScroll("precios")}>Precios</button></li>
                         <li><button onClick={() => handleScroll("seguridad")}>Seguridad</button></li>
-                        <li><button onClick={() => handleScroll("ayuda")}>Ayuda</button></li>
                     </ul>
                 )}
 
@@ -227,11 +226,19 @@ const Header = () => {
                             {user?.rol === "ROLE_CLIENTE" && (
                                 <>
                                     <Link className={`${styles.btn} ${styles.ghost}`} to="/mis-solicitudes">
-                                        Mis solicitudes
+                                        Mi historial
                                     </Link>
                                     <button onClick={() => setShowPaseoForm(true)}>
                                         Registrar solicitud
                                     </button>
+                                </>
+                            )}
+
+                            {user?.rol === "ROLE_ADMIN" && (
+                                <>
+                                    <Link className={`${styles.btn} ${styles.ghost}`} to="/precios">
+                                        Actualizar precios
+                                    </Link>
                                 </>
                             )}
 

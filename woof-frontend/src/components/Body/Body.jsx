@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import styles from "./Body.module.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
@@ -6,8 +6,21 @@ import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import axios from "axios";
 
 const Body = () => {
+
+    const [precio, setPrecio] = useState();
+
+    useEffect(() => {
+        axios
+            .get(`http://localhost:8080/paseo/precio`)
+            .then((res) => {
+                setPrecio(res.data);
+            })
+            .catch(() => setPrecio(0));
+        console.log("Precio actual recuperado:", precio);
+    }, []);
 
     const ShieldIcon = ({ className }) => (
         <svg className={className} viewBox="0 0 24 24" stroke="currentColor" fill="none" aria-hidden="true">
@@ -35,6 +48,14 @@ const Body = () => {
             <path d="M12 11v5" strokeWidth="1.6" strokeLinecap="round"/>
         </svg>
     );
+
+    const formatearPrecio = (valor) => {
+        if (valor === null || valor === undefined || isNaN(valor)) return "0,00";
+        return valor.toLocaleString("es-AR", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        });
+    };
 
     return (
         <main style={{
@@ -156,6 +177,51 @@ const Body = () => {
                     </li>
                 </ul>
             </section>
+
+            {/* --- PRECIO --- */}
+            <section id="precios" aria-labelledby="precio-title" className={styles.securitySection}>
+                <div className={styles.securityContent}>
+                    <h1 id="precio-title" className={styles.title}>Precios en Woof</h1>
+                    <p className={styles.securityIntro}>
+                        Sabemos que la felicidad de tu mascota no tiene precio, pero nos aseguramos de que nuestros servicios de alta calidad tengan una tarifa justa y transparente.
+                    </p>
+                </div>
+
+                <div
+                    className={styles.securityGrid}
+                    style={{ gridTemplateColumns: '1fr', maxWidth: '520px', margin: '0.0rem auto 0' }}
+                >
+                    <article className={styles.securityCard}
+                             style={{ flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+                <span className={styles.iconCircle} aria-hidden="true" style={{ marginRight: 12 }}>
+                    <svg className={styles.icon} viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <path d="M12 7v5l3 2"></path>
+                  </svg>
+                </span>
+
+                        <div style={{ flex: 1, textAlign: 'center' }}>
+                            <h3 className={styles.securityCardTitle} style={{ marginBottom: 8 }}>
+                                Paseo 1 hora (60 min)
+                            </h3>
+
+                            <p className={styles.securityCardText} style={{ margin: 0 }}>
+                                Precio:
+                                <strong style={{ fontSize: '1.9rem', color: '#007c7d', marginLeft: 8 }}>
+                                    ${formatearPrecio(precio)}
+                                </strong>
+                            </p>
+
+                            <p className={styles.securityCardText} style={{ marginTop: 8 }}>
+                                Tarifa fija. Se ve antes de confirmar tu solicitud.
+                            </p>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+
+
             {/* --- SEGURIDAD --- */}
             <section id="seguridad" aria-labelledby="seguridad-title" className={styles.securitySection}>
                 <div className={styles.securityContent}>

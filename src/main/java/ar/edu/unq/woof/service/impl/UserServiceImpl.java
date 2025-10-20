@@ -1,11 +1,11 @@
 package ar.edu.unq.woof.service.impl;
 
-import ar.edu.unq.woof.controller.dto.user.UserDTO;
 import ar.edu.unq.woof.controller.dto.user.UserRequestDTO;
-import ar.edu.unq.woof.modelo.SolicitudPaseo;
+import ar.edu.unq.woof.modelo.Precio;
 import ar.edu.unq.woof.modelo.Usuario;
 import ar.edu.unq.woof.modelo.enums.EstadoValidacion;
 import ar.edu.unq.woof.modelo.exceptions.CorreoDuplicadoPaseadorException;
+import ar.edu.unq.woof.persistence.PrecioDAO;
 import ar.edu.unq.woof.persistence.UserDAO;
 import ar.edu.unq.woof.service.interfaces.UserService;
 import jakarta.persistence.EntityNotFoundException;
@@ -26,9 +26,11 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserDAO userDAO;
+    private final PrecioDAO precioDAO;
 
-    public UserServiceImpl(UserDAO userDAO) {
+    public UserServiceImpl(UserDAO userDAO, PrecioDAO precioDAO) {
         this.userDAO = userDAO;
+        this.precioDAO = precioDAO;
     }
 
     @Override
@@ -226,6 +228,18 @@ public class UserServiceImpl implements UserService {
 
 
         return new File(stored);
+    }
+
+    @Override
+    public void actualizarPrecio(Float nuevoPrecio) {
+        Precio precio = precioDAO.findById(1L)
+                .orElseGet(() -> {
+                    Precio p = new Precio();
+                    p.setPrecio(nuevoPrecio);
+                    return p;
+                });
+        precio.setPrecio(nuevoPrecio);
+        precioDAO.save(precio);
     }
 
     @Override

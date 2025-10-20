@@ -23,6 +23,25 @@ export default function PaseoForm() {
     const [touched, setTouched] = useState({});
     const [errors, setErrors] = useState({});
     const [showSuccess, setShowSuccess] = useState(false);
+    const [precio, setPrecio] = useState();
+
+    useEffect(() => {
+        axios
+            .get(`http://localhost:8080/paseo/precio`)
+            .then((res) => {
+                setPrecio(res.data);
+            })
+            .catch(() => setPrecio(0));
+        console.log("Precio actual recuperado:", precio);
+    }, []);
+
+    const formatearPrecio = (valor) => {
+        if (valor === null || valor === undefined || isNaN(valor)) return "0,00";
+        return valor.toLocaleString("es-AR", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        });
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -83,9 +102,10 @@ export default function PaseoForm() {
 
     return (
         <>
+
             <form className={styles.form} onSubmit={handleSubmit} noValidate>
                 <h2>Formulario de solicitud de paseo</h2>
-
+                <p><strong>Precio por hora de paseo: ${formatearPrecio(precio)}</strong></p>
                 <label>
                     Zona de paseo:
                     <select

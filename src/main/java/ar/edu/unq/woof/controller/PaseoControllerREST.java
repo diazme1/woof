@@ -106,4 +106,10 @@ public class PaseoControllerREST {
         return ResponseEntity.ok(SolicitudPaseoDTO.desdeModelo(solicitud));
 
     }
+
+    @GetMapping("/precio")
+    public ResponseEntity<Float> getPrecioPaseos() {
+        Float precio = solicitudService.getPrecioPaseos();
+        return ResponseEntity.ok(precio);
+    }
 }

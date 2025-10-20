@@ -21,4 +21,5 @@ public interface SolicitudPaseoService {
     int contarLosPaseosDePaseador(Long idPaseador);
     void finalizarSolicitud(Long id);
     void guardarComprobante(Long id, MultipartFile comprobante) throws IOException;
+    Float getPrecioPaseos();
 }

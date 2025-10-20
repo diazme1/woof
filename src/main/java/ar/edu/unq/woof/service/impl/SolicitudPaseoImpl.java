@@ -7,6 +7,7 @@ import ar.edu.unq.woof.modelo.exceptions.FranjaHorariaExcedida;
 import ar.edu.unq.woof.modelo.exceptions.HorarioIncorrecto;
 import ar.edu.unq.woof.modelo.exceptions.SolicitudNoEncontrada;
 import ar.edu.unq.woof.modelo.exceptions.SolicitudaNoPagadaAceptada;
+import ar.edu.unq.woof.persistence.PrecioDAO;
 import ar.edu.unq.woof.persistence.SolicitudPaseoDAO;
 import ar.edu.unq.woof.service.interfaces.SolicitudPaseoService;
 import jakarta.transaction.Transactional;
@@ -25,8 +26,11 @@ import java.util.Optional;
 public class SolicitudPaseoImpl implements SolicitudPaseoService {
 
     private final SolicitudPaseoDAO paseoDAO;
+    private final PrecioDAO precioDAO;
 
-    public SolicitudPaseoImpl(SolicitudPaseoDAO userDAO) { this.paseoDAO = userDAO; }
+    public SolicitudPaseoImpl(SolicitudPaseoDAO userDAO, PrecioDAO precioDAO) { this.paseoDAO = userDAO;
+        this.precioDAO = precioDAO;
+    }
 
     @Override
     public SolicitudPaseo savePaseo(SolicitudPaseo paseo){
@@ -144,6 +148,11 @@ public class SolicitudPaseoImpl implements SolicitudPaseoService {
     @Override
     public List<SolicitudPaseo> obtenerPaseosPaseador(Long id) {
         return paseoDAO.findByIdPaseador(id);
+    }
+
+    @Override
+    public Float getPrecioPaseos(){
+        return precioDAO.findById(1L).get().getPrecio();
     }
 
 }
