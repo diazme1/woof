@@ -13,6 +13,7 @@ import DashboardPaseosAceptados from "./components/PaseosAceptados/DashboardPase
 import Perfil from "./components/Perfil/Perfil";
 import ReseniaForm from "./components/ReseniaForm/ReseniaForm";
 import DashboardPrecios from "./components/Precios/DashboardPrecios";
+import DashboardValidaciones from "./components/Validaciones/DashboardValidaciones";
 
 
 const App = () => {
@@ -50,6 +51,7 @@ const App = () => {
                 <Route path="/perfil/:paramUserId" element={<Perfil />} />
                 <Route path="/resenia" element={<ReseniaForm />} />
                 <Route path="precios" element={<DashboardPrecios />} />
+                <Route path="validaciones" element={<DashboardValidaciones />} />
             </Routes>
 
             <Footer />
