@@ -1,0 +1,104 @@
+/* Wrapper principal */
+.wrapper {
+    display: grid;
+    align-items: start;
+    place-items: center;
+    justify-items: center;
+    min-height: 50vh;
+    padding: 16px;
+    background: #f8f9fa;
+}
+
+/* Formulario */
+.form {
+    width: 100%;
+    max-width: 380px;
+    display: grid;
+    gap: 16px;
+    padding: 24px;
+    border: 1px solid #e6e6e6;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.form h2 {
+    margin: 0 0 8px;
+    font-size: 20px;
+    text-align: center;
+    color: #333;
+}
+
+/* Labels e inputs */
+.form label {
+    display: grid;
+    gap: 6px;
+    font-size: 14px;
+    color: #555;
+}
+
+.form input {
+    padding: 10px 12px;
+    border: 1px solid #d6d6d6;
+    border-radius: 8px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form input:focus {
+    border-color: #0d6efd;
+}
+
+/* Botón de submit */
+.form button[type="submit"] {
+    padding: 10px 12px;
+    border: 0;
+    border-radius: 8px;
+    background: #0d6efd;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.form button[type="submit"]:hover {
+    background: #0b5ed7;
+}
+
+/* Mensaje de error */
+.form p {
+    margin: 0;
+    font-size: 13px;
+    color: crimson;
+    text-align: center;
+}
+
+/* Opcional: input para precio más pequeño */
+.inputPrecioWrapper {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.inputPrecioWrapper input {
+    flex: 1;
+}
+
+/* Helper text */
+.helper {
+    margin: 0;
+    font-size: 14px;
+    text-align: center;
+    color: #666;
+}
+
+/* Link estilo botón */
+.linkButton {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #0d6efd;
+    text-decoration: underline;
+    cursor: pointer;
+}

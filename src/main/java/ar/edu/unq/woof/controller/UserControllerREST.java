@@ -2,6 +2,7 @@ package ar.edu.unq.woof.controller;
 
 import ar.edu.unq.woof.controller.dto.user.UserDTO;
 import ar.edu.unq.woof.controller.dto.user.UserRequestDTO;
+import ar.edu.unq.woof.modelo.Precio;
 import ar.edu.unq.woof.modelo.Usuario;
 import ar.edu.unq.woof.service.interfaces.UserService;
 import jakarta.persistence.EntityNotFoundException;
@@ -147,5 +148,8 @@ public class UserControllerREST {
                 .body(bytes);
     }
 
-
+    @PutMapping("actualizar-precio")
+    public void actualizarPrecio(@RequestBody Float precio) {
+        userService.actualizarPrecio(precio);
+    }
 }

@@ -234,6 +234,14 @@ const Header = () => {
                                 </>
                             )}
 
+                            {user?.rol === "ROLE_ADMIN" && (
+                                <>
+                                    <Link className={`${styles.btn} ${styles.ghost}`} to="/precios">
+                                        Actualizar precios
+                                    </Link>
+                                </>
+                            )}
+
                             <button className={styles.btn} onClick={handleLogout}>
                                 Cerrar sesión
                             </button>
