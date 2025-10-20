@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AdminDashboard Component Snapshot testing coincide con el snapshot 1`] = `
+<main
+  class="dashboard"
+>
+  <section>
+    <div
+      data-testid="dashboard-validaciones"
+    >
+      Dashboard Validaciones Mock
+    </div>
+  </section>
+</main>
+`;
