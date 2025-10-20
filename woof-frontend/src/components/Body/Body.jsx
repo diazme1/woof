@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import styles from "./Body.module.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
@@ -6,8 +6,21 @@ import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import axios from "axios";
 
 const Body = () => {
+
+    const [precio, setPrecio] = useState();
+
+    useEffect(() => {
+        axios
+            .get(`http://localhost:8080/paseo/precio`)
+            .then((res) => {
+                setPrecio(res.data);
+            })
+            .catch(() => setPrecio(0));
+        console.log("Precio actual recuperado:", precio);
+    }, []);
 
     const ShieldIcon = ({ className }) => (
         <svg className={className} viewBox="0 0 24 24" stroke="currentColor" fill="none" aria-hidden="true">
@@ -35,6 +48,14 @@ const Body = () => {
             <path d="M12 11v5" strokeWidth="1.6" strokeLinecap="round"/>
         </svg>
     );
+
+    const formatearPrecio = (valor) => {
+        if (valor === null || valor === undefined || isNaN(valor)) return "0,00";
+        return valor.toLocaleString("es-AR", {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        });
+    };
 
     return (
         <main style={{
@@ -187,7 +208,7 @@ const Body = () => {
                             <p className={styles.securityCardText} style={{ margin: 0 }}>
                                 Precio:
                                 <strong style={{ fontSize: '1.9rem', color: '#007c7d', marginLeft: 8 }}>
-                                    $8.000
+                                    ${formatearPrecio(precio)}
                                 </strong>
                             </p>
 
