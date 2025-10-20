@@ -1,8 +1,12 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
+jest.mock('axios');
+jest.mock("react-router-dom", () => ({
+    BrowserRouter: ({ children }) => <div>{children}</div>,
+}));
+import { BrowserRouter } from "react-router-dom";
 import PaseoForm from '../components/PaseoForm/PaseoForm';
-import { BrowserRouter } from 'react-router-dom';
 
 jest.mock('axios');
 
