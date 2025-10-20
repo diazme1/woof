@@ -12,7 +12,7 @@ const validate = (v) => {
     if (!v.zona) {
         errors.zona = "Seleccioná una zona.";
     } else if (!["QUILMES", "BERNAL", "DON_BOSCO", "FLORENCIO_VARELA", "AVELLANEDA", "LA_PLATA"].includes(v.zona)) {
-        errors.zona = "Zona inválido.";
+        errors.zona = "Zona inválido";
     }
     return errors;
 };
