@@ -1,10 +1,8 @@
 package ar.edu.unq.woof.service.impl;
 
 import ar.edu.unq.woof.modelo.SolicitudPaseo;
-import ar.edu.unq.woof.modelo.Usuario;
 import ar.edu.unq.woof.modelo.enums.EstadoDePago;
 import ar.edu.unq.woof.modelo.enums.EstadoSolicitud;
-import ar.edu.unq.woof.modelo.enums.EstadoValidacion;
 import ar.edu.unq.woof.modelo.exceptions.FranjaHorariaExcedida;
 import ar.edu.unq.woof.modelo.exceptions.HorarioIncorrecto;
 import ar.edu.unq.woof.modelo.exceptions.SolicitudNoEncontrada;

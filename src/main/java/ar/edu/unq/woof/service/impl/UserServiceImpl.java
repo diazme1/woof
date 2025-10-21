@@ -241,6 +241,11 @@ public class UserServiceImpl implements UserService {
         precio.setPrecio(nuevoPrecio);
         precioDAO.save(precio);
     }
+
+    @Override
+    public void deleteAll() {
+        userDAO.deleteAll();
+    }
 }
 
 
