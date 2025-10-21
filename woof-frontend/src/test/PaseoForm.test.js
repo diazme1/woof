@@ -20,6 +20,9 @@ describe('PaseoForm Component', () => {
 
   beforeEach(() => {
     localStorage.setItem('user', JSON.stringify({ id: 1, nombre: 'Test User' }));
+
+    // Mock de axios.get para el precio del paseo
+    axios.get.mockResolvedValue({ data: 1500 });
   });
 
   afterEach(() => {

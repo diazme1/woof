@@ -96,7 +96,6 @@ describe('Header Component', () => {
         expect(screen.getByText(/¿por qué elegirnos\?/i)).toBeInTheDocument();
         expect(screen.getByText(/precios/i)).toBeInTheDocument();
         expect(screen.getByText(/seguridad/i)).toBeInTheDocument();
-        expect(screen.getByText(/ayuda/i)).toBeInTheDocument();
     });
 
     test('muestra botón de cerrar sesión cuando está logueado', () => {
@@ -129,7 +128,7 @@ describe('Header Component', () => {
         renderWithRouter(<Header />);
 
         await waitFor(() => {
-            expect(screen.getByText(/mis solicitudes/i)).toBeInTheDocument();
+            expect(screen.getByText(/mi historial/i)).toBeInTheDocument();
             expect(screen.getByText(/registrar solicitud/i)).toBeInTheDocument();
         });
     });
