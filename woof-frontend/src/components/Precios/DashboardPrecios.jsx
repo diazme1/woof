@@ -10,6 +10,7 @@ const DashboardPrecios = () => {
     const [precioViejo, setPrecioViejo] = useState(0);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
+    const [showSuccess, setShowSuccess] = useState(false);
 
     const formatearPrecio = (valor) => {
         if (valor === null || valor === undefined || isNaN(valor)) return "0,00";
@@ -42,8 +43,7 @@ const DashboardPrecios = () => {
                                                     "Content-Type": "application/json"
                                                 }
                                             });
-            alert("Precio modificado exitosamente");
-            navigate("/validaciones")
+            setShowSuccess(true);
         } catch (err) {
             setError("Hubo un error al actualizar el precio");
             console.error("Error al enviar datos:", err);
@@ -75,6 +75,37 @@ const DashboardPrecios = () => {
 
                 {error && <p style={{ color: "red" }}>{error}</p>}
             </form>
+
+            {/* Mensaje de éxito */}
+            {showSuccess && (
+                <div
+                    className={styles.overlay}
+                    role="presentation"
+                    onClick={() => {
+                        setShowSuccess(false);
+                        navigate("/admin/validaciones");
+                    }}
+                >
+                    <div
+                        className={styles.modal}
+                        role="dialog"
+                        aria-modal="true"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <p>Precio modificado exitosamente.</p>
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setShowSuccess(false);
+                                navigate("/admin/validaciones");
+                            }}
+                        >
+                            Cerrar
+                        </button>
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 }

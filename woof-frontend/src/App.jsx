@@ -51,7 +51,7 @@ const App = () => {
                 <Route path="/perfil/:paramUserId" element={<Perfil />} />
                 <Route path="/resenia" element={<ReseniaForm />} />
                 <Route path="precios" element={<DashboardPrecios />} />
-                <Route path="validaciones" element={<DashboardValidaciones />} />
+                <Route path="/admin/validaciones" element={<DashboardValidaciones />} />
             </Routes>
 
             <Footer />

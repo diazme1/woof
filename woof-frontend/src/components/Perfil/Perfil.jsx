@@ -205,7 +205,9 @@ export default function Perfil() {
                 biografia: form.biografia || null,
             };
 
-            const { data: updated } = await axios.put(`http://localhost:8080/user/${user.id}`, payload);
+            console.log("Payload to save:", payload);
+
+            const { data: updated } = await axios.put(`http://localhost:8080/user/${userId}`, payload);
 
             const merged = {
                 ...updated,

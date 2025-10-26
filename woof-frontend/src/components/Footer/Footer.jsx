@@ -15,17 +15,6 @@ const Footer = () => {
                     <p className={styles.footerText}>© Global Pro Care Inc.</p>
                 </div>
 
-                {/* Centro: Links */}
-                <div className={styles.footerLinks}>
-                    <a href="/contacto" className={styles.footerLink}>Contacto</a>
-                    <span>-</span>
-                    <a href="/privacidad" className={styles.footerLink}>Política de Privacidad</a>
-                    <span>-</span>
-                    <a href="/terminos" className={styles.footerLink}>Términos y Condiciones</a>
-                    <span>-</span>
-                    <a href="/paises" className={styles.footerLink}>Woof.com en Otros Países</a>
-                </div>
-
 
                 <div className={styles.footerSocials}>
                     <a  href="https://www.instagram.com/WoofArgentinaOk/"
