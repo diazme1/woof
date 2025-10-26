@@ -275,7 +275,7 @@ const Header = () => {
                             </button>
                         </div>
                         <div className={styles.modalBody}>
-                            <PaseoForm />
+                            <PaseoForm onSuccess={() => setShowPaseoForm(false)}/>
                         </div>
                     </div>
                 </div>

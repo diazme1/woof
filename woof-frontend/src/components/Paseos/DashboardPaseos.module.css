@@ -3,6 +3,7 @@
     flex-direction: column;
     min-height: 100vh;
     padding: 16px;
+    align-items: center; /* centrar contenido */
 }
 
 .title {
@@ -12,26 +13,20 @@
     text-align: center;
 }
 
+/* Lista convertida a grid de 3 columnas */
 .lista {
     list-style: none;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
-}
-
-.item {
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 12px;
-    background: #fafafa;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
     width: 100%;
-    max-width: 700px;
+    max-width: 1100px; /* controla ancho para que entren 3 columnas cómodas */
+    box-sizing: border-box;
 }
 
+/* Tarjeta: mantengo la estructura flex column para alinear contenido y acciones */
 .item {
     background: var(--card);
     border: 1px solid var(--line);
@@ -43,7 +38,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between; /* mantiene contenido arriba y acciones abajo */
-    min-height: 220px; /* opcional para que todas las tarjetas tengan altura similar */
+    min-height: 200px; /* altura consistente */
+    align-self: stretch; /* que cada tarjeta ocupe la altura de la fila */
 }
 
 .item:hover {
@@ -52,7 +48,7 @@
 }
 
 .cardActions {
-    margin-top: auto;
+    margin-top: 12px;
     display: flex;
     justify-content: flex-end;
 }
@@ -123,4 +119,66 @@
     margin: 0;
     font-size: 1.1rem;
     color: #a80000;
+}
+
+/* Estructura interna de la tarjeta para parecerse a securityCard de Body.module.css */
+.cardRow {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.iconCircle {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #e8f3ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon {
+    width: 26px;
+    height: 26px;
+    stroke: #1e6de4;
+    stroke-width: 1.8;
+}
+
+.cardContent {
+    flex: 1 1 auto;
+}
+
+.cardTitle {
+    color: #007c7d;
+    font-size: 1.05rem;
+    margin: 0 0 6px 0;
+}
+
+.cardText {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: #333;
+    margin: 6px 0;
+}
+
+/* Responsive: 2 columnas en pantallas medianas, 1 en pequeñas */
+@media (max-width: 900px) {
+    .lista {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        max-width: 800px;
+        gap: 16px;
+    }
+}
+
+@media (max-width: 600px) {
+    .lista {
+        grid-template-columns: 1fr;
+        padding: 0 12px;
+        max-width: 520px;
+    }
+    .item {
+        min-height: auto;
+    }
 }

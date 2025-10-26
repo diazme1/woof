@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import styles from "./ClientForm.module.css";
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 const initial = { fullName: "", dni:"", email: "", phone: "", address: "", password: "", rol:"" };
 const emailRE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -33,12 +34,13 @@ const validate = (v) => {
     return errors;
 };
 
-export default function ClientForm() {
+export default function ClientForm({ onSuccess }) {
     const [formData, setFormData] = useState(initial);
     const [touched, setTouched] = useState({});
     const [errors, setErrors] = useState({});
     const [showSuccess, setShowSuccess] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const navigate = useNavigate();
 
 
     const handleChange = (e) => {
@@ -249,7 +251,14 @@ export default function ClientForm() {
                 <div
                     className={styles.overlay}
                     role="presentation"
-                    onClick={() => setShowSuccess(false)}
+                    onClick={() => {
+                        setShowSuccess(false);
+                        if (onSuccess) {
+                            onSuccess();
+                        } else {
+                            navigate("/login");
+                        }
+                    }}
                 >
                     <div
                         className={styles.modal}
@@ -259,7 +268,14 @@ export default function ClientForm() {
                     >
                         <h3>¡Registro realizado con exito!</h3>
                         <p>Los datos se enviaron correctamente. Proximamente nos comunicaremos con vos.</p>
-                        <button type="button" onClick={() => setShowSuccess(false)}>
+                        <button type="button" onClick={() => {
+                            setShowSuccess(false);
+                            if (onSuccess) {
+                                onSuccess();
+                            } else {
+                                navigate("/login");
+                            }
+                        }}>
                             Cerrar
                         </button>
                     </div>

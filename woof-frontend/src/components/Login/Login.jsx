@@ -126,7 +126,7 @@ const Login = () => {
                             </button>
                         </div>
                         <div className={styles.modalBody}>
-                            <ClientForm />
+                            <ClientForm onSuccess={() => setShowRegister(false)} />
                         </div>
                     </div>
                 </div>
@@ -135,4 +135,3 @@ const Login = () => {
     );
 }
 export default Login;
-

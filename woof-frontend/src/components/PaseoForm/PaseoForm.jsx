@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import styles from "./PaseoForm.module.css";
 import axios from 'axios';
+import { useNavigate } from "react-router-dom";
 
 const initial = { zona:"", horario:"", nombrePerro:"", tamanoPerro:"", raza:"", detalles:"" };
 
@@ -17,13 +18,14 @@ const validate = (v) => {
     return errors;
 };
 
-export default function PaseoForm() {
+export default function PaseoForm({onSuccess}) {
     const user = JSON.parse(localStorage.getItem("user"));
     const [formData, setFormData] = useState(initial);
     const [touched, setTouched] = useState({});
     const [errors, setErrors] = useState({});
     const [showSuccess, setShowSuccess] = useState(false);
     const [precio, setPrecio] = useState();
+    const navigate = useNavigate();
 
     useEffect(() => {
         axios
@@ -220,7 +222,13 @@ export default function PaseoForm() {
                 <div
                     className={styles.overlay}
                     role="presentation"
-                    onClick={() => setShowSuccess(false)}
+                    onClick={() => {
+                        setShowSuccess(false);
+                        if (onSuccess) {
+                            onSuccess();
+                        }
+                        navigate("/mis-solicitudes");
+                    }}
                 >
                     <div
                         className={styles.modal}
@@ -230,7 +238,13 @@ export default function PaseoForm() {
                     >
                         <h3>¡Paseo registrado con éxito!</h3>
                         <p>Los datos se enviaron correctamente. Proximamente un paseador se comunicará con vos.</p>
-                        <button type="button" onClick={() => setShowSuccess(false)}>
+                        <button type="button" onClick={() => {
+                            setShowSuccess(false);
+                            if (onSuccess) {
+                                onSuccess();
+                            }
+                            navigate("/mis-solicitudes");
+                        }}>
                             Cerrar
                         </button>
                     </div>

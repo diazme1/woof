@@ -115,21 +115,34 @@ const DashboardPaseosAceptados = () => {
                 <ul className={styles.lista}>
                     {lista.map((s) => (
                         <li key={s.id} className={styles.item}>
-                            <h3><strong>Zona:</strong> {zonasMap[s.zona] || s.zona}</h3>
-                            <p><strong>Fecha y Hora:</strong> {formatFecha(s.horario)}</p>
-                            <p><strong>Perro:</strong> {s.nombrePerro} ({s.raza})</p>
-                            <p><strong>Estado de solicitud:</strong> {estadoMap[s.estado] || s.estado}</p>
-                            { (s.estadoPago === "PAGO") && (<p><strong>Estado de pago:</strong> {"Pagada"}</p>)}
-                            { (s.estadoPago === "PENDIENTE_DE_PAGO") && (<p><strong>Estado de pago:</strong> {"Pendiente"}</p>)}
+                            <div className={styles.cardRow}>
+                                <span className={styles.iconCircle} aria-hidden>
+                                    {/* Icono de check/completado */}
+                                    <svg className={styles.icon} viewBox="0 0 24 24" fill="none">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" strokeWidth="1.6"/>
+                                        <polyline points="22 4 12 14.01 9 11.01" strokeWidth="1.6"/>
+                                    </svg>
+                                </span>
 
+                                <div className={styles.cardContent}>
+                                    <h3 className={styles.cardTitle}><strong>Zona:</strong> {zonasMap[s.zona] || s.zona}</h3>
+                                    <p className={styles.cardText}><strong>Fecha y Hora:</strong> {formatFecha(s.horario)}</p>
+                                    <p className={styles.cardText}><strong>Perro:</strong> {s.nombrePerro} ({s.raza})</p>
+                                    <p className={styles.cardText}><strong>Estado de solicitud:</strong> {estadoMap[s.estado] || s.estado}</p>
+                                    {(s.estadoPago === "PAGO") && (<p className={styles.cardText}><strong>Estado de pago:</strong> {"Pagada"}</p>)}
+                                    {(s.estadoPago === "PENDIENTE_DE_PAGO") && (<p className={styles.cardText}><strong>Estado de pago:</strong> {"Pendiente"}</p>)}
+                                </div>
+                            </div>
 
                             {s.idPaseador === user.id && s.estadoPago === "PAGO" && view === "activos" && (
-                                <button
-                                    className={styles.finalizarBtn}
-                                    onClick={() => finalizarPaseo(s.id)}
-                                >
-                                    Finalizar paseo
-                                </button>
+                                <div className={styles.cardActions}>
+                                    <button
+                                        className={styles.finalizarBtn}
+                                        onClick={() => finalizarPaseo(s.id)}
+                                    >
+                                        Finalizar paseo
+                                    </button>
+                                </div>
                             )}
                         </li>
                     ))}

@@ -3,7 +3,7 @@
     flex-direction: column;
     min-height: 100vh;
     padding: 16px;
-    align-items: center;
+    align-items: center; /* centrar contenido */
 }
 
 .title {
@@ -13,29 +13,32 @@
     text-align: center;
 }
 
+/* Lista convertida a grid de 3 columnas */
 .lista {
     list-style: none;
     padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
     width: 100%;
+    max-width: 1100px;
+    box-sizing: border-box;
 }
 
+/* Tarjeta con estructura flex column */
 .item {
     background: var(--card, #fafafa);
     border: 1px solid var(--line, #ddd);
     border-radius: 14px;
-    padding: 20px;
+    padding: 18px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 240px;
-    width: 100%;
-    max-width: 700px;
+    min-height: 200px;
+    align-self: stretch;
 }
 
 .item:hover {
@@ -43,8 +46,50 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
 }
 
+/* Estructura interna de la tarjeta */
+.cardRow {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.iconCircle {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #e8f3ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon {
+    width: 26px;
+    height: 26px;
+    stroke: #1e6de4;
+    stroke-width: 1.8;
+}
+
+.cardContent {
+    flex: 1 1 auto;
+}
+
+.cardTitle {
+    color: #007c7d;
+    font-size: 1.05rem;
+    margin: 0 0 6px 0;
+}
+
+.cardText {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: #333;
+    margin: 6px 0;
+}
+
 .cardActions {
-    margin-top: auto;
+    margin-top: 12px;
     display: flex;
     justify-content: flex-end;
     gap: 10px;
@@ -68,7 +113,52 @@
     transform: scale(1.03);
 }
 
-/* Popup de éxito */
+/* Botón Pagar */
+.btnPagar {
+    background-color: #00bcd4;
+    color: #fff;
+    padding: 10px 18px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btnPagar:hover {
+    background-color: #0097a7;
+    transform: scale(1.03);
+}
+
+.finalizarBtn {
+    background-color: #ff9800;
+    color: #fff;
+    padding: 10px 18px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.finalizarBtn:hover {
+    background-color: #f57c00;
+    transform: scale(1.03);
+}
+
+.paseadorLink {
+    color: #007c7d;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.paseadorLink:hover {
+    text-decoration: underline;
+}
+
+/* Popup */
 .overlay {
     position: fixed;
     inset: 0;
@@ -106,6 +196,15 @@
     cursor: pointer;
 }
 
+.modalResenia {
+    padding: 20px 30px;
+    text-align: center;
+    font-weight: 600;
+    animation: fadeIn 0.3s ease-out;
+    max-width: 400px;
+    width: 90%;
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -141,9 +240,26 @@
     color: #a80000;
 }
 
-/* Responsive */
-@media (max-width: 480px) {
-    .btnPrimary {
+/* Responsive: 2 columnas en pantallas medianas, 1 en pequeñas */
+@media (max-width: 900px) {
+    .lista {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        max-width: 800px;
+        gap: 16px;
+    }
+}
+
+@media (max-width: 600px) {
+    .lista {
+        grid-template-columns: 1fr;
+        padding: 0 12px;
+        max-width: 520px;
+    }
+    .item {
+        min-height: auto;
+    }
+
+    .btnPrimary, .btnPagar, .finalizarBtn {
         width: 100%;
         font-size: 0.95rem;
     }
@@ -151,65 +267,4 @@
     .cardActions {
         justify-content: center;
     }
-
-    .item {
-        padding: 16px;
-    }
-}
-
-/* Botón Aceptar */
-.btnAceptar {
-    background-color: #2196f3; /* azul */
-    color: #fff;
-    padding: 10px 18px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-}
-
-.btnAceptar:hover {
-    background-color: #1976d2;
-    transform: scale(1.03);
-}
-
-/* Botón Pagar */
-.btnPagar {
-    background-color: #00bcd4; /* turquesa */
-    color: #fff;
-    padding: 10px 18px;
-    font-size: 1rem;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease;
-}
-
-.btnPagar:hover {
-    background-color: #0097a7;
-    transform: scale(1.03);
-}
-
-.modalResenia {
-    padding: 20px 30px;
-    text-align: center;
-    font-weight: 600;
-    animation: fadeIn 0.3s ease-out;
-    max-width: 400px;
-    width: 90%;
-}
-
-.paseadorLink {
-    color: #4a90e2;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.2s ease;
-}
-
-.paseadorLink:hover {
-    color: #357abd;
-    text-decoration: underline;
 }

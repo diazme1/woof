@@ -210,18 +210,35 @@ const DashboardSolicitudes = () => {
                 <ul className={styles.lista}>
                     {solicitudes.map((s) => (
                         <li key={s.id} className={styles.item}>
-                            <h3><strong>Zona:</strong> {zonasMap[s.zona] || s.zona}</h3>
-                            <p><strong>Horario:</strong> {formatFecha(s.horario)}</p>
-                            <p><strong>Perro:</strong> {s.nombrePerro} ({s.raza})</p>
-                            <p><strong>Tamaño:</strong> {tamanosMap[s.tamanoPerro] || s.tamanoPerro}</p>
-                            {s.idPaseador && (
-                                <p><strong>Paseador:</strong> <Link to={`/perfil/${s.idPaseador}`} className={styles.paseadorLink}>
-                                    {obtenerNombrePaseador(s.idPaseador)}
-                                </Link></p>
-                            )}
-                            <p><strong>Estado de solicitud:</strong> {estadoMap[s.estado] || s.estado}</p>
-                            { (s.estadoPago === "PAGO") && (<p><strong>Estado de pago:</strong> {"Pagada ✅"}</p>)}
-                            { (s.estadoPago === "PENDIENTE_DE_PAGO") && (<p><strong>Estado de pago:</strong> {"Pendiente"}</p>)}
+                            <div className={styles.cardRow}>
+                                <span className={styles.iconCircle} aria-hidden>
+                                    {/* Icono de documento/solicitud */}
+                                    <svg className={styles.icon} viewBox="0 0 24 24" fill="none">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" strokeWidth="1.6"/>
+                                        <path d="M14 2v6h6" strokeWidth="1.6"/>
+                                        <line x1="16" y1="13" x2="8" y2="13" strokeWidth="1.6"/>
+                                        <line x1="16" y1="17" x2="8" y2="17" strokeWidth="1.6"/>
+                                        <line x1="10" y1="9" x2="8" y2="9" strokeWidth="1.6"/>
+                                    </svg>
+                                </span>
+
+                                <div className={styles.cardContent}>
+                                    <h3 className={styles.cardTitle}><strong>Zona:</strong> {zonasMap[s.zona] || s.zona}</h3>
+                                    <p className={styles.cardText}><strong>Horario:</strong> {formatFecha(s.horario)}</p>
+                                    <p className={styles.cardText}><strong>Perro:</strong> {s.nombrePerro} ({s.raza})</p>
+                                    <p className={styles.cardText}><strong>Tamaño:</strong> {tamanosMap[s.tamanoPerro] || s.tamanoPerro}</p>
+                                    {s.idPaseador && (
+                                        <p className={styles.cardText}>
+                                            <strong>Paseador:</strong> <Link to={`/perfil/${s.idPaseador}`} className={styles.paseadorLink}>
+                                                {obtenerNombrePaseador(s.idPaseador)}
+                                            </Link>
+                                        </p>
+                                    )}
+                                    <p className={styles.cardText}><strong>Estado de solicitud:</strong> {estadoMap[s.estado] || s.estado}</p>
+                                    {(s.estadoPago === "PAGO") && (<p className={styles.cardText}><strong>Estado de pago:</strong> {"Pagada ✅"}</p>)}
+                                    {(s.estadoPago === "PENDIENTE_DE_PAGO") && (<p className={styles.cardText}><strong>Estado de pago:</strong> {"Pendiente"}</p>)}
+                                </div>
+                            </div>
 
                             <div className={styles.cardActions}>
                                 {esCancelable(s) && (
