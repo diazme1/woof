@@ -35,8 +35,8 @@ public class SolicitudPaseoImpl implements SolicitudPaseoService {
     @Override
     public SolicitudPaseo savePaseo(SolicitudPaseo paseo){
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime max = now.plusHours(12);
-        LocalTime cutoff = LocalTime.of(21, 0);
+        LocalDateTime max = now.plusHours(7);
+        LocalTime cutoff = LocalTime.of(23, 0);
 
         LocalDateTime horario = paseo.getHorario();
 
@@ -63,7 +63,7 @@ public class SolicitudPaseoImpl implements SolicitudPaseoService {
 
     @Override
     public int contarLosPaseosDePaseador(Long idPaseador) {
-        return paseoDAO.getPaseosPaseador(idPaseador).size();
+        return paseoDAO.getPaseosPaseador(idPaseador).stream().filter(p -> p.getEstadoDeSolicitud().equals(EstadoSolicitud.FINALIZADA)).toList().size();
     }
 
     @Override
@@ -155,4 +155,15 @@ public class SolicitudPaseoImpl implements SolicitudPaseoService {
         return precioDAO.findById(1L).get().getPrecio();
     }
 
+    @Override
+    public File getComprobante(Long id) {
+        SolicitudPaseo solicitud = paseoDAO.findById(id)
+                .orElseThrow(() -> new RuntimeException("Solicitud no encontrada"));
+
+        if (solicitud.getComprobanteDePago() == null) {
+            throw new RuntimeException("No hay comprobante cargado para esta solicitud");
+        }
+
+        return new File(solicitud.getComprobanteDePago());
+    }
 }

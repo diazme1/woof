@@ -6,11 +6,14 @@ import ar.edu.unq.woof.modelo.SolicitudPaseo;
 import ar.edu.unq.woof.service.interfaces.SolicitudPaseoService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -111,5 +114,21 @@ public class PaseoControllerREST {
     public ResponseEntity<Float> getPrecioPaseos() {
         Float precio = solicitudService.getPrecioPaseos();
         return ResponseEntity.ok(precio);
+    }
+
+    @GetMapping("/{id}/comprobante")
+    public ResponseEntity<byte[]> getComprobante(@PathVariable Long id) throws IOException {
+        File file = solicitudService.getComprobante(id);
+
+        if (!file.exists()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        byte[] bytes = Files.readAllBytes(file.toPath());
+        String mimeType = Files.probeContentType(file.toPath());
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(mimeType != null ? mimeType : "application/octet-stream"))
+                .body(bytes);
     }
 }

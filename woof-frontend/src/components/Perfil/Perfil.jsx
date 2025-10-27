@@ -30,10 +30,20 @@ export default function Perfil() {
 
     function toImageSrc(u, id) {
         if (!u) return null;
-        if (/^[A-Za-z]:\\/.test(u) || u.startsWith("\\\\")) {
+        // Detectar rutas absolutas (Windows: C:\... o \\..., Unix/macOS: /...)
+        const isAbsolutePath = /^[A-Za-z]:\\/.test(u) || u.startsWith("\\\\") || u.startsWith("/");
+
+        if (isAbsolutePath) {
+            // Si es una ruta absoluta del sistema de archivos, usar el endpoint del backend
             return `http://localhost:8080/user/${id}/foto-perfil`;
         }
-        if (u.startsWith("/")) return `http://localhost:8080${u}`;
+
+        // Si ya es una URL relativa que empieza con /uploads, agregarle el host
+        if (u.startsWith("/uploads")) return `http://localhost:8080${u}`;
+
+        // Si ya es una URL completa (http:// o https://), devolverla tal cual
+        if (u.startsWith("http://") || u.startsWith("https://")) return u;
+
         return u;
     }
 

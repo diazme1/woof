@@ -134,7 +134,24 @@ const DashboardPaseosAceptados = () => {
                                 </div>
                             </div>
 
-                            {s.idPaseador === user.id && s.estadoPago === "PAGO" && view === "activos" && (
+                            {/* Botón para ver comprobante si está pagado */}
+                            {s.estadoPago === "PAGO" && (
+                                <div className={styles.cardActions}>
+                                    <a
+                                        href={`http://localhost:8080/paseo/${s.id}/comprobante`}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className={styles.comprobanteBtn}
+                                    >
+                                        📎 Ver Comprobante
+                                    </a>
+                                </div>
+                            )}
+
+                            {s.idPaseador === user.id &&
+                             s.estadoPago === "PAGO" &&
+                             view === "activos" &&
+                             new Date(s.horario).getTime() + (60 * 60 * 1000) <= Date.now() && (
                                 <div className={styles.cardActions}>
                                     <button
                                         className={styles.finalizarBtn}
