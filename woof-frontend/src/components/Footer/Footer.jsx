@@ -21,7 +21,7 @@ const Footer = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                         className={styles.footerIcon}><FaInstagram/></a>
-                    <a href="https://wa.me/5491156238162"
+                    <a href="https://wa.me/5491141594843"
                        target="_blank"
                        rel="noopener noreferrer"
                        className={styles.footerIcon}><FaWhatsapp/></a>
