@@ -90,13 +90,17 @@ const PaseadorDashboard = () => {
 
     return (
         <main className={styles.dashboard}>
+            {estadoValidacion === "ENVIADO" && (
             <p>
                 Ahora podés aceptar solicitudes de paseo ✨. <br />
                 Esperamos que repartas tu amor a todos los perritos de tus paseos 🐾
             </p>
-
+            )}
             {user?.rol === "ROLE_PASEADOR" && (
                 <>
+                    <p>
+                        Aún debes validarte para aceptar solicitudes de paseo ✨. <br />
+                    </p>
                     {estadoValidacion === "NO_ENVIADO" && !mostrarForm && (
                         <button onClick={() => setMostrarForm(true)}>Validarse</button>
                     )}

@@ -88,9 +88,6 @@ public class DataInitializer {
             "juanpaseador",
             "Amante de los perros con 2 años de experiencia."
         );
-        paseadorNoValidado.setEstadoValidacion(EstadoValidacion.PENDIENTE);
-        paseadorNoValidado.setFotoDni("uploads/dni_juan.jpg");
-        paseadorNoValidado.setCv("uploads/cv_juan.pdf");
         userDAO.save(paseadorNoValidado);
 
         // Paseador VALIDADO
